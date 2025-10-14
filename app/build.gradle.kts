@@ -59,7 +59,10 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.2")
     annotationProcessor("androidx.room:room-compiler:2.8.2")
 
-    //
+    // Coroutines
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
 
 
 }
