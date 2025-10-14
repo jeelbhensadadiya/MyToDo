@@ -1,7 +1,6 @@
 package com.jeelpatel.mytodo.view
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +11,7 @@ import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
 import com.jeelpatel.mytodo.model.TaskRepository
 import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
+import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.authentication.LoginActivity
 import com.jeelpatel.mytodo.view.authentication.SignUpActivity
 import com.jeelpatel.mytodo.viewModel.TaskViewModel
@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     lateinit var taskViewModel: TaskViewModel
-    lateinit var sharedPref: SharedPreferences
-    var currentUserID: Int = 0
+    lateinit var sessionManager: SessionManager
+    var currentUserID = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // for get current User ID and Status
-        sharedPref = getSharedPreferences("currentUserId", MODE_PRIVATE)
-        currentUserID = sharedPref.getInt("uId", 0)
+        sessionManager = SessionManager(this)
+        currentUserID = sessionManager.getUserId()
 
 
         // Setup Room + MVVM
@@ -92,20 +92,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.materialToolBar.setOnMenuItemClickListener() { menuItem ->
             if (menuItem.itemId == R.id.logOutBtn) {
-                sharedPref.edit().clear().apply()
+                sessionManager.clearSession()
                 startActivity(Intent(this, SignUpActivity::class.java))
                 finish()
                 true
             } else {
                 false
             }
-
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (!sharedPref.getBoolean("isLoggedIn", false)) {
+        if (!sessionManager.isLoggedIn()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }

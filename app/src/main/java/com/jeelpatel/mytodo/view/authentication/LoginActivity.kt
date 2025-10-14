@@ -14,17 +14,18 @@ import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityLoginBinding
 import com.jeelpatel.mytodo.model.UserRepository
 import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
+import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.MainActivity
 import com.jeelpatel.mytodo.viewModel.UserViewModel
 import com.jeelpatel.mytodo.viewModel.UserViewModelFactory
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity() : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
 
-    lateinit var sharedPref: SharedPreferences
+    lateinit var sessionManager: SessionManager
 
     lateinit var userViewModel: UserViewModel
 
@@ -32,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        sharedPref = getSharedPreferences("currentUserId", MODE_PRIVATE)
+        sessionManager = SessionManager(this)
 
         // Setup Room + MVVM
         val db = DatabaseBuilder.getInstance(this)
@@ -58,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (sharedPref.getBoolean("isLoggedIn", false)) {
+        if (sessionManager.isLoggedIn()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -66,10 +67,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun observeData() {
         userViewModel.user.observe(this) { user ->
-            sharedPref.edit().putInt("uId", user.uId).apply()
-            sharedPref.edit().putBoolean("isLoggedIn", true).apply()
-
+            sessionManager.saveUserSession(user.uId)
         }
+
         userViewModel.isRegistered.observe(this) { registered ->
             if (registered == true) {
                 startActivity(Intent(this, MainActivity::class.java))

@@ -16,6 +16,7 @@ import com.jeelpatel.mytodo.model.local.dao.UserDao
 import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
 import com.jeelpatel.mytodo.model.local.database.UserDatabase
 import com.jeelpatel.mytodo.model.local.entity.UserEntity
+import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.MainActivity
 import com.jeelpatel.mytodo.viewModel.UserViewModel
 import com.jeelpatel.mytodo.viewModel.UserViewModelFactory
@@ -25,7 +26,7 @@ class SignUpActivity : AppCompatActivity() {
     private val binding: ActivitySignUpBinding by lazy {
         ActivitySignUpBinding.inflate(layoutInflater)
     }
-    lateinit var sharedPref: SharedPreferences
+    lateinit var sessionManager: SessionManager
 
     lateinit var userViewModel: UserViewModel
 
@@ -33,7 +34,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        sharedPref = getSharedPreferences("currentUserId", MODE_PRIVATE)
+        sessionManager = SessionManager(this)
 
         // Setup Room + MVVM
         val db = DatabaseBuilder.getInstance(this)
@@ -71,7 +72,7 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (sharedPref.getBoolean("isLoggedIn", false)) {
+        if (sessionManager.isLoggedIn()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
