@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
 import com.jeelpatel.mytodo.model.TaskRepository
 import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
 import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.view.adapter.TaskAdapter
 import com.jeelpatel.mytodo.view.authentication.LoginActivity
 import com.jeelpatel.mytodo.view.authentication.SignUpActivity
 import com.jeelpatel.mytodo.viewModel.TaskViewModel
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var taskViewModel: TaskViewModel
     lateinit var sessionManager: SessionManager
+    lateinit var taskAdapter: TaskAdapter
     var currentUserID = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         val taskFactory = TaskViewModelFactory(taskRepository)
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
+        // Adapter
+        taskAdapter = TaskAdapter()
+        binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.taskRecyclerView.adapter = taskAdapter
+
         uiSetup()
         observeData()
 
@@ -62,21 +70,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        taskViewModel.task.observe(this) { task ->
-            binding.taskTv.text = task.joinToString {
-                """
-                    ${it.taskId}
-                    ${it.title}
-                    ${it.description}
-                    ${it.isCompleted}
-                    ${it.priority}
-                    ${it.dueDate}
-                    ${it.createdAt}
-                    ${it.userOwnerId}
-                    
-                    
-                """.trimIndent()
-            }
+        taskViewModel.task.observe(this) { taskList ->
+            taskAdapter.submitList(taskList)
+//            binding.taskTv.text = taskList.joinToString {
+//                """
+//                    ${it.taskId}
+//                    ${it.title}
+//                    ${it.description}
+//                    ${it.isCompleted}
+//                    ${it.priority}
+//                    ${it.dueDate}
+//                    ${it.createdAt}
+//                    ${it.userOwnerId}
+//
+//
+//                """.trimIndent()
+//            }
         }
 
         taskViewModel.message.observe(this) { msg ->

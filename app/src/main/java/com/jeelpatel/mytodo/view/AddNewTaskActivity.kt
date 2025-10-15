@@ -14,6 +14,7 @@ import com.jeelpatel.mytodo.model.TaskRepository
 import com.jeelpatel.mytodo.model.UserRepository
 import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
 import com.jeelpatel.mytodo.model.local.entity.TaskEntity
+import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.viewModel.TaskViewModel
 import com.jeelpatel.mytodo.viewModel.TaskViewModelFactory
 import com.jeelpatel.mytodo.viewModel.UserViewModel
@@ -25,7 +26,7 @@ class AddNewTaskActivity : AppCompatActivity() {
         ActivityAddNewTaskBinding.inflate(layoutInflater)
     }
     lateinit var taskViewModel: TaskViewModel
-    lateinit var sharedPref: SharedPreferences
+    lateinit var sessionManager: SessionManager
     var currentUserID: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +34,8 @@ class AddNewTaskActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // for current user Status
-        sharedPref = getSharedPreferences("currentUserId", MODE_PRIVATE)
-        currentUserID = sharedPref.getInt("uId", 0)
+        sessionManager = SessionManager(this)
+        currentUserID = sessionManager.getUserId()
 
 
         // Setup Room + MVVM
