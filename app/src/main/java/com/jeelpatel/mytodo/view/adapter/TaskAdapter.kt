@@ -1,14 +1,19 @@
 package com.jeelpatel.mytodo.view.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.UiContext
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jeelpatel.mytodo.databinding.ItemTasksBinding
 import com.jeelpatel.mytodo.model.local.entity.TaskEntity
+import com.jeelpatel.mytodo.view.TaskActivity
 
-class TaskAdapter : ListAdapter<TaskEntity, TaskAdapter.TaskViewHolder>(DiffCallBack()) {
+class TaskAdapter(val context: Context) :
+    ListAdapter<TaskEntity, TaskAdapter.TaskViewHolder>(DiffCallBack()) {
     class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
 
     class DiffCallBack : DiffUtil.ItemCallback<TaskEntity>() {
@@ -39,8 +44,16 @@ class TaskAdapter : ListAdapter<TaskEntity, TaskAdapter.TaskViewHolder>(DiffCall
                 3 -> "🔴"
                 else -> " "
             }
+
+            root.setOnClickListener {
+                val intent = Intent(context.applicationContext, TaskActivity::class.java)
+                intent.putExtra("TITLE", task.title)
+                intent.putExtra("DESC", task.description)
+                intent.putExtra("DUE_DATE", task.dueDate)
+                intent.putExtra("PRIORITY", task.priority)
+                intent.putExtra("IS_COMPLETED", task.isCompleted)
+                context.startActivity(intent)
+            }
         }
-
     }
-
 }

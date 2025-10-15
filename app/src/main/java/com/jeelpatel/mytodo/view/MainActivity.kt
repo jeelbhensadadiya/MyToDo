@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
         // Adapter
-        taskAdapter = TaskAdapter()
+        taskAdapter = TaskAdapter(this)
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.taskRecyclerView.adapter = taskAdapter
 
