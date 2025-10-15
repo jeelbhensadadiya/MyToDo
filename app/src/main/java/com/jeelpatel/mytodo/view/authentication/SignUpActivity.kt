@@ -58,7 +58,9 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(this, "Passwords mismatch !!!", Toast.LENGTH_LONG).show()
                 } else {
                     val user = UserEntity(
-                        uName = userName, uEmail = userEmail.lowercase(), uPassword = userPassword
+                        uName = userName,
+                        uEmail = userEmail.lowercase().trim(),
+                        uPassword = userPassword
                     )
                     userViewModel.registerUser(user)
                 }

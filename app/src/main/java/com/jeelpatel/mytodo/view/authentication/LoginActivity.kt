@@ -51,8 +51,12 @@ class LoginActivity() : AppCompatActivity() {
             if (userEmail.isEmpty() || userPassword.isEmpty()) {
                 Toast.makeText(this, "Enter email or Password", Toast.LENGTH_LONG).show()
             } else {
-                userViewModel.loginUser(userEmail.lowercase(), userPassword)
+                userViewModel.loginUser(userEmail.lowercase().trim(), userPassword)
             }
+        }
+
+        binding.notUserBtn.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
 
     }
