@@ -7,7 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityAddNewTaskBinding
 import com.jeelpatel.mytodo.model.TaskRepository
@@ -19,6 +22,7 @@ import com.jeelpatel.mytodo.viewModel.TaskViewModel
 import com.jeelpatel.mytodo.viewModel.TaskViewModelFactory
 import com.jeelpatel.mytodo.viewModel.UserViewModel
 import com.jeelpatel.mytodo.viewModel.UserViewModelFactory
+import kotlinx.coroutines.launch
 
 class AddNewTaskActivity : AppCompatActivity() {
 
@@ -36,7 +40,6 @@ class AddNewTaskActivity : AppCompatActivity() {
         // for current user Status
         sessionManager = SessionManager(this)
         currentUserID = sessionManager.getUserId()
-
 
         // Setup Room + MVVM
         val db = DatabaseBuilder.getInstance(this)
@@ -61,13 +64,22 @@ class AddNewTaskActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        taskViewModel.message.observe(this) { msg ->
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-        }
 
-        taskViewModel.isTaskCreated.observe(this) { isCreated ->
-            if (isCreated == true) {
-                finish()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    taskViewModel.message.collect { msg ->
+                        Toast.makeText(this@AddNewTaskActivity, msg, Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                launch {
+                    taskViewModel.isTaskCreated.collect { isCreated ->
+                        if (isCreated) {
+                            finish()
+                        }
+                    }
+                }
             }
         }
     }

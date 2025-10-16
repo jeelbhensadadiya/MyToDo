@@ -2,11 +2,15 @@ package com.jeelpatel.mytodo.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
@@ -18,6 +22,7 @@ import com.jeelpatel.mytodo.view.authentication.LoginActivity
 import com.jeelpatel.mytodo.view.authentication.SignUpActivity
 import com.jeelpatel.mytodo.viewModel.TaskViewModel
 import com.jeelpatel.mytodo.viewModel.TaskViewModelFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,26 +75,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        taskViewModel.task.observe(this) { taskList ->
-            taskAdapter.submitList(taskList)
-//            binding.taskTv.text = taskList.joinToString {
-//                """
-//                    ${it.taskId}
-//                    ${it.title}
-//                    ${it.description}
-//                    ${it.isCompleted}
-//                    ${it.priority}
-//                    ${it.dueDate}
-//                    ${it.createdAt}
-//                    ${it.userOwnerId}
+//        taskViewModel.task.observe(this) { taskList ->
+//            taskAdapter.submitList(taskList)
+//        }
 //
-//
-//                """.trimIndent()
-//            }
-        }
+//        taskViewModel.message.observe(this) { msg ->
+//            binding.taskTv.text = msg
+//        }
 
-        taskViewModel.message.observe(this) { msg ->
-            binding.taskTv.text = msg
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    taskViewModel.task.collect { task ->
+                        taskAdapter.submitList(task)
+                    }
+                }
+
+                launch {
+                    taskViewModel.message.collect { msg ->
+                        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
         }
     }
 
