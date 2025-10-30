@@ -8,7 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivitySignUpBinding
 import com.jeelpatel.mytodo.model.UserRepository
@@ -20,6 +23,7 @@ import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.MainActivity
 import com.jeelpatel.mytodo.viewModel.UserViewModel
 import com.jeelpatel.mytodo.viewModel.UserViewModelFactory
+import kotlinx.coroutines.launch
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -81,15 +85,27 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        userViewModel.message.observe(this) { msg ->
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-        }
 
-        userViewModel.isRegistered.observe(this) { registered ->
-            if (registered == true) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    userViewModel.message.collect { msg ->
+                        Toast.makeText(this@SignUpActivity, msg, Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                launch {
+
+                    userViewModel.isRegistered.collect { registered ->
+                        if (registered) {
+                            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+                            finish()
+                        }
+                    }
+                }
             }
         }
+
+
     }
 }

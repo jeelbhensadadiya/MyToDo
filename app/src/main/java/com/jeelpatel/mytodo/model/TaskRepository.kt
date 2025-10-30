@@ -9,4 +9,7 @@ class TaskRepository(private val taskDao: TaskDao) {
     suspend fun createNewTask(task: TaskEntity) = taskDao.createTask(task)
 
     fun getAllTask(currentUserId: Int): Flow<List<TaskEntity>> = taskDao.tasksList(currentUserId)
+
+    suspend fun updateTaskStatus(taskId: Int, isCompleted: Boolean) =
+        taskDao.updateTaskStatus(taskId, isCompleted)
 }

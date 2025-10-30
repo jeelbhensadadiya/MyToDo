@@ -38,12 +38,19 @@ class TaskViewModel constructor(private val repository: TaskRepository) : ViewMo
                 .flowOn(Dispatchers.IO)
                 .collect { task ->
 
-                    if (task.isEmpty()) {
-                        _message.emit("No any task created")
-                    } else {
-                        _task.value = task
-                    }
+                if (task.isEmpty()) {
+                    _message.emit("No any task created")
+                } else {
+                    _task.value = task
                 }
+            }
+        }
+    }
+
+    fun updateTaskStatus(taskId: Int, isCompleted: Boolean) {
+        viewModelScope.launch {
+            repository.updateTaskStatus(taskId, isCompleted)
+            _message.emit("Status Marked as ${if (isCompleted) "Completed" else "Incomplete"}")
         }
     }
 }

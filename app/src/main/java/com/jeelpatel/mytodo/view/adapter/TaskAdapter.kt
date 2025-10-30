@@ -12,7 +12,10 @@ import com.jeelpatel.mytodo.databinding.ItemTasksBinding
 import com.jeelpatel.mytodo.model.local.entity.TaskEntity
 import com.jeelpatel.mytodo.view.TaskActivity
 
-class TaskAdapter(val context: Context) :
+class TaskAdapter(
+    val context: Context,
+    val onStatusChange: (taskId: Int, isCompleted: Boolean) -> Unit
+) :
     ListAdapter<TaskEntity, TaskAdapter.TaskViewHolder>(DiffCallBack()) {
     class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -23,7 +26,6 @@ class TaskAdapter(val context: Context) :
         override fun areContentsTheSame(oldItem: TaskEntity, newItem: TaskEntity): Boolean =
             oldItem == newItem
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.TaskViewHolder {
         val binding = ItemTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -37,12 +39,20 @@ class TaskAdapter(val context: Context) :
         with(holder.binding) {
             taskTitleTv.text = task.title
             taskDescriptionTv.text = task.description
-            taskCheckBox.isSelected = task.isCompleted
+            taskCheckBox.isChecked = task.isCompleted
             taskPriorityTv.text = when (task.priority) {
-                1 -> "🟢"
-                2 -> "🟡"
-                3 -> "🔴"
+                1 -> "1"
+                2 -> "2"
+                3 -> "3"
                 else -> " "
+            }
+
+            taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    onStatusChange(task.taskId, true)
+                } else {
+                    onStatusChange(task.taskId, false)
+                }
             }
 
             root.setOnClickListener {

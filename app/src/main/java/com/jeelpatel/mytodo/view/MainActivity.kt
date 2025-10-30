@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-
     lateinit var taskViewModel: TaskViewModel
     lateinit var sessionManager: SessionManager
     lateinit var taskAdapter: TaskAdapter
@@ -58,7 +57,9 @@ class MainActivity : AppCompatActivity() {
         taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
 
         // Adapter
-        taskAdapter = TaskAdapter(this)
+        taskAdapter = TaskAdapter(this) { taskId, isCompleted ->
+            taskViewModel.updateTaskStatus(taskId, isCompleted)
+        }
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.taskRecyclerView.adapter = taskAdapter
 
@@ -75,13 +76,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-//        taskViewModel.task.observe(this) { taskList ->
-//            taskAdapter.submitList(taskList)
-//        }
-//
-//        taskViewModel.message.observe(this) { msg ->
-//            binding.taskTv.text = msg
-//        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

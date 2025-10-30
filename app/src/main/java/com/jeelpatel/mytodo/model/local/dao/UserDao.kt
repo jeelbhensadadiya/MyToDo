@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Insert
 import androidx.room.Query
 import com.jeelpatel.mytodo.model.local.entity.UserEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -13,6 +14,6 @@ interface UserDao {
     suspend fun registerUser(user: UserEntity)
 
     @Query("SELECT * FROM user_table WHERE uEmail = :userEmail AND uPassword = :userPassword LIMIT 1")
-    suspend fun loginUser(userEmail: String, userPassword: String): UserEntity?
+    fun loginUser(userEmail: String, userPassword: String): Flow<UserEntity?>
 
 }
