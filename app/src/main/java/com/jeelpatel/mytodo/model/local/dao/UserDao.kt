@@ -1,7 +1,6 @@
 package com.jeelpatel.mytodo.model.local.dao
 
 import androidx.room.Dao
-import androidx.room.Database
 import androidx.room.Insert
 import androidx.room.Query
 import com.jeelpatel.mytodo.model.local.entity.UserEntity

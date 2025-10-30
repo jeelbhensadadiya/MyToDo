@@ -1,51 +1,36 @@
 package com.jeelpatel.mytodo.view.authentication
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivitySignUpBinding
-import com.jeelpatel.mytodo.model.UserRepository
-import com.jeelpatel.mytodo.model.local.dao.UserDao
-import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
-import com.jeelpatel.mytodo.model.local.database.UserDatabase
 import com.jeelpatel.mytodo.model.local.entity.UserEntity
 import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.MainActivity
 import com.jeelpatel.mytodo.viewModel.UserViewModel
-import com.jeelpatel.mytodo.viewModel.UserViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-class SignUpActivity : AppCompatActivity() {
 
+@AndroidEntryPoint
+class SignUpActivity : AppCompatActivity() {
     private val binding: ActivitySignUpBinding by lazy {
         ActivitySignUpBinding.inflate(layoutInflater)
     }
-    lateinit var sessionManager: SessionManager
+    private val userViewModel: UserViewModel by viewModels()
 
-    lateinit var userViewModel: UserViewModel
+    lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-
-        // Setup Room + MVVM
-        val db = DatabaseBuilder.getInstance(this)
-        val userDao = db.userDao()
-        val userRepository = UserRepository(userDao)
-        val userFactory = UserViewModelFactory(userRepository)
-        userViewModel = ViewModelProvider(this, userFactory)[UserViewModel::class.java]
 
         observeData()
 

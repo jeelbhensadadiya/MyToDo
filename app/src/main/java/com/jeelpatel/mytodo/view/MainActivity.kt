@@ -4,32 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
-import com.jeelpatel.mytodo.model.TaskRepository
-import com.jeelpatel.mytodo.model.local.database.DatabaseBuilder
 import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.view.adapter.TaskAdapter
 import com.jeelpatel.mytodo.view.authentication.LoginActivity
 import com.jeelpatel.mytodo.view.authentication.SignUpActivity
 import com.jeelpatel.mytodo.viewModel.TaskViewModel
-import com.jeelpatel.mytodo.viewModel.TaskViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    lateinit var taskViewModel: TaskViewModel
+    private val taskViewModel: TaskViewModel by viewModels()
     lateinit var sessionManager: SessionManager
     lateinit var taskAdapter: TaskAdapter
     var currentUserID = 0
@@ -49,13 +48,6 @@ class MainActivity : AppCompatActivity() {
         currentUserID = sessionManager.getUserId()
 
 
-        // Setup Room + MVVM
-        val db = DatabaseBuilder.getInstance(this)
-        val taskDao = db.taskDao()
-        val taskRepository = TaskRepository(taskDao)
-        val taskFactory = TaskViewModelFactory(taskRepository)
-        taskViewModel = ViewModelProvider(this, taskFactory)[TaskViewModel::class.java]
-
         // Adapter
         taskAdapter = TaskAdapter(this) { taskId, isCompleted ->
             taskViewModel.updateTaskStatus(taskId, isCompleted)
@@ -63,17 +55,27 @@ class MainActivity : AppCompatActivity() {
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.taskRecyclerView.adapter = taskAdapter
 
-        uiSetup()
+        binding.createNewTaskBtn.setOnClickListener {
+            startActivity(Intent(this, AddNewTaskActivity::class.java))
+        }
+
+        binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
+            if (menuItem.itemId == R.id.logOutBtn) {
+                sessionManager.clearSession()
+                startActivity(Intent(this, SignUpActivity::class.java))
+                finish()
+                true
+            } else {
+                false
+            }
+        }
+
         observeData()
 
         taskViewModel.getAllTask(currentUserID)
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        taskViewModel.getAllTask(currentUserID)
-    }
 
     private fun observeData() {
 
@@ -95,29 +97,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun uiSetup() {
-
-        binding.createNewTaskBtn.setOnClickListener {
-            startActivity(Intent(this, AddNewTaskActivity::class.java))
-        }
-
-        binding.materialToolBar.setOnMenuItemClickListener() { menuItem ->
-            if (menuItem.itemId == R.id.logOutBtn) {
-                sessionManager.clearSession()
-                startActivity(Intent(this, SignUpActivity::class.java))
-                finish()
-                true
-            } else {
-                false
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        taskViewModel.getAllTask(currentUserID)
     }
 
     override fun onStart() {
         super.onStart()
         if (!sessionManager.isLoggedIn()) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            if (currentUserID == 0) {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
         }
     }
 }

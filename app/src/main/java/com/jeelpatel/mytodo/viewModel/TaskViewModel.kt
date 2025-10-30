@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeelpatel.mytodo.model.TaskRepository
 import com.jeelpatel.mytodo.model.local.entity.TaskEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,8 +13,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TaskViewModel constructor(private val repository: TaskRepository) : ViewModel() {
+
+@HiltViewModel
+class TaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
     private val _task = MutableStateFlow<List<TaskEntity>>(emptyList())
     val task: StateFlow<List<TaskEntity>> = _task.asStateFlow()
@@ -38,12 +42,12 @@ class TaskViewModel constructor(private val repository: TaskRepository) : ViewMo
                 .flowOn(Dispatchers.IO)
                 .collect { task ->
 
-                if (task.isEmpty()) {
-                    _message.emit("No any task created")
-                } else {
-                    _task.value = task
+                    if (task.isEmpty()) {
+                        _message.emit("No any task created")
+                    } else {
+                        _task.value = task
+                    }
                 }
-            }
         }
     }
 

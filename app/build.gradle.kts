@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 }
 
@@ -52,6 +53,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Activity
+
+    implementation("androidx.activity:activity-ktx:1.11.0")
 
     // Room Database
 
@@ -63,6 +67,13 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
+
+
+    // Hilt
+
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    implementation ("com.google.dagger:hilt-android:2.57.2")
+    ksp ("com.google.dagger:hilt-compiler:2.57.2")
 
 
 }
