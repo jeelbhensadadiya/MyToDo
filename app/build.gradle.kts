@@ -53,15 +53,18 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
     // Activity
 
     implementation("androidx.activity:activity-ktx:1.11.0")
+
 
     // Room Database
 
     implementation("androidx.room:room-runtime:2.8.2")
     ksp("androidx.room:room-compiler:2.8.2")
     annotationProcessor("androidx.room:room-compiler:2.8.2")
+
 
     // Coroutines
 
@@ -72,8 +75,13 @@ dependencies {
     // Hilt
 
     implementation("com.google.dagger:hilt-android:2.57.2")
-    implementation ("com.google.dagger:hilt-android:2.57.2")
-    ksp ("com.google.dagger:hilt-compiler:2.57.2")
+    implementation("com.google.dagger:hilt-android:2.57.2")
+    ksp("com.google.dagger:hilt-compiler:2.57.2")
+
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 
 }

@@ -59,6 +59,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, AddNewTaskActivity::class.java))
         }
 
+        binding.onlineTodosBtn.setOnClickListener {
+            startActivity(Intent(this, TodoActivity::class.java))
+        }
+
         binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.logOutBtn) {
                 sessionManager.clearSession()
