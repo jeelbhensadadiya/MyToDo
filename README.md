@@ -40,79 +40,68 @@ This project is created for learning and practice purposes to understand **MVVM*
 ---
 
 ## 🧩 Project Structure
-
-com.jeelpatel.mytodo/
-mytodo/
-├── MyApplication.kt
-│
-├── data/
-│   ├── local/
-│   │   ├── database/
-│   │   │   ├── UserDatabase.kt
-│   │   ├── entity/
-│   │   │   ├── TaskEntity.kt
-│   │   │   ├── UserEntity.kt
-│   │   ├── dao/
-│   │   │   ├── UserDao.kt
-│   │   │   ├── TaskDao.kt
-│   │
-│   ├── remote/
-│   │   ├── dto/
-│   │   │   ├── TodoDto.kt
-│   │   ├── api/
-│   │   │   ├── ApiService.kt
-│   │
-│   ├── repository/
-│       ├── UserRepositoryImpl.kt
-│       ├── TodoRepositoryImpl.kt
-│       ├── TaskRepositoryImpl.kt
-│
-├── ui/
-│   ├── adapter/
-│   │   ├── TodoAdapter.kt
-│   │   ├── TaskAdapter.kt
-│   │
-│   ├── view/
-│   │   ├── AddNewTaskActivity.kt
-│   │   ├── MainActivity.kt
-│   │   ├── TodoActivity.kt
-│   │   ├── TaskActivity.kt
-│   │   ├── authentication/
-│   │       ├── SignUpActivity.kt
-│   │       ├── LoginActivity.kt
-│   │
-│   ├── viewModel/
-│       ├── TodoViewModel.kt
-│       ├── UserViewModel.kt
-│       ├── TaskViewModel.kt
-│
-├── di/
-│   ├── DatabaseModule.kt
-│   ├── NetworkModule.kt
-│   ├── RepositoryModule.kt
-│
-├── utils/
-│   ├── SessionManager.kt
-│
-├── domain/
-│   ├── repository/
-│   │   ├── TaskRepository.kt
-│   │   ├── UserRepository.kt
-│   │
-│   ├── model/
-│   │   ├── UserModel.kt
-│   │   ├── TaskModel.kt
-│   │
-│   ├── mapper/
-│   │   ├── UserMapper.kt
-│   │   ├── TaskMapper.kt
-│   │
-│   ├── usecase/
-│       ├── GetTasksUseCase.kt
-│       ├── GetLoginUserUseCase.kt
-│       ├── RegisterNewUserUseCase.kt
-│       ├── UpdateTaskUseCase.kt
-│       ├── CreateNewTaskUseCase.kt
+```
+com.jeelpatel.
+└── mytodo/
+    ├── MyApplication.kt
+    ├── data/
+    │   ├── local/
+    │   │   ├── database/
+    │   │   │   └── UserDatabase.kt
+    │   │   ├── entity/
+    │   │   │   ├── TaskEntity.kt
+    │   │   │   └── UserEntity.kt
+    │   │   ├── dao/
+    │   │   │   ├── UserDao.kt
+    │   │   │   └── TaskDao.kt
+    │   │   └── remote/
+    │   ├── dto/
+    │   │   └── TodoDto.kt
+    │   ├── api/
+    │   │   └── ApiService.kt
+    │   └── repository/
+    │       ├── UserRepositoryImpl.kt
+    │       ├── TodoRepositoryImpl.kt
+    │       └── TaskRepositoryImpl.kt
+    ├── ui/
+    │   ├── adapter/
+    │   │   ├── TodoAdapter.kt
+    │   │   └── TaskAdapter.kt
+    │   ├── view/
+    │   │   ├── AddNewTaskActivity.kt
+    │   │   ├── MainActivity.kt
+    │   │   ├── TodoActivity.kt
+    │   │   ├── TaskActivity.kt
+    │   │   └── authentication/
+    │   │       ├── SignUpActivity.kt
+    │   │       └── LoginActivity.kt
+    │   └── viewModel/
+    │       ├── TodoViewModel.kt
+    │       ├── UserViewModel.kt
+    │       └── TaskViewModel.kt
+    ├── di/
+    │   ├── DatabaseModule.kt
+    │   ├── NetworkModule.kt
+    │   └── RepositoryModule.kt
+    ├── utils/
+    │   └── SessionManager.kt
+    ├── domain/
+    │   ├── repository/
+    │   │   ├── TaskRepository.kt
+    │   │   └── UserRepository.kt
+    │   ├── model/
+    │   │   ├── UserModel.kt
+    │   │   └── TaskModel.kt
+    │   ├── mapper/
+    │   │   ├── UserMapper.kt
+    │   │   └── TaskMapper.kt
+    │   └── usecase/
+    │       ├── GetTasksUseCase.kt
+    │       ├── GetLoginUserUseCase.kt
+    │       ├── RegisterNewUserUseCase.kt
+    │       ├── UpdateTaskUseCase.kt
+    │       └── CreateNewTaskUseCase.kt
+```
 
 
 
