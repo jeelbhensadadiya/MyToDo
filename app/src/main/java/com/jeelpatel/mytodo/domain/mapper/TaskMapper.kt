@@ -12,7 +12,8 @@ fun TaskModel.toEntity(): TaskEntity {
         priority = priority,
         dueDate = dueDate,
         createdAt = createdAt,
-        userOwnerId = userOwnerId
+        userOwnerId = userOwnerId,
+        isDeleted = isDeleted
     )
 }
 
@@ -25,6 +26,7 @@ fun TaskEntity.toDomain(): TaskModel {
         priority = priority,
         dueDate = dueDate,
         createdAt = createdAt,
-        userOwnerId = userOwnerId
+        userOwnerId = userOwnerId,
+        isDeleted = isDeleted
     )
 }

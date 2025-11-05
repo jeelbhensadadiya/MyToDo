@@ -2,23 +2,25 @@ package com.jeelpatel.mytodo.ui.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
-import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
 import com.jeelpatel.mytodo.ui.view.authentication.LoginActivity
 import com.jeelpatel.mytodo.ui.view.authentication.SignUpActivity
 import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
+import com.jeelpatel.mytodo.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,12 +50,21 @@ class MainActivity : AppCompatActivity() {
         currentUserID = sessionManager.getUserId()
 
 
-        // Adapter
-        taskAdapter = TaskAdapter(this) { taskId, isCompleted ->
-            taskViewModel.updateTaskStatus(taskId, isCompleted)
-        }
+
+        taskAdapter = TaskAdapter(
+            this,
+            onStatusChange = { taskID, isCompleted ->
+                taskViewModel.updateTaskStatus(taskID, isCompleted)
+            },
+            onDeleted = { taskId ->
+                taskViewModel.deleteTask(taskId)
+            }
+        )
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.taskRecyclerView.adapter = taskAdapter
+
+        // default Get all task
+        taskViewModel.getAllTask(currentUserID)
 
         binding.createNewTaskBtn.setOnClickListener {
             startActivity(Intent(this, AddNewTaskActivity::class.java))
@@ -61,6 +72,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.onlineTodosBtn.setOnClickListener {
             startActivity(Intent(this, TodoActivity::class.java))
+        }
+
+        binding.recyclerBinBtn.setOnClickListener {
+            startActivity(Intent(this, RecyclerBinActivity::class.java))
         }
 
         binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
@@ -74,9 +89,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        observeData()
+        binding.buttonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
 
-        taskViewModel.getAllTask(currentUserID)
+            binding.buttonGroup.children.forEach { view ->
+                view.isSelected = view.id == checkedId
+            }
+
+            when (checkedId) {
+                R.id.allTaskFilterBtn -> {
+                    taskViewModel.getAllTask(currentUserID)
+                }
+
+                R.id.overDueTaskFilterBtn -> {
+                    taskViewModel.overDueTask(currentUserID)
+                }
+
+                R.id.completedTaskFilterBtn -> {
+                    taskViewModel.completedTask(currentUserID)
+                }
+
+                R.id.pendingTaskFilterBtn -> {
+                    taskViewModel.pendingTask(currentUserID)
+                }
+            }
+        }
+
+        observeData()
 
     }
 
@@ -89,6 +128,12 @@ class MainActivity : AppCompatActivity() {
                 launch {
                     taskViewModel.task.collect { task ->
                         taskAdapter.submitList(task)
+                        if (task.isEmpty()) {
+                            binding.emptyTextView.text = "No tasks"
+                            binding.emptyTextView.visibility = View.VISIBLE
+                        } else {
+                            binding.emptyTextView.visibility = View.GONE
+                        }
                     }
                 }
 
@@ -99,11 +144,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        taskViewModel.getAllTask(currentUserID)
     }
 
     override fun onStart() {

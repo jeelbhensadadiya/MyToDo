@@ -14,12 +14,11 @@ import com.jeelpatel.mytodo.databinding.ItemTasksBinding
 import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.ui.view.TaskActivity
 
-class TaskAdapter(
+class RecycleBinTaskAdapter(
     val context: Context,
-    val onStatusChange: (taskId: Int, isCompleted: Boolean) -> Unit,
-    val onDeleted: (taskId: Int) -> Unit
+    val onRestore: (taskId: Int) -> Unit
 ) :
-    ListAdapter<TaskModel, TaskAdapter.TaskViewHolder>(DiffCallBack()) {
+    ListAdapter<TaskModel, RecycleBinTaskAdapter.TaskViewHolder>(DiffCallBack()) {
     class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
 
     class DiffCallBack : DiffUtil.ItemCallback<TaskModel>() {
@@ -30,12 +29,15 @@ class TaskAdapter(
             oldItem == newItem
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskAdapter.TaskViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecycleBinTaskAdapter.TaskViewHolder {
         val binding = ItemTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TaskAdapter.TaskViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecycleBinTaskAdapter.TaskViewHolder, position: Int) {
         val task = getItem(position)
 
         with(holder.binding) {
@@ -63,23 +65,14 @@ class TaskAdapter(
 
             deleteBtn.setOnClickListener {
                 MaterialAlertDialogBuilder(holder.itemView.context)
-                    .setTitle("Delete")
-                    .setMessage("Are you sure to delete Task?")
+                    .setTitle("Restore")
                     .setCancelable(false)
-                    .setPositiveButton("Delete") { dialog, _ ->
-                        onDeleted(task.taskId)
+                    .setPositiveButton("Restore") { dialog, _ ->
+                        onRestore(task.taskId)
                         dialog.dismiss()
                     }
                     .setNeutralButton("Cancel", null)
                     .show()
-            }
-
-            taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    onStatusChange(task.taskId, true)
-                } else {
-                    onStatusChange(task.taskId, false)
-                }
             }
 
             root.setOnClickListener {

@@ -15,8 +15,7 @@
             android:id="@+id/materialToolBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:menu="@menu/main_menu"
-            app:title="Welcome to ToDo" />
+            app:navigationIcon="@drawable/arrow_small_left_24" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Card Container -->

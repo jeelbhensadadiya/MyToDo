@@ -23,5 +23,6 @@ data class TaskEntity(
     val priority: Int,
     val dueDate: Long,
     val createdAt: Long = System.currentTimeMillis(),
-    val userOwnerId: Int
+    val userOwnerId: Int,
+    val isDeleted: Boolean = false
 )

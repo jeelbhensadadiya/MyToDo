@@ -16,10 +16,39 @@ class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao) : Tas
     }
 
     override fun getAllTask(currentUserId: Int): Flow<List<TaskModel>> =
-        taskDao.tasksList(currentUserId).map { entities ->
-            entities.map { it.toDomain() }
+        taskDao.tasksList(currentUserId).map { task ->
+            task.map { it.toDomain() }
+        }
+
+    override fun getAllDeletedTask(currentUserId: Int): Flow<List<TaskModel>> =
+        taskDao.getDeletedTasks(currentUserId).map { deleteTask ->
+            deleteTask.map { it.toDomain() }
+        }
+
+
+    override fun completedTask(currentUserId: Int): Flow<List<TaskModel>> =
+        taskDao.completedTasks(currentUserId).map { task ->
+            task.map { it.toDomain() }
+        }
+
+
+    override fun pendingTask(currentUserId: Int): Flow<List<TaskModel>> =
+        taskDao.pendingTasks(currentUserId).map { task ->
+            task.map { it.toDomain() }
+        }
+
+    override fun overDueTask(currentUserId: Int): Flow<List<TaskModel>> =
+        taskDao.overdueTasks(currentUserId).map { task ->
+            task.map { it.toDomain() }
         }
 
     override suspend fun updateTaskStatus(taskId: Int, isCompleted: Boolean) =
         taskDao.updateTaskStatus(taskId, isCompleted)
+
+    override suspend fun deleteTask(taskId: Int) =
+        taskDao.deleteTaskById(taskId)
+
+    override suspend fun restoreTask(taskId: Int) {
+        taskDao.restoreTask(taskId)
+    }
 }

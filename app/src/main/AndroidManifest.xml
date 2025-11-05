@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.view.RecyclerBinActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.TodoActivity"
             android:exported="false" />
         <activity

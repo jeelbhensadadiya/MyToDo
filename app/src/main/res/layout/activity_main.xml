@@ -16,15 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:menu="@menu/main_menu"
-            app:title="Welcome to ToDo" />
+            app:navigationIcon="@drawable/to_do_24"
+            app:title="My ToDo" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/taskTv"
+        android:id="@+id/emptyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Manage Your Daily Tasks"
+        android:text=""
         android:textAppearance="?attr/textAppearanceTitleLarge"
         android:visibility="gone" />
 
@@ -39,11 +40,75 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/onlineTodosBtn"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/onlineTodosBtn"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="Remote Todo" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/recyclerBinBtn"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recycler Bin"
+                    app:icon="@drawable/trash_24" />
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Online Todo" />
+                android:layout_marginVertical="8dp"
+                android:text="Filter Task"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarSize="0dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/buttonGroup"
+                    style="?attr/materialButtonToggleGroupStyle"
+                    android:layout_width="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleSelection="true"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/allTaskFilterBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/overDueTaskFilterBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Over Due" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/completedTaskFilterBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Completed" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pendingTaskFilterBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pending" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </HorizontalScrollView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/taskRecyclerView"
@@ -62,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
-        android:src="@drawable/baseline_create_24" />
+        android:src="@drawable/pencil_24" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

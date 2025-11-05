@@ -141,4 +141,11 @@
     <color name="md_theme_surfaceContainer_highContrast">#E2E2E9</color>
     <color name="md_theme_surfaceContainerHigh_highContrast">#D3D4DB</color>
     <color name="md_theme_surfaceContainerHighest_highContrast">#C5C6CD</color>
+
+    // Priority colours
+    <color name="p1">#C98BC34A</color>
+    <color name="p2">#BFFF9800</color>
+    <color name="p3">#D3BF0606</color>
+
+
 </resources>
