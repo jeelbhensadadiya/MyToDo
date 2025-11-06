@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +18,7 @@ import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
 import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.SessionManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -77,6 +77,8 @@ class MainFragment : Fragment() {
 
         // default Get all task
         taskViewModel.getAllTask(currentUserID)
+        binding.buttonGroup.check(R.id.allTaskFilterBtn)
+
 
         binding.createNewTaskBtn.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToCreateTaskFragment())
@@ -96,26 +98,11 @@ class MainFragment : Fragment() {
 
         binding.buttonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
 
-            binding.buttonGroup.children.forEach { view ->
-                view.isSelected = view.id == checkedId
-            }
-
             when (checkedId) {
-                R.id.allTaskFilterBtn -> {
-                    taskViewModel.getAllTask(currentUserID)
-                }
-
-                R.id.overDueTaskFilterBtn -> {
-                    taskViewModel.overDueTask(currentUserID)
-                }
-
-                R.id.completedTaskFilterBtn -> {
-                    taskViewModel.completedTask(currentUserID)
-                }
-
-                R.id.pendingTaskFilterBtn -> {
-                    taskViewModel.pendingTask(currentUserID)
-                }
+                R.id.allTaskFilterBtn -> taskViewModel.getAllTask(currentUserID)
+                R.id.overDueTaskFilterBtn -> taskViewModel.overDueTask(currentUserID)
+                R.id.completedTaskFilterBtn -> taskViewModel.completedTask(currentUserID)
+                R.id.pendingTaskFilterBtn -> taskViewModel.pendingTask(currentUserID)
             }
         }
 
@@ -132,7 +119,7 @@ class MainFragment : Fragment() {
                     }
                 }
                 launch {
-                    taskViewModel.task.collect {
+                    taskViewModel.task.collectLatest {
                         taskAdapter.submitList(it)
                     }
                 }
