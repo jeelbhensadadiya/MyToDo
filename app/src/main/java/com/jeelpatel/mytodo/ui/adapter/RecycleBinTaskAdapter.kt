@@ -1,7 +1,6 @@
 package com.jeelpatel.mytodo.ui.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,16 +9,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.R
-import com.jeelpatel.mytodo.databinding.ItemTasksBinding
+import com.jeelpatel.mytodo.databinding.ItemDeletedTasksBinding
 import com.jeelpatel.mytodo.domain.model.TaskModel
-import com.jeelpatel.mytodo.ui.view.TaskActivity
 
 class RecycleBinTaskAdapter(
     val context: Context,
-    val onRestore: (taskId: Int) -> Unit
+    val onRestore: (taskId: Int) -> Unit,
+    val onTaskClick: (task: TaskModel) -> Unit
 ) :
     ListAdapter<TaskModel, RecycleBinTaskAdapter.TaskViewHolder>(DiffCallBack()) {
-    class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
+    class TaskViewHolder(val binding: ItemDeletedTasksBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     class DiffCallBack : DiffUtil.ItemCallback<TaskModel>() {
         override fun areItemsTheSame(oldItem: TaskModel, newItem: TaskModel): Boolean =
@@ -33,7 +33,8 @@ class RecycleBinTaskAdapter(
         parent: ViewGroup,
         viewType: Int
     ): RecycleBinTaskAdapter.TaskViewHolder {
-        val binding = ItemTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemDeletedTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
 
@@ -76,13 +77,7 @@ class RecycleBinTaskAdapter(
             }
 
             root.setOnClickListener {
-                val intent = Intent(holder.itemView.context, TaskActivity::class.java)
-                intent.putExtra("TITLE", task.title)
-                intent.putExtra("DESC", task.description)
-                intent.putExtra("DUE_DATE", task.dueDate)
-                intent.putExtra("PRIORITY", task.priority)
-                intent.putExtra("IS_COMPLETED", task.isCompleted)
-                context.startActivity(intent)
+                onTaskClick(task)
             }
         }
     }

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nv_graph"
+    app:startDestination="@id/signUpFragment">
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.authentication.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.authentication.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_recycleBinFragment"
+            app:destination="@id/recycleBinFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_createTaskFragment"
+            app:destination="@id/createTaskFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_remoteTodoFragment"
+            app:destination="@id/remoteTodoFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recycleBinFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.RecycleBinFragment"
+        android:label="fragment_recycle_bin"
+        tools:layout="@layout/fragment_recycle_bin">
+        <action
+            android:id="@+id/action_recycleBinFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTaskFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.CreateTaskFragment"
+        android:label="fragment_create_task"
+        tools:layout="@layout/fragment_create_task" />
+    <fragment
+        android:id="@+id/remoteTodoFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.RemoteTodoFragment"
+        android:label="fragment_remote_todo"
+        tools:layout="@layout/fragment_remote_todo" />
+    <fragment
+        android:id="@+id/taskViewFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.TaskViewFragment"
+        android:label="fragment_task_view"
+        tools:layout="@layout/fragment_task_view">
+        <argument
+            android:name="title"
+            app:argType="string" />
+
+        <argument
+            android:name="desc"
+            app:argType="string"/>
+
+        <argument
+            android:name="dueDate"
+            app:argType="long" />
+
+        <argument
+            android:name="priority"
+            app:argType="integer" />
+
+        <argument
+            android:name="isCompleted"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jeelpatel.mytodo.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

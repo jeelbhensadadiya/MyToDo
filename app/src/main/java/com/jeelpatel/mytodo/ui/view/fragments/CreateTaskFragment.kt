@@ -1,22 +1,22 @@
-package com.jeelpatel.mytodo.ui.view
+package com.jeelpatel.mytodo.ui.view.fragments
 
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.jeelpatel.mytodo.R
-import com.jeelpatel.mytodo.databinding.ActivityAddNewTaskBinding
+import com.jeelpatel.mytodo.databinding.FragmentCreateTaskBinding
 import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.SessionManager
@@ -25,33 +25,33 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class AddNewTaskActivity : AppCompatActivity() {
+class CreateTaskFragment : Fragment() {
 
-    private val binding: ActivityAddNewTaskBinding by lazy {
-        ActivityAddNewTaskBinding.inflate(layoutInflater)
-    }
+    private var _binding: FragmentCreateTaskBinding? = null
+    private val binding get() = _binding!!
     private val taskViewModel: TaskViewModel by viewModels()
     lateinit var sessionManager: SessionManager
     var currentUserID: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentCreateTaskBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // for current user Status
-        sessionManager = SessionManager(this)
+        sessionManager = SessionManager(requireContext())
         currentUserID = sessionManager.getUserId()
 
+        dataCollector()
 
-        observeData()
 
-        binding.taskDueDateEt.setOnClickListener() {
+        binding.taskDueDateEt.setOnClickListener {
             showMaterialDateTimePicker()
         }
 
@@ -77,34 +77,33 @@ class AddNewTaskActivity : AppCompatActivity() {
                 )
                 taskViewModel.createNewTask(task)
             }
-
-        }
-
-        binding.materialToolBar.setNavigationOnClickListener() {
-            finish()
         }
     }
 
-    private fun observeData() {
-
-        lifecycleScope.launch {
+    private fun dataCollector() {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    taskViewModel.message.collect { msg ->
-                        Toast.makeText(this@AddNewTaskActivity, msg, Toast.LENGTH_LONG).show()
+                    taskViewModel.message.collect {
+                        toast(it)
                     }
                 }
 
                 launch {
                     taskViewModel.isTaskCreated.collect { isCreated ->
                         if (isCreated) {
-                            finish()
+                            findNavController().popBackStack()
                         }
                     }
                 }
             }
         }
     }
+
+    private fun toast(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+    }
+
 
     private fun showMaterialDateTimePicker() {
 
@@ -133,10 +132,14 @@ class AddNewTaskActivity : AppCompatActivity() {
                 binding.taskDueDateEt.setText(formatter.format(calendar.time))
             }
 
-            timePicker.show(supportFragmentManager, "M3_TIME_PICKER")
+            timePicker.show(parentFragmentManager, "M3_TIME_PICKER")
         }
 
-        datePicker.show(supportFragmentManager, "M3_DATE_PICKER")
+        datePicker.show(parentFragmentManager, "M3_DATE_PICKER")
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

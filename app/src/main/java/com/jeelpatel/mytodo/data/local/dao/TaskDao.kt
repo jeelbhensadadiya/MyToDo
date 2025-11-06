@@ -13,7 +13,7 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun createTask(task: TaskEntity)
 
-    @Query("SELECT * FROM task_table WHERE isDeleted = 0 AND userOwnerId = :currentUserId")
+    @Query("SELECT * FROM task_table WHERE isDeleted = 0 AND userOwnerId = :currentUserId ORDER BY dueDate DESC")
     fun tasksList(currentUserId: Int): Flow<List<TaskEntity>>
 
     @Query("SELECT * FROM task_table WHERE userOwnerId = :currentUserId AND isCompleted = 1")

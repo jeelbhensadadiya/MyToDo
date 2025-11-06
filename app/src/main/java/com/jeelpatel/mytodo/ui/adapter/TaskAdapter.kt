@@ -12,12 +12,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ItemTasksBinding
 import com.jeelpatel.mytodo.domain.model.TaskModel
-import com.jeelpatel.mytodo.ui.view.TaskActivity
 
 class TaskAdapter(
     val context: Context,
     val onStatusChange: (taskId: Int, isCompleted: Boolean) -> Unit,
-    val onDeleted: (taskId: Int) -> Unit
+    val onDeleted: (taskId: Int) -> Unit,
+    val onTaskClick: (task: TaskModel) -> Unit
 ) :
     ListAdapter<TaskModel, TaskAdapter.TaskViewHolder>(DiffCallBack()) {
     class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
@@ -83,13 +83,15 @@ class TaskAdapter(
             }
 
             root.setOnClickListener {
-                val intent = Intent(holder.itemView.context, TaskActivity::class.java)
-                intent.putExtra("TITLE", task.title)
-                intent.putExtra("DESC", task.description)
-                intent.putExtra("DUE_DATE", task.dueDate)
-                intent.putExtra("PRIORITY", task.priority)
-                intent.putExtra("IS_COMPLETED", task.isCompleted)
-                context.startActivity(intent)
+                onTaskClick(task)
+
+//                val intent = Intent(holder.itemView.context, TaskActivity::class.java)
+//                intent.putExtra("TITLE", task.title)
+//                intent.putExtra("DESC", task.description)
+//                intent.putExtra("DUE_DATE", task.dueDate)
+//                intent.putExtra("PRIORITY", task.priority)
+//                intent.putExtra("IS_COMPLETED", task.isCompleted)
+//                context.startActivity(intent)
             }
         }
     }
