@@ -25,8 +25,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -61,9 +60,9 @@ dependencies {
 
     // Room Database
 
-    implementation("androidx.room:room-runtime:2.8.2")
-    ksp("androidx.room:room-compiler:2.8.2")
-    annotationProcessor("androidx.room:room-compiler:2.8.2")
+    implementation("androidx.room:room-runtime:2.8.3")
+    ksp("androidx.room:room-compiler:2.8.3")
+    annotationProcessor("androidx.room:room-compiler:2.8.3")
 
 
     // Coroutines
@@ -80,8 +79,9 @@ dependencies {
 
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
 
 }
