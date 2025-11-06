@@ -71,7 +71,7 @@ class MainFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
-
+        taskAdapter.setHasStableIds(true)
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.taskRecyclerView.adapter = taskAdapter
 
@@ -97,6 +97,7 @@ class MainFragment : Fragment() {
         }
 
         binding.buttonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
 
             when (checkedId) {
                 R.id.allTaskFilterBtn -> taskViewModel.getAllTask(currentUserID)

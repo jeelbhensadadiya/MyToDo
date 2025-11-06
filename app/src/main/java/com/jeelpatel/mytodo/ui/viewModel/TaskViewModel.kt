@@ -6,6 +6,7 @@ import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.domain.usecase.TaskContainer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -29,6 +30,8 @@ class TaskViewModel @Inject constructor(
     private val _isTaskCreated = MutableStateFlow(false)
     val isTaskCreated: StateFlow<Boolean> = _isTaskCreated
 
+    private var taskJob: Job? = null
+
     fun createNewTask(task: TaskModel) {
         viewModelScope.launch(Dispatchers.IO) {
 
@@ -44,7 +47,8 @@ class TaskViewModel @Inject constructor(
     }
 
     fun getAllTask(currentUserId: Int) {
-        viewModelScope.launch {
+        taskJob?.cancel()
+        taskJob = viewModelScope.launch {
             useCases.getTasks(currentUserId)
                 .collect {
                     _task.value = it
@@ -53,7 +57,8 @@ class TaskViewModel @Inject constructor(
     }
 
     fun getAllDeletedTask(currentUserId: Int) {
-        viewModelScope.launch {
+        taskJob?.cancel()
+        taskJob = viewModelScope.launch {
             useCases.getDeleted(currentUserId)
                 .collect {
                     _task.value = it
@@ -62,7 +67,8 @@ class TaskViewModel @Inject constructor(
     }
 
     fun completedTask(currentUserId: Int) {
-        viewModelScope.launch {
+        taskJob?.cancel()
+        taskJob = viewModelScope.launch {
             useCases.getCompleted(currentUserId).collect { completedTaskList ->
                 _task.value = completedTaskList
             }
@@ -70,7 +76,8 @@ class TaskViewModel @Inject constructor(
     }
 
     fun pendingTask(currentUserId: Int) {
-        viewModelScope.launch {
+        taskJob?.cancel()
+        taskJob = viewModelScope.launch {
             useCases.getPending(currentUserId)
                 .collect { pendingTaskList ->
                     _task.value = pendingTaskList
@@ -79,7 +86,8 @@ class TaskViewModel @Inject constructor(
     }
 
     fun overDueTask(currentUserId: Int) {
-        viewModelScope.launch {
+        taskJob?.cancel()
+        taskJob = viewModelScope.launch {
             useCases.getOverdue(currentUserId)
                 .collect { overDueTaskList ->
                     _task.value = overDueTaskList
