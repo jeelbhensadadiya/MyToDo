@@ -1,4 +1,4 @@
-package com.jeelpatel.mytodo
+package com.jeelpatel.mytodo.ui.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

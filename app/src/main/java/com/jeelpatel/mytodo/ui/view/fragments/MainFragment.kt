@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentMainBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
@@ -62,6 +63,7 @@ class MainFragment : Fragment() {
             },
             onTaskClick = { task ->
                 val action = MainFragmentDirections.actionMainFragmentToTaskViewFragment(
+                    task.taskId,
                     task.title,
                     task.description ?: "No - Description",
                     task.dueDate,
@@ -79,21 +81,8 @@ class MainFragment : Fragment() {
         taskViewModel.getAllTask(currentUserID)
         binding.buttonGroup.check(R.id.allTaskFilterBtn)
 
-
-        binding.createNewTaskBtn.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToCreateTaskFragment())
-        }
-
         binding.onlineTodosBtn.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToRemoteTodoFragment())
-        }
-
-        binding.recyclerBinBtn.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToRecycleBinFragment())
-        }
-
-        binding.profileBtn.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToProfileFragment())
         }
 
         binding.buttonGroup.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
@@ -129,7 +118,14 @@ class MainFragment : Fragment() {
     }
 
     private fun toast(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+
+        val bottomNav =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG)
+            .setAnchorView(bottomNav)
+            .setAction("Done") {}
+            .show()
     }
 
 

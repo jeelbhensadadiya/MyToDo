@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     tools:context=".ui.view.fragments.MainFragment">
 
     <TextView
@@ -22,15 +21,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/profileBtn"
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Profile" />
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,27 +35,12 @@
                 android:text="Remote Todo"
                 app:icon="@drawable/globe_24" />
 
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/recyclerBinBtn"
-                style="?attr/materialIconButtonFilledTonalStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Recycler Bin"
-                app:icon="@drawable/trash_24" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="Filter Task"
-            android:textAppearance="@style/TextAppearance.Material3.LabelLarge" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:scrollbarSize="0dp"
             android:scrollbars="none">
 
@@ -114,16 +89,5 @@
             android:layout_marginTop="10dp"
             tools:listitem="@layout/item_tasks" />
     </LinearLayout>
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createNewTaskBtn"
-        style="?attr/floatingActionButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:src="@drawable/pencil_24" />
-
 
 </FrameLayout>

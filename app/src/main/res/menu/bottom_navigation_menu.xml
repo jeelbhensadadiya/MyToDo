@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainFragment"
+        android:enabled="true"
+        android:icon="@drawable/radio_button_24"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/createTaskFragment"
+        android:enabled="true"
+        android:icon="@drawable/pencil_24"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/recycleBinFragment"
+        android:enabled="true"
+        android:icon="@drawable/trash_24"
+        android:title="RecycleBin" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:enabled="true"
+        android:icon="@drawable/user_24"
+        android:title="Profile" />
+</menu>

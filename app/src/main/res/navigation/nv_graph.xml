@@ -80,6 +80,10 @@
         android:label="fragment_task_view"
         tools:layout="@layout/fragment_task_view">
         <argument
+            android:name="taskId"
+            app:argType="integer" />
+
+        <argument
             android:name="title"
             app:argType="string" />
 
@@ -101,7 +105,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.jeelpatel.mytodo.ProfileFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 

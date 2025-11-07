@@ -2,13 +2,11 @@ package com.jeelpatel.mytodo.ui.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
 import com.jeelpatel.mytodo.utils.SessionManager
@@ -25,13 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+//            insets
+//        }
 
         // for get current User ID and Status
         sessionManager = SessionManager(this)
@@ -42,19 +40,30 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.loginFragment, R.id.signUpFragment -> binding.appBar.visibility = View.GONE
+                R.id.loginFragment, R.id.signUpFragment -> {
+                    binding.appBar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.GONE
+                }
+
                 R.id.recycleBinFragment -> binding.materialToolBar.title = "Recycle Bin"
                 R.id.createTaskFragment -> binding.materialToolBar.title = "Create Task"
-                R.id.taskViewFragment -> binding.materialToolBar.title = ""
+                R.id.taskViewFragment -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                    binding.materialToolBar.title = ""
+                }
+
                 R.id.remoteTodoFragment -> binding.materialToolBar.title = "Remote Todo"
                 R.id.profileFragment -> binding.materialToolBar.title = "My Profile"
 
                 else -> {
                     binding.appBar.visibility = View.VISIBLE
+                    binding.bottomNavigation.visibility = View.VISIBLE
                     binding.materialToolBar.title = "My Todo"
                 }
             }
         }
+
+        binding.bottomNavigation.setupWithNavController(navController)
 
         binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.logOutBtn) {
