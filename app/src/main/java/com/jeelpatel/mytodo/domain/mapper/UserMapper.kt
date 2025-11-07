@@ -3,6 +3,7 @@ package com.jeelpatel.mytodo.domain.mapper
 import com.jeelpatel.mytodo.data.local.entity.UserEntity
 import com.jeelpatel.mytodo.domain.model.UserModel
 
+// map UserEntity to UserModel
 fun UserEntity.toDomain(): UserModel {
     return UserModel(
         uId = uId,
@@ -12,6 +13,8 @@ fun UserEntity.toDomain(): UserModel {
     )
 }
 
+
+// map UserModel to UserEntity
 fun UserModel.toEntity(): UserEntity {
     return UserEntity(
         uId = 0,

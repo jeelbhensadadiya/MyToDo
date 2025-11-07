@@ -2,8 +2,9 @@ package com.jeelpatel.mytodo.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import javax.inject.Inject
 
-class SessionManager(context: Context) {
+class SessionManager @Inject constructor(context: Context) {
 
     private val pref: SharedPreferences =
         context.getSharedPreferences("user_session", Context.MODE_PRIVATE)

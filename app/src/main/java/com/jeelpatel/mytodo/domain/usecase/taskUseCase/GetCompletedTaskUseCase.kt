@@ -1,12 +1,12 @@
-package com.jeelpatel.mytodo.domain.usecase
+package com.jeelpatel.mytodo.domain.usecase.taskUseCase
 
 import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.domain.repository.TaskRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetOverDueTaskUseCase @Inject constructor(private val repository: TaskRepository) {
+class GetCompletedTaskUseCase @Inject constructor(private val repository: TaskRepository) {
     operator fun invoke(currentUserId: Int): Flow<List<TaskModel>> {
-        return repository.overDueTask(currentUserId)
+        return repository.completedTask(currentUserId)
     }
 }

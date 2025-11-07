@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,21 +12,25 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentLoginBinding
-import com.jeelpatel.mytodo.ui.viewModel.UserViewModel
+import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
 import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val userViewModel: UserViewModel by viewModels()
-    lateinit var sessionManager: SessionManager
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -37,24 +40,24 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sessionManager = SessionManager(requireContext())
 
-        dataCollectors()
-
+        // login user
         binding.loginBtn.setOnClickListener {
-            val userEmail = binding.userEmailEt.text.toString()
-            val userPassword = binding.userPasswordEt.text.toString()
-
-            if (userEmail.isEmpty() || userPassword.isEmpty()) {
-                toast("Enter email or Password !!!")
-            } else {
-                userViewModel.loginUser(userEmail.lowercase().trim(), userPassword)
-            }
+            userViewModel.loginUser(
+                userEmail = binding.userEmailEt.text.toString(),
+                userPassword = binding.userPasswordEt.text.toString()
+            )
         }
 
+
+        // navigate to signup if not registered
         binding.notUserBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
         }
+
+
+        // collects flow data
+        dataCollectors()
     }
 
     private fun dataCollectors() {
@@ -62,20 +65,24 @@ class LoginFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     userViewModel.message.collect {
-                        toast(it)
+                        // show errors
+                        UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    userViewModel.isRegistered.collect { registered ->
-                        if (registered) {
-                            findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+                    userViewModel.isUserLoggedIn.collect { loggedIn ->
+
+                        // navigate to main fragment if login success
+                        if (loggedIn) {
+                            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
                         }
                     }
                 }
 
                 launch {
                     userViewModel.user.collect { user ->
+                        // store logged in user id to session manager
                         sessionManager.saveUserSession(user?.uId ?: 0)
                     }
                 }
@@ -83,12 +90,8 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun toast(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+        _binding = null // clean binding
     }
 }

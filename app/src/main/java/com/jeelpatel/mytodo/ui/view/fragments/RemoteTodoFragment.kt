@@ -13,7 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentRemoteTodoBinding
 import com.jeelpatel.mytodo.ui.adapter.TodoAdapter
-import com.jeelpatel.mytodo.ui.viewModel.TodoViewModel
+import com.jeelpatel.mytodo.ui.viewModel.remoteViewModel.TodoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -61,9 +61,6 @@ class RemoteTodoFragment : Fragment() {
         }
     }
 
-    private fun toast(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
-    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -1,4 +1,4 @@
-package com.jeelpatel.mytodo.domain.usecase
+package com.jeelpatel.mytodo.domain.usecase.taskUseCase
 
 import com.jeelpatel.mytodo.domain.repository.TaskRepository
 import javax.inject.Inject

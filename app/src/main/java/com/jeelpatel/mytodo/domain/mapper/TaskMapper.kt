@@ -3,6 +3,7 @@ package com.jeelpatel.mytodo.domain.mapper
 import com.jeelpatel.mytodo.data.local.entity.TaskEntity
 import com.jeelpatel.mytodo.domain.model.TaskModel
 
+// map TaskModel to TaskEntity
 fun TaskModel.toEntity(): TaskEntity {
     return TaskEntity(
         taskId = taskId,
@@ -17,6 +18,8 @@ fun TaskModel.toEntity(): TaskEntity {
     )
 }
 
+
+// map TaskEntity to TaskModel
 fun TaskEntity.toDomain(): TaskModel {
     return TaskModel(
         taskId = taskId,

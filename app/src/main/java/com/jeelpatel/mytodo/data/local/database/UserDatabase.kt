@@ -10,7 +10,10 @@ import com.jeelpatel.mytodo.data.local.entity.UserEntity
 @Database(entities = [UserEntity::class, TaskEntity::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
 
+
     abstract fun userDao(): UserDao
+
+
     abstract fun taskDao(): TaskDao
 
 }

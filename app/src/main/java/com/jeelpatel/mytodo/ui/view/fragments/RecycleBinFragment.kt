@@ -11,24 +11,25 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
-import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentRecycleBinBinding
 import com.jeelpatel.mytodo.ui.adapter.RecycleBinTaskAdapter
-import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
 import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecycleBinFragment : Fragment() {
 
     private var _binding: FragmentRecycleBinBinding? = null
     private val binding get() = _binding!!
-    private val taskViewModel: TaskViewModel by viewModels()
+    private val viewModel: RecycleTaskViewModel by viewModels()
     private lateinit var recyclerBinAdapter: RecycleBinTaskAdapter
-    private lateinit var sessionManager: SessionManager
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     private var currentUserID = 0
 
     override fun onCreateView(
@@ -45,19 +46,18 @@ class RecycleBinFragment : Fragment() {
 
 
         // for get current User ID and Status
-        sessionManager = SessionManager(requireContext())
         currentUserID = sessionManager.getUserId()
 
 
         // default fetch
-        taskViewModel.getAllDeletedTask(currentUserID)
+        viewModel.getAllDeletedTask(currentUserID)
 
 
         // adapter
         recyclerBinAdapter = RecycleBinTaskAdapter(
             requireContext(),
             onRestore = { taskId ->
-                taskViewModel.restoreTask(taskId)
+                viewModel.restoreTask(taskId)
             },
             onTaskClick = { task ->
                 val action =
@@ -84,29 +84,18 @@ class RecycleBinFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    taskViewModel.task.collect {
+                    viewModel.task.collect {
                         recyclerBinAdapter.submitList(it)
                     }
                 }
 
                 launch {
-                    taskViewModel.message.collect {
-                        toast(it)
+                    viewModel.message.collect {
+                        UiHelper.showSnackWithBottomNav(binding.root, it)
                     }
                 }
             }
         }
-    }
-
-    private fun toast(msg: String) {
-
-        val bottomNav =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG)
-            .setAnchorView(bottomNav)
-            .setAction("Done") {}
-            .show()
     }
 
     override fun onDestroy() {

@@ -1,15 +1,15 @@
 package com.jeelpatel.mytodo.di
 
-import com.jeelpatel.mytodo.domain.usecase.CreateNewTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.DeleteTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.GetAllDeletedTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.GetCompletedTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.GetOverDueTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.GetPendingTaskUseCase
-import com.jeelpatel.mytodo.domain.usecase.GetTasksUseCase
-import com.jeelpatel.mytodo.domain.usecase.RestoreTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.CreateNewTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.DeleteTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.GetAllDeletedTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.GetCompletedTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.GetOverDueTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.GetPendingTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.GetTasksUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.RestoreTaskUseCase
 import com.jeelpatel.mytodo.domain.usecase.TaskContainer
-import com.jeelpatel.mytodo.domain.usecase.UpdateTaskUseCase
+import com.jeelpatel.mytodo.domain.usecase.taskUseCase.UpdateTaskUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

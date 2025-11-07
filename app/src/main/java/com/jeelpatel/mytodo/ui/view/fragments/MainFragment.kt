@@ -11,28 +11,32 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentMainBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
-import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.FilterTaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.UpdateTaskViewModel
 import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
 
+    @Inject
+    lateinit var sessionManager: SessionManager
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-    private lateinit var sessionManager: SessionManager
 
-    private val taskViewModel: TaskViewModel by viewModels()
-    private var currentUserID = 0
-
+    private val filterViewModel: FilterTaskViewModel by viewModels()
+    private val updateViewModel: UpdateTaskViewModel by viewModels()
+    private val recyclerViewModel: RecycleTaskViewModel by viewModels()
     private lateinit var taskAdapter: TaskAdapter
+    private var currentUserID = 0
 
 
     override fun onCreateView(
@@ -46,20 +50,19 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sessionManager = SessionManager(requireContext())
         currentUserID = sessionManager.getUserId()
 
         if (!sessionManager.isLoggedIn()) {
-            findNavController().navigate(R.id.action_mainFragment_to_signUpFragment)
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSignUpFragment())
         }
 
         taskAdapter = TaskAdapter(
             requireContext(),
             onStatusChange = { taskId, isCompleted ->
-                taskViewModel.updateTaskStatus(taskId, isCompleted)
+                updateViewModel.updateTaskStatus(taskId, isCompleted)
             },
             onDeleted = { taskId ->
-                taskViewModel.deleteTask(taskId)
+                recyclerViewModel.deleteTask(taskId)
             },
             onTaskClick = { task ->
                 val action = MainFragmentDirections.actionMainFragmentToTaskViewFragment(
@@ -78,7 +81,7 @@ class MainFragment : Fragment() {
         binding.taskRecyclerView.adapter = taskAdapter
 
         // default Get all task
-        taskViewModel.getAllTask(currentUserID)
+        filterViewModel.getAllTask(currentUserID)
         binding.buttonGroup.check(R.id.allTaskFilterBtn)
 
         binding.onlineTodosBtn.setOnClickListener {
@@ -89,10 +92,10 @@ class MainFragment : Fragment() {
             if (!isChecked) return@addOnButtonCheckedListener
 
             when (checkedId) {
-                R.id.allTaskFilterBtn -> taskViewModel.getAllTask(currentUserID)
-                R.id.overDueTaskFilterBtn -> taskViewModel.overDueTask(currentUserID)
-                R.id.completedTaskFilterBtn -> taskViewModel.completedTask(currentUserID)
-                R.id.pendingTaskFilterBtn -> taskViewModel.pendingTask(currentUserID)
+                R.id.allTaskFilterBtn -> filterViewModel.getAllTask(currentUserID)
+                R.id.overDueTaskFilterBtn -> filterViewModel.overDueTask(currentUserID)
+                R.id.completedTaskFilterBtn -> filterViewModel.completedTask(currentUserID)
+                R.id.pendingTaskFilterBtn -> filterViewModel.pendingTask(currentUserID)
             }
         }
 
@@ -104,30 +107,31 @@ class MainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    taskViewModel.message.collect {
-                        toast(it)
+                    updateViewModel.message.collect {
+                        UiHelper.showToast(requireContext(), it)
                     }
                 }
+
                 launch {
-                    taskViewModel.task.collectLatest {
+                    recyclerViewModel.message.collect {
+                        UiHelper.showToast(requireContext(), it)
+                    }
+                }
+
+                launch {
+                    filterViewModel.message.collect {
+                        UiHelper.showToast(requireContext(), it)
+                    }
+                }
+
+                launch {
+                    filterViewModel.task.collectLatest {
                         taskAdapter.submitList(it)
                     }
                 }
             }
         }
     }
-
-    private fun toast(msg: String) {
-
-        val bottomNav =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG)
-            .setAnchorView(bottomNav)
-            .setAction("Done") {}
-            .show()
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()

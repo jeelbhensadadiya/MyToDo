@@ -1,9 +1,9 @@
-package com.jeelpatel.mytodo.ui.viewModel
+package com.jeelpatel.mytodo.ui.viewModel.remoteViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeelpatel.mytodo.data.repository.TodoRepositoryImpl
 import com.jeelpatel.mytodo.data.remote.dto.TodoDto
+import com.jeelpatel.mytodo.data.repository.TodoRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,6 @@ class TodoViewModel @Inject constructor(private val repository: TodoRepositoryIm
                 repository.getTodos()
                     .flowOn(Dispatchers.IO)
                     .collectLatest { todos ->
-                        println("API Response Size: ${todos.size}")
                         _todos.value = todos
                     }
             } catch (e: Exception) {

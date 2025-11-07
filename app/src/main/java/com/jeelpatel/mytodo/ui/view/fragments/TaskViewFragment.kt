@@ -15,7 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentTaskViewBinding
-import com.jeelpatel.mytodo.ui.viewModel.TaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.UpdateTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -29,7 +30,8 @@ class TaskViewFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: TaskViewFragmentArgs by navArgs()
 
-    private val taskViewModel: TaskViewModel by viewModels()
+    private val updateViewModel: UpdateTaskViewModel by viewModels()
+    private val recycleViewModel: RecycleTaskViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,11 +67,11 @@ class TaskViewFragment : Fragment() {
             }
 
             taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                taskViewModel.updateTaskStatus(args.taskId, isChecked)
+                updateViewModel.updateTaskStatus(args.taskId, isChecked)
             }
 
             deleteTaskBtn.setOnClickListener {
-                taskViewModel.deleteTask(args.taskId)
+                recycleViewModel.deleteTask(args.taskId)
             }
 
             taskDueDateTv.text = "Due : $formattedDate"
@@ -82,7 +84,13 @@ class TaskViewFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    taskViewModel.message.collect {
+                    recycleViewModel.message.collect {
+                        toast(it)
+                    }
+                }
+
+                launch {
+                    updateViewModel.message.collect {
                         toast(it)
                     }
                 }
