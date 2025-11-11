@@ -68,6 +68,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/deleteBtn"
                 style="?attr/materialIconButtonStyle"
+                android:contentDescription="@string/delete_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/trash_24"

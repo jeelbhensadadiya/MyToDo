@@ -1,12 +1,12 @@
 package com.jeelpatel.mytodo.data.remote.api
 
 import com.jeelpatel.mytodo.data.remote.dto.TodoDto
+import com.jeelpatel.mytodo.utils.Config
 import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface ApiService {
 
-    @GET("todos")
+    @GET(Config.GET_TODOS)
     suspend fun getTodos(): List<TodoDto>
 
 }

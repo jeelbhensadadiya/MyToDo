@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jeelpatel.mytodo.databinding.FragmentCreateTaskBinding
+import com.jeelpatel.mytodo.ui.viewModel.CreateTaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.CreateTaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,20 +65,18 @@ class CreateTaskFragment : Fragment() {
     private fun dataCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
                 launch {
-                    viewModel.message.collectLatest {
-                        // show errors
-                        UiHelper.showSnackWithBottomNav(binding.root, msg = it)
-                    }
-                }
+                    viewModel.uiState.collectLatest { uiState ->
+                        when (uiState) {
+                            is CreateTaskUiState.Ideal -> {}
+                            is CreateTaskUiState.Loading -> {}
+                            is CreateTaskUiState.Success -> {
+                                findNavController().popBackStack()
+                            }
 
-
-                launch {
-                    viewModel.isTaskCreated.collectLatest { isCreated ->
-                        // navigate to back if task created successfully
-                        if (isCreated) {
-                            findNavController().popBackStack()
+                            is CreateTaskUiState.Error -> {
+                                UiHelper.showToast(requireContext(), uiState.message)
+                            }
                         }
                     }
                 }

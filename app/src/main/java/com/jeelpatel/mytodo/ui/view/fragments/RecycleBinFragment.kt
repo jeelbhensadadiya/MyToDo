@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentRecycleBinBinding
 import com.jeelpatel.mytodo.ui.adapter.RecycleBinTaskAdapter
+import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,14 +75,18 @@ class RecycleBinFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.task.collectLatest {
-                        recyclerBinAdapter.submitList(it)
-                    }
-                }
+                    viewModel.uiStates.collectLatest { uiStates ->
+                        when (uiStates) {
+                            is TaskUiState.Error -> {
+                                UiHelper.showToast(requireContext(), uiStates.message)
+                            }
 
-                launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showSnackWithBottomNav(binding.root, it)
+                            is TaskUiState.Ideal -> {}
+                            is TaskUiState.Loading -> {}
+                            is TaskUiState.Success -> {
+                                recyclerBinAdapter.submitList(uiStates.tasks)
+                            }
+                        }
                     }
                 }
             }

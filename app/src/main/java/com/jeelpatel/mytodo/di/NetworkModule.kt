@@ -1,6 +1,7 @@
 package com.jeelpatel.mytodo.di
 
 import com.jeelpatel.mytodo.data.remote.api.ApiService
+import com.jeelpatel.mytodo.utils.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,12 +14,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
-
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(Config.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

@@ -69,12 +69,13 @@ class TaskAdapter(
             }
 
             deleteBtn.setOnClickListener {
-                MaterialAlertDialogBuilder(holder.itemView.context).setTitle("Delete")
-                    .setMessage("Are you sure to delete Task?").setCancelable(false)
-                    .setPositiveButton("Delete") { dialog, _ ->
+                MaterialAlertDialogBuilder(holder.itemView.context).setTitle(context.getString(R.string.delete))
+                    .setMessage(context.getString(R.string.are_you_sure_to_delete_task))
+                    .setCancelable(false)
+                    .setPositiveButton(context.getString(R.string.delete)) { dialog, _ ->
                         onDeleted(task.taskId)
                         dialog.dismiss()
-                    }.setNeutralButton("Cancel", null).show()
+                    }.setNeutralButton(context.getString(R.string.cancel), null).show()
             }
 
             taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
@@ -87,14 +88,6 @@ class TaskAdapter(
 
             root.setOnClickListener {
                 onTaskClick(task)
-
-//                val intent = Intent(holder.itemView.context, TaskActivity::class.java)
-//                intent.putExtra("TITLE", task.title)
-//                intent.putExtra("DESC", task.description)
-//                intent.putExtra("DUE_DATE", task.dueDate)
-//                intent.putExtra("PRIORITY", task.priority)
-//                intent.putExtra("IS_COMPLETED", task.isCompleted)
-//                context.startActivity(intent)
             }
         }
     }

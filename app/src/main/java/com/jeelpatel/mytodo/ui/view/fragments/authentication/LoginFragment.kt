@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentLoginBinding
+import com.jeelpatel.mytodo.ui.viewModel.UserUiState
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,22 +61,24 @@ class LoginFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    userViewModel.message.collectLatest {
-                        // show errors
-                        UiHelper.showToast(requireContext(), it)
-                    }
-                }
+                    userViewModel.uiState.collectLatest { uiState ->
+                        when (uiState) {
+                            is UserUiState.Ideal -> {}
 
-                launch {
-                    userViewModel.isUserLoggedIn.collectLatest { loggedIn ->
-                        // navigate to main fragment if login success
-                        if (loggedIn) {
-                            findNavController().navigate(
-                                LoginFragmentDirections.actionLoginFragmentToMainFragment(),
-                                androidx.navigation.NavOptions.Builder()
-                                    .setPopUpTo(R.id.loginFragment, true)
-                                    .build()
-                            )
+                            is UserUiState.Loading -> {}
+
+                            is UserUiState.Success -> {
+                                findNavController().navigate(
+                                    LoginFragmentDirections.actionLoginFragmentToMainFragment(),
+                                    androidx.navigation.NavOptions.Builder()
+                                        .setPopUpTo(R.id.loginFragment, true)
+                                        .build()
+                                )
+                            }
+
+                            is UserUiState.Error -> {
+                                UiHelper.showToast(requireContext(), uiState.message)
+                            }
                         }
                     }
                 }

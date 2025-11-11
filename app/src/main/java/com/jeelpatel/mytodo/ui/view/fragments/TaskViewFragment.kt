@@ -13,14 +13,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentTaskViewBinding
+import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @AndroidEntryPoint
 class TaskViewFragment : Fragment() {
@@ -41,13 +39,15 @@ class TaskViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val formattedDate = SimpleDateFormat("dd-MMM-yyyy, hh:mm a", Locale.getDefault())
-            .format(Date(args.dueDate))
-
         with(binding) {
             taskTitleTv.text = args.title
             taskDescriptionTv.text = args.desc
-            taskStatusChip.text = if (args.isCompleted) "Completed" else "Pending"
+            taskStatusChip.text = if (args.isCompleted) {
+                requireContext().getString(R.string.completed)
+            } else {
+                requireContext().getString(R.string.pending)
+            }
+            taskCheckBox.isChecked = args.isCompleted
 
             when (args.priority) {
                 1 -> taskPriorityCard.setCardBackgroundColor(
@@ -71,7 +71,7 @@ class TaskViewFragment : Fragment() {
                 viewModel.deleteTask(args.taskId)
             }
 
-            taskDueDateTv.text = "Due : $formattedDate"
+            taskDueDateTv.text = getString(R.string.due, UiHelper.formatDate(args.dueDate))
         }
 
         dataCollectors()
@@ -81,14 +81,15 @@ class TaskViewFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showToast(requireContext(), it)
-                    }
-                }
-
-                launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showToast(requireContext(), it)
+                    viewModel.uiStates.collectLatest { uiStates ->
+                        when (uiStates) {
+                            is TaskUiState.Ideal -> {}
+                            is TaskUiState.Loading -> {}
+                            is TaskUiState.Success -> {}
+                            is TaskUiState.Error -> {
+                                UiHelper.showToast(requireContext(), uiStates.message)
+                            }
+                        }
                     }
                 }
             }

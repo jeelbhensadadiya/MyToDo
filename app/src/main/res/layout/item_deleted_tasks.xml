@@ -70,6 +70,7 @@
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/restore_task"
                 app:icon="@drawable/time_past_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +85,6 @@
             android:layout_margin="8dp"
             app:cardCornerRadius="12dp"
             app:strokeWidth="0dp" />
-
 
     </LinearLayout>
 

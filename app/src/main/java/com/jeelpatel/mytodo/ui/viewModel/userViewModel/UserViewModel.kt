@@ -2,15 +2,13 @@ package com.jeelpatel.mytodo.ui.viewModel.userViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jeelpatel.mytodo.domain.model.UserModel
 import com.jeelpatel.mytodo.domain.usecase.userUseCase.GetLoginUserUseCase
 import com.jeelpatel.mytodo.domain.usecase.userUseCase.RegisterNewUserUseCase
+import com.jeelpatel.mytodo.ui.viewModel.UserUiState
 import com.jeelpatel.mytodo.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,17 +20,11 @@ class UserViewModel @Inject constructor(
     private val sessionManager: SessionManager
 ) : ViewModel() {
 
-    private val _message = MutableSharedFlow<String>()
-    val message: SharedFlow<String> = _message
+    private var _uiState = MutableStateFlow<UserUiState>(UserUiState.Ideal)
+    val uiState: StateFlow<UserUiState> = _uiState
 
-    private val _user = MutableStateFlow<UserModel?>(null)
-    val user: StateFlow<UserModel?> = _user
-
-    private val _isUserCreated = MutableStateFlow(false)
-    val isUserCreated: StateFlow<Boolean> = _isUserCreated
-
-    private val _isUserLoggedIn = MutableStateFlow(false)
-    val isUserLoggedIn: StateFlow<Boolean> = _isUserLoggedIn
+    private var _isUserLoggedIn = MutableStateFlow(false)
+    val isUserLoggedIn: StateFlow<Boolean> get() = _isUserLoggedIn
 
     fun registerUser(
         userName: String,
@@ -40,8 +32,10 @@ class UserViewModel @Inject constructor(
         userPassword: String,
         userRePassword: String
     ) {
-
         viewModelScope.launch(Dispatchers.IO) {
+
+            _uiState.value = UserUiState.Loading
+
             val result = registerNewUserUseCase(
                 userName,
                 userEmail,
@@ -50,11 +44,9 @@ class UserViewModel @Inject constructor(
             )
 
             result.onSuccess {
-                _message.emit("User Registration Success")
-                _isUserCreated.value = true
+                _uiState.value = UserUiState.Success
             }.onFailure {
-                _message.emit(it.message ?: "Unknown error")
-                _isUserCreated.value = false
+                _uiState.value = UserUiState.Error(it.message ?: "Unknown error")
             }
         }
     }
@@ -64,15 +56,15 @@ class UserViewModel @Inject constructor(
         userPassword: String
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-
+            _uiState.value = UserUiState.Loading
             val result = getLoginUser(userEmail, userPassword)
 
             result.onSuccess { loggedInUser ->
-                sessionManager.saveUserSession(loggedInUser.uId)
+                _uiState.value = UserUiState.Success
                 _isUserLoggedIn.value = true
+                sessionManager.saveUserSession(loggedInUser.uId)
             }.onFailure {
-                _message.emit(it.message ?: "Unknown error")
-                _isUserLoggedIn.value = false
+                _uiState.value = UserUiState.Error(it.message ?: "Unknown error")
             }
         }
     }
@@ -84,6 +76,6 @@ class UserViewModel @Inject constructor(
     fun logoutUser() {
         sessionManager.clearSession()
         _isUserLoggedIn.value = false
-        _user.value = null
+        _uiState.value = UserUiState.Ideal
     }
 }

@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.logOutBtn) {
                 userViewModel.logoutUser()
-                userViewModel.checkLoginStatus()
+                logout()
                 true
             } else {
                 false
@@ -88,22 +88,27 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     userViewModel.isUserLoggedIn.collect { loggedIn ->
-
-                        Log.d("AUTH_STATE", "loggedIn = $loggedIn")
-
+                        Log.d("AUTH", "isUserLoggedIn = $loggedIn")
                         if (!loggedIn) {
-                            val navController = findNavController(R.id.nav_host_fragment)
-                            navController.navigate(
-                                R.id.signUpFragment,
-                                null,
-                                androidx.navigation.NavOptions.Builder()
-                                    .setPopUpTo(R.id.signUpFragment, true)
-                                    .build()
-                            )
+                            logout()
                         }
                     }
                 }
             }
         }
+    }
+
+    fun logout() {
+        if (navController.currentDestination?.id != R.id.mainFragment)
+            return
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(
+            R.id.signUpFragment,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(navController.graph.startDestinationId, true)   // ✅ clear up to START
+                .build()
+        )
     }
 }

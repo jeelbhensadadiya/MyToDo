@@ -40,7 +40,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Task Title"
+                        android:text="@string/title"
                         android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                         android:textStyle="bold" />
 
@@ -49,7 +49,7 @@
                         style="@style/Widget.Material3.Chip.Assist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pending"
+                        android:text="@string/pending"
                         android:textColor="?attr/colorOnPrimaryContainer"
                         app:chipBackgroundColor="?attr/colorPrimaryContainer" />
 
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="This is task description."
+                    android:text="@string/description"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
@@ -78,7 +78,7 @@
                         android:id="@+id/taskDueDateTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Due: 14 Oct 2025"
+                        android:text="@string/due_date"
                         android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
                         android:textColor="?attr/colorPrimary" />
 
@@ -89,30 +89,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:gravity="end"
-                    android:orientation="horizontal">
+                    android:gravity="end">
 
                     <CheckBox
                         android:id="@+id/taskCheckBox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mark as Completed"
+                        android:text="@string/mark_as_completed"
                         android:textAppearance="?attr/textAppearanceLabelLarge"
                         app:buttonTint="?attr/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/editTaskBtn"
                         style="?attr/materialIconButtonStyle"
+                        android:contentDescription="@string/edit_task"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:icon="@drawable/pencil_24" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/deleteTaskBtn"
+                        android:contentDescription="@string/delete_task"
                         style="?attr/materialIconButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

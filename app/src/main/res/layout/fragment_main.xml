@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Remote Todo"
+                android:text="@string/remote_todo"
                 app:icon="@drawable/globe_24" />
 
         </LinearLayout>
@@ -56,28 +56,28 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="All" />
+                    android:text="@string/all" />
 
                 <Button
                     android:id="@+id/overDueTaskFilterBtn"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Over Due" />
+                    android:text="@string/over_due" />
 
                 <Button
                     android:id="@+id/completedTaskFilterBtn"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Completed" />
+                    android:text="@string/completed" />
 
                 <Button
                     android:id="@+id/pendingTaskFilterBtn"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pending" />
+                    android:text="@string/pending" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
         </HorizontalScrollView>

@@ -3,11 +3,10 @@ package com.jeelpatel.mytodo.ui.viewModel.taskViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeelpatel.mytodo.domain.usecase.TaskContainer
+import com.jeelpatel.mytodo.ui.viewModel.CreateTaskUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,11 +16,9 @@ class CreateTaskViewModel @Inject constructor(
     private val useCases: TaskContainer,
 ) : ViewModel() {
 
-    private var _message = MutableSharedFlow<String>()
-    val message: SharedFlow<String> = _message
+    private var _uiState = MutableStateFlow<CreateTaskUiState>(CreateTaskUiState.Ideal)
+    val uiState: StateFlow<CreateTaskUiState> = _uiState
 
-    private var _isTaskCreated = MutableStateFlow(false)
-    val isTaskCreated: StateFlow<Boolean> = _isTaskCreated
 
     fun createNewTask(
         title: String,
@@ -32,6 +29,10 @@ class CreateTaskViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
 
+            // Start Loading
+            _uiState.value = CreateTaskUiState.Loading
+
+            // store result
             val result = useCases.createTask(
                 title,
                 description,
@@ -41,11 +42,9 @@ class CreateTaskViewModel @Inject constructor(
             )
 
             result.onSuccess {
-                _message.emit("New task created")
-                _isTaskCreated.value = true
+                _uiState.value = CreateTaskUiState.Success
             }.onFailure {
-                _message.emit(it.message ?: "Unknown error")
-                _isTaskCreated.value = false
+                _uiState.value = CreateTaskUiState.Error(it.message ?: "Unknown Error")
             }
         }
     }

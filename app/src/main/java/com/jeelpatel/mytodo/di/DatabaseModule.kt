@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.jeelpatel.mytodo.data.local.dao.TaskDao
 import com.jeelpatel.mytodo.data.local.dao.UserDao
 import com.jeelpatel.mytodo.data.local.database.UserDatabase
+import com.jeelpatel.mytodo.utils.Config
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +23,7 @@ object DatabaseModule {
         Room.databaseBuilder(
             context,
             UserDatabase::class.java,
-            "app_database"
+            Config.APP_DATABASE
         )
             .fallbackToDestructiveMigration()
             .build()

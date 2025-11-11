@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentMainBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
+import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,26 +91,18 @@ class MainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showToast(requireContext(), it)
-                    }
-                }
+                    viewModel.uiStates.collectLatest { uiStates ->
+                        when (uiStates) {
+                            is TaskUiState.Ideal -> {}
+                            is TaskUiState.Loading -> {}
+                            is TaskUiState.Success -> {
+                                taskAdapter.submitList(uiStates.tasks)
+                            }
 
-                launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showToast(requireContext(), it)
-                    }
-                }
-
-                launch {
-                    viewModel.message.collectLatest {
-                        UiHelper.showToast(requireContext(), it)
-                    }
-                }
-
-                launch {
-                    viewModel.task.collectLatest {
-                        taskAdapter.submitList(it)
+                            is TaskUiState.Error -> {
+                                UiHelper.showToast(requireContext(), uiStates.message)
+                            }
+                        }
                     }
                 }
             }

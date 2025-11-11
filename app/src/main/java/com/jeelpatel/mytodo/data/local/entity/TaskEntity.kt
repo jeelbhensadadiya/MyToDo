@@ -3,9 +3,10 @@ package com.jeelpatel.mytodo.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.jeelpatel.mytodo.utils.Config
 
 @Entity(
-    tableName = "task_table",
+    tableName = Config.TASK_TABLE,
     foreignKeys = [ForeignKey(
         entity = UserEntity::class,
         parentColumns = ["uId"],

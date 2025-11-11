@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.jeelpatel.mytodo.data.local.entity.TaskEntity
+import com.jeelpatel.mytodo.utils.Config
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,7 +19,7 @@ interface TaskDao {
     @Query(
         """
         SELECT *
-        FROM task_table
+        FROM ${Config.TASK_TABLE}
         WHERE userOwnerId = :currentUserId AND isDeleted = 0
         ORDER BY dueDate DESC
         """
@@ -29,7 +30,7 @@ interface TaskDao {
     @Query(
         """
         SELECT *
-        FROM task_table
+        FROM ${Config.TASK_TABLE}
         WHERE userOwnerId = :currentUserId AND isCompleted = 1 AND isDeleted = 0
         ORDER BY dueDate DESC
         """
@@ -40,7 +41,7 @@ interface TaskDao {
     @Query(
         """
         SELECT *
-        FROM task_table
+        FROM ${Config.TASK_TABLE}
         WHERE userOwnerId = :currentUserId AND isCompleted = 0 AND isDeleted = 0
         ORDER BY dueDate DESC
         """
@@ -51,7 +52,7 @@ interface TaskDao {
     @Query(
         """
         SELECT *
-        FROM task_table
+        FROM ${Config.TASK_TABLE}
         WHERE userOwnerId = :currentUserId AND isCompleted = 0 AND isDeleted = 0 AND dueDate < :currentTime
         ORDER BY dueDate ASC
         """
@@ -63,7 +64,7 @@ interface TaskDao {
 
     @Query(
         """
-        UPDATE task_table
+        UPDATE ${Config.TASK_TABLE}
         SET isDeleted = 1
         WHERE taskId = :taskId
         """
@@ -73,7 +74,7 @@ interface TaskDao {
 
     @Query(
         """
-        SELECT * FROM task_table 
+        SELECT * FROM ${Config.TASK_TABLE} 
         WHERE isDeleted = 1 AND userOwnerId = :userId
         """
     )
@@ -82,7 +83,7 @@ interface TaskDao {
 
     @Query(
         """
-        UPDATE task_table
+        UPDATE ${Config.TASK_TABLE}
         SET isDeleted = 0
         WHERE taskId = :taskId
         """
@@ -92,7 +93,7 @@ interface TaskDao {
 
     @Query(
         """
-        UPDATE task_table
+        UPDATE ${Config.TASK_TABLE}
         SET isCompleted = :isCompleted
         WHERE taskId = :taskId
         """

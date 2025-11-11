@@ -25,6 +25,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="15dp"
+                android:contentDescription="@string/user"
                 android:src="@drawable/user_24" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:maxLines="1"
-            android:text="Jeel Patel"
+            android:text="@string/user"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             app:layout_constraintEnd_toEndOf="@+id/materialCardView"
             app:layout_constraintStart_toStartOf="@+id/materialCardView"
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:maxLines="1"
-            android:text="test@gmail.com"
+            android:text="@string/email"
             android:textAppearance="?attr/textAppearanceLabelLarge"
             app:layout_constraintEnd_toEndOf="@+id/materialCardView"
             app:layout_constraintStart_toStartOf="@+id/materialCardView"
@@ -57,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Logout"
+            android:text="@string/logout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userIdTv" />

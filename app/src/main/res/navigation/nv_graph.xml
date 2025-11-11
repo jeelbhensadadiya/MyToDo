@@ -12,6 +12,8 @@
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_mainFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/mainFragment" />
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
@@ -38,6 +40,8 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="false"
             app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_mainFragment_to_recycleBinFragment"

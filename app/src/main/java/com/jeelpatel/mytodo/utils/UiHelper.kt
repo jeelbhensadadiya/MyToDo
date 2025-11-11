@@ -32,16 +32,16 @@ object UiHelper {
 
     /** ✅ Convert dateMillis → formatted string */
     fun formatDate(millis: Long): String {
-        return SimpleDateFormat("dd-MMM-yyyy, hh:mm a", Locale.getDefault())
+        return SimpleDateFormat(Config.DATE_TIME_FORMAT, Locale.getDefault())
             .format(Date(millis))
     }
 
     /** ✅ Convert string → millis */
     fun parseDateToMillis(dateStr: String): Long {
         return try {
-            SimpleDateFormat("dd-MMM-yyyy, hh:mm a", Locale.getDefault())
+            SimpleDateFormat(Config.DATE_TIME_FORMAT, Locale.getDefault())
                 .parse(dateStr)?.time ?: 0L
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             0L
         }
     }
