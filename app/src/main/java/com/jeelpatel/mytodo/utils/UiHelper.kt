@@ -3,10 +3,13 @@ package com.jeelpatel.mytodo.utils
 import android.content.Context
 import android.view.View
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.FragmentManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import com.jeelpatel.mytodo.R
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -42,4 +45,41 @@ object UiHelper {
             0L
         }
     }
+
+    fun showMaterialDateTimePicker(
+        fragmentManager: FragmentManager,
+        onDateTimeSelected: (String) -> Unit
+    ) {
+
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener { date ->
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = date
+
+            val timePicker = MaterialTimePicker.Builder()
+                .setTitleText("Select time")
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(calendar.get(Calendar.HOUR_OF_DAY))
+                .setMinute(calendar.get(Calendar.MINUTE))
+                .build()
+
+            timePicker.addOnPositiveButtonClickListener {
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                calendar.set(Calendar.MINUTE, timePicker.minute)
+
+                onDateTimeSelected(
+                    formatDate(calendar.timeInMillis)
+                )
+            }
+
+            timePicker.show(fragmentManager, "M3_TIME_PICKER")
+        }
+
+        datePicker.show(fragmentManager, "M3_DATE_PICKER")
+    }
+
 }

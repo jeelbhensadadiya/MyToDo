@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jeelpatel.mytodo.domain.model.UserModel
 import com.jeelpatel.mytodo.domain.usecase.userUseCase.GetLoginUserUseCase
 import com.jeelpatel.mytodo.domain.usecase.userUseCase.RegisterNewUserUseCase
+import com.jeelpatel.mytodo.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val getLoginUser: GetLoginUserUseCase,
     private val registerNewUserUseCase: RegisterNewUserUseCase,
+    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private val _message = MutableSharedFlow<String>()
@@ -66,12 +68,22 @@ class UserViewModel @Inject constructor(
             val result = getLoginUser(userEmail, userPassword)
 
             result.onSuccess { loggedInUser ->
-                _user.value = loggedInUser
+                sessionManager.saveUserSession(loggedInUser.uId)
                 _isUserLoggedIn.value = true
             }.onFailure {
                 _message.emit(it.message ?: "Unknown error")
                 _isUserLoggedIn.value = false
             }
         }
+    }
+
+    fun checkLoginStatus() {
+        _isUserLoggedIn.value = sessionManager.isLoggedIn()
+    }
+
+    fun logoutUser() {
+        sessionManager.clearSession()
+        _isUserLoggedIn.value = false
+        _user.value = null
     }
 }

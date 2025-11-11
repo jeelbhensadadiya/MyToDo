@@ -11,13 +11,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentTaskViewBinding
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.UpdateTaskViewModel
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
+import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -29,14 +28,12 @@ class TaskViewFragment : Fragment() {
     private var _binding: FragmentTaskViewBinding? = null
     private val binding get() = _binding!!
     private val args: TaskViewFragmentArgs by navArgs()
-
-    private val updateViewModel: UpdateTaskViewModel by viewModels()
-    private val recycleViewModel: RecycleTaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTaskViewBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -67,11 +64,11 @@ class TaskViewFragment : Fragment() {
             }
 
             taskCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                updateViewModel.updateTaskStatus(args.taskId, isChecked)
+                viewModel.updateTaskStatus(args.taskId, isChecked)
             }
 
             deleteTaskBtn.setOnClickListener {
-                recycleViewModel.deleteTask(args.taskId)
+                viewModel.deleteTask(args.taskId)
             }
 
             taskDueDateTv.text = "Due : $formattedDate"
@@ -84,29 +81,18 @@ class TaskViewFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    recycleViewModel.message.collect {
-                        toast(it)
+                    viewModel.message.collectLatest {
+                        UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    updateViewModel.message.collect {
-                        toast(it)
+                    viewModel.message.collectLatest {
+                        UiHelper.showToast(requireContext(), it)
                     }
                 }
             }
         }
-    }
-
-    private fun toast(msg: String) {
-
-        val bottomNav =
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG)
-            .setAnchorView(bottomNav)
-            .setAction("Done") {}
-            .show()
     }
 
     override fun onDestroy() {

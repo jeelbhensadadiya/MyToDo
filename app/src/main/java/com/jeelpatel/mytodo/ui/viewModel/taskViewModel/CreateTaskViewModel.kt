@@ -3,7 +3,6 @@ package com.jeelpatel.mytodo.ui.viewModel.taskViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jeelpatel.mytodo.domain.usecase.TaskContainer
-import com.jeelpatel.mytodo.utils.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateTaskViewModel @Inject constructor(
     private val useCases: TaskContainer,
-    private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private var _message = MutableSharedFlow<String>()
@@ -39,7 +37,6 @@ class CreateTaskViewModel @Inject constructor(
                 description,
                 priority,
                 dueDate,
-                sessionManager.getUserId(),
                 isCompleted
             )
 

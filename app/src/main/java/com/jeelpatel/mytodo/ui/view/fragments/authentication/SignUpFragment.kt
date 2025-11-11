@@ -10,19 +10,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentSignUpBinding
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
-import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
-    @Inject
-    lateinit var sessionManager: SessionManager
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
     private val userViewModel: UserViewModel by viewModels()
@@ -32,7 +30,7 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,10 +40,7 @@ class SignUpFragment : Fragment() {
 
 
         // Check User Login Status
-        if (sessionManager.isLoggedIn()) {
-            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToMainFragment())
-            return
-        }
+        userViewModel.checkLoginStatus()
 
 
         // create user
@@ -73,7 +68,7 @@ class SignUpFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    userViewModel.message.collect {
+                    userViewModel.message.collectLatest {
                         // show errors
                         UiHelper.showToast(requireContext(), it)
                     }
@@ -81,10 +76,25 @@ class SignUpFragment : Fragment() {
 
 
                 launch {
-                    userViewModel.isUserCreated.collect { created ->
+                    userViewModel.isUserCreated.collectLatest { created ->
                         // navigate to login after successful signup
                         if (created) {
                             findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
+                        }
+                    }
+                }
+
+
+                launch {
+                    userViewModel.isUserLoggedIn.collectLatest { loggedIn ->
+                        // navigate to main if already loggedIn
+                        if (loggedIn) {
+                            findNavController().navigate(
+                                SignUpFragmentDirections.actionSignUpFragmentToMainFragment(),
+                                androidx.navigation.NavOptions.Builder()
+                                    .setPopUpTo(R.id.signUpFragment, true)
+                                    .build()
+                            )
                         }
                     }
                 }

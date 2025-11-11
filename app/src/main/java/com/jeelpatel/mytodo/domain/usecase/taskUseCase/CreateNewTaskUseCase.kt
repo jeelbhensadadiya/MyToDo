@@ -2,16 +2,20 @@ package com.jeelpatel.mytodo.domain.usecase.taskUseCase
 
 import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.domain.repository.TaskRepository
+import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.utils.UiHelper
 import javax.inject.Inject
 
-class CreateNewTaskUseCase @Inject constructor(private val taskRepository: TaskRepository) {
+class CreateNewTaskUseCase @Inject constructor(
+    private val taskRepository: TaskRepository,
+    private val sessionManager: SessionManager
+) {
+
     suspend operator fun invoke(
         title: String,
         description: String,
         priority: Int,
         dueDate: String,
-        userOwnerId: Int,
         isCompleted: Boolean
     ): Result<Unit> {
 
@@ -42,7 +46,7 @@ class CreateNewTaskUseCase @Inject constructor(private val taskRepository: TaskR
             priority = priority,
             dueDate = UiHelper.parseDateToMillis(dueDate),
             createdAt = System.currentTimeMillis(),
-            userOwnerId = userOwnerId,
+            userOwnerId = sessionManager.getUserId(),
             isDeleted = false
         )
 

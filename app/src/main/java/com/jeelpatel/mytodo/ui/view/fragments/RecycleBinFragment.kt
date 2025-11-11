@@ -13,29 +13,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentRecycleBinBinding
 import com.jeelpatel.mytodo.ui.adapter.RecycleBinTaskAdapter
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
-import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecycleBinFragment : Fragment() {
 
     private var _binding: FragmentRecycleBinBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: RecycleTaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
     private lateinit var recyclerBinAdapter: RecycleBinTaskAdapter
-
-    @Inject
-    lateinit var sessionManager: SessionManager
-    private var currentUserID = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRecycleBinBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,13 +39,8 @@ class RecycleBinFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // for get current User ID and Status
-        currentUserID = sessionManager.getUserId()
-
-
         // default fetch
-        viewModel.getAllDeletedTask(currentUserID)
+        viewModel.getAllDeletedTask()
 
 
         // adapter
@@ -84,13 +74,13 @@ class RecycleBinFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.task.collect {
+                    viewModel.task.collectLatest {
                         recyclerBinAdapter.submitList(it)
                     }
                 }
 
                 launch {
-                    viewModel.message.collect {
+                    viewModel.message.collectLatest {
                         UiHelper.showSnackWithBottomNav(binding.root, it)
                     }
                 }

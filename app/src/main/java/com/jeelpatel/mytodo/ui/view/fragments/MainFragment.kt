@@ -14,35 +14,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentMainBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.FilterTaskViewModel
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.RecycleTaskViewModel
-import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.UpdateTaskViewModel
-import com.jeelpatel.mytodo.utils.SessionManager
+import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
-
-    @Inject
-    lateinit var sessionManager: SessionManager
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-
-    private val filterViewModel: FilterTaskViewModel by viewModels()
-    private val updateViewModel: UpdateTaskViewModel by viewModels()
-    private val recyclerViewModel: RecycleTaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
     private lateinit var taskAdapter: TaskAdapter
-    private var currentUserID = 0
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,19 +39,13 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        currentUserID = sessionManager.getUserId()
-
-        if (!sessionManager.isLoggedIn()) {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSignUpFragment())
-        }
-
         taskAdapter = TaskAdapter(
             requireContext(),
             onStatusChange = { taskId, isCompleted ->
-                updateViewModel.updateTaskStatus(taskId, isCompleted)
+                viewModel.updateTaskStatus(taskId, isCompleted)
             },
             onDeleted = { taskId ->
-                recyclerViewModel.deleteTask(taskId)
+                viewModel.deleteTask(taskId)
             },
             onTaskClick = { task ->
                 val action = MainFragmentDirections.actionMainFragmentToTaskViewFragment(
@@ -81,7 +64,7 @@ class MainFragment : Fragment() {
         binding.taskRecyclerView.adapter = taskAdapter
 
         // default Get all task
-        filterViewModel.getAllTask(currentUserID)
+        viewModel.getAllTask()
         binding.buttonGroup.check(R.id.allTaskFilterBtn)
 
         binding.onlineTodosBtn.setOnClickListener {
@@ -92,10 +75,10 @@ class MainFragment : Fragment() {
             if (!isChecked) return@addOnButtonCheckedListener
 
             when (checkedId) {
-                R.id.allTaskFilterBtn -> filterViewModel.getAllTask(currentUserID)
-                R.id.overDueTaskFilterBtn -> filterViewModel.overDueTask(currentUserID)
-                R.id.completedTaskFilterBtn -> filterViewModel.completedTask(currentUserID)
-                R.id.pendingTaskFilterBtn -> filterViewModel.pendingTask(currentUserID)
+                R.id.allTaskFilterBtn -> viewModel.getAllTask()
+                R.id.overDueTaskFilterBtn -> viewModel.overDueTask()
+                R.id.completedTaskFilterBtn -> viewModel.completedTask()
+                R.id.pendingTaskFilterBtn -> viewModel.pendingTask()
             }
         }
 
@@ -107,25 +90,25 @@ class MainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    updateViewModel.message.collect {
+                    viewModel.message.collectLatest {
                         UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    recyclerViewModel.message.collect {
+                    viewModel.message.collectLatest {
                         UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    filterViewModel.message.collect {
+                    viewModel.message.collectLatest {
                         UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    filterViewModel.task.collectLatest {
+                    viewModel.task.collectLatest {
                         taskAdapter.submitList(it)
                     }
                 }

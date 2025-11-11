@@ -13,17 +13,13 @@ import androidx.navigation.fragment.findNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentLoginBinding
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
-import com.jeelpatel.mytodo.utils.SessionManager
 import com.jeelpatel.mytodo.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-
-    @Inject
-    lateinit var sessionManager: SessionManager
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val userViewModel: UserViewModel by viewModels()
@@ -32,7 +28,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,26 +60,23 @@ class LoginFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    userViewModel.message.collect {
+                    userViewModel.message.collectLatest {
                         // show errors
                         UiHelper.showToast(requireContext(), it)
                     }
                 }
 
                 launch {
-                    userViewModel.isUserLoggedIn.collect { loggedIn ->
-
+                    userViewModel.isUserLoggedIn.collectLatest { loggedIn ->
                         // navigate to main fragment if login success
                         if (loggedIn) {
-                            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+                            findNavController().navigate(
+                                LoginFragmentDirections.actionLoginFragmentToMainFragment(),
+                                androidx.navigation.NavOptions.Builder()
+                                    .setPopUpTo(R.id.loginFragment, true)
+                                    .build()
+                            )
                         }
-                    }
-                }
-
-                launch {
-                    userViewModel.user.collect { user ->
-                        // store logged in user id to session manager
-                        sessionManager.saveUserSession(user?.uId ?: 0)
                     }
                 }
             }
