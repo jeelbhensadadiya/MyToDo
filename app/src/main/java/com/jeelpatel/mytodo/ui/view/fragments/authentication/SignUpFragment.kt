@@ -39,10 +39,6 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        // Check User Login Status
-        userViewModel.checkLoginStatus()
-
-
         // create user
         binding.signUpBtn.setOnClickListener {
             userViewModel.registerUser(
@@ -71,7 +67,9 @@ class SignUpFragment : Fragment() {
                     userViewModel.uiState.collectLatest { uiState ->
                         when (uiState) {
                             is UserUiState.Ideal -> {}
+
                             is UserUiState.Loading -> {}
+
                             is UserUiState.Success -> {
                                 findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
                             }
@@ -79,18 +77,14 @@ class SignUpFragment : Fragment() {
                             is UserUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiState.message)
                             }
-                        }
-                    }
-                }
 
-
-                launch {
-                    userViewModel.isUserLoggedIn.collectLatest { loggedIn ->
-                        // navigate to main if already loggedIn
-                        if (loggedIn) {
-                            findNavController().navigate(
-                                SignUpFragmentDirections.actionSignUpFragmentToMainFragment()
-                            )
+                            is UserUiState.IsUserLoggedIn -> {
+                                if (uiState.loggedIn) {
+                                    findNavController().navigate(
+                                        SignUpFragmentDirections.actionSignUpFragmentToMainFragment()
+                                    )
+                                }
+                            }
                         }
                     }
                 }

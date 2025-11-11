@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentLoginBinding
@@ -70,14 +71,25 @@ class LoginFragment : Fragment() {
                             is UserUiState.Success -> {
                                 findNavController().navigate(
                                     LoginFragmentDirections.actionLoginFragmentToMainFragment(),
-                                    androidx.navigation.NavOptions.Builder()
-                                        .setPopUpTo(R.id.loginFragment, true)
+                                    NavOptions.Builder()
+                                        .setPopUpTo(R.id.mainFragment, true)
                                         .build()
                                 )
                             }
 
                             is UserUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiState.message)
+                            }
+
+                            is UserUiState.IsUserLoggedIn -> {
+                                if (uiState.loggedIn) {
+                                    findNavController().navigate(
+                                        LoginFragmentDirections.actionLoginFragmentToMainFragment(),
+                                        NavOptions.Builder()
+                                            .setPopUpTo(R.id.mainFragment, true)
+                                            .build()
+                                    )
+                                }
                             }
                         }
                     }

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
+import com.jeelpatel.mytodo.ui.viewModel.UserUiState
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         binding.materialToolBar.setOnMenuItemClickListener { menuItem ->
             if (menuItem.itemId == R.id.logOutBtn) {
                 userViewModel.logoutUser()
-                logout()
+//                navigateToSignUpFragment()
                 true
             } else {
                 false
@@ -87,10 +88,18 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    userViewModel.isUserLoggedIn.collect { loggedIn ->
-                        Log.d("AUTH", "isUserLoggedIn = $loggedIn")
-                        if (!loggedIn) {
-                            logout()
+                    userViewModel.uiState.collect { uiState ->
+                        when (uiState) {
+                            is UserUiState.IsUserLoggedIn -> {
+                                Log.d("AUTH", "isUserLoggedIn = ${uiState.loggedIn}")
+                                if (!uiState.loggedIn) {
+                                    navigateToSignUpFragment()
+                                } else {
+                                    navigateToMainFragment()
+                                }
+                            }
+
+                            else -> {}
                         }
                     }
                 }
@@ -98,16 +107,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun logout() {
-        if (navController.currentDestination?.id != R.id.mainFragment)
-            return
-
+    fun navigateToSignUpFragment() {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.navigate(
             R.id.signUpFragment,
             null,
             androidx.navigation.NavOptions.Builder()
-                .setPopUpTo(navController.graph.startDestinationId, true)   // ✅ clear up to START
+                .setPopUpTo(R.id.signUpFragment, true)   // ✅ clear up to START
+                .build()
+        )
+    }
+
+    fun navigateToMainFragment() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(
+            R.id.mainFragment,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.mainFragment, true)   // ✅ clear up to START
                 .build()
         )
     }
