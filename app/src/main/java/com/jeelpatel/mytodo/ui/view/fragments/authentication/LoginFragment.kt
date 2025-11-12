@@ -9,9 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentLoginBinding
 import com.jeelpatel.mytodo.ui.viewModel.UserUiState
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
