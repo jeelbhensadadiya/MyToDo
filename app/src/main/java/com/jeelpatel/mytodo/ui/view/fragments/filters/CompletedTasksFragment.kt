@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentCompletedTasksBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
+import com.jeelpatel.mytodo.ui.view.fragments.MainFragmentDirections
 import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
 import com.jeelpatel.mytodo.utils.UiHelper
@@ -56,7 +57,7 @@ class CompletedTasksFragment : Fragment() {
             },
             onTaskClick = { task ->
                 val action =
-                    CompletedTasksFragmentDirections.actionCompletedTasksFragmentToTaskViewFragment(
+                    MainFragmentDirections.actionMainFragmentToTaskViewFragment(
                         task.taskId,
                         task.title,
                         task.description ?: "No - Description",
