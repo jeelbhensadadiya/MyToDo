@@ -29,6 +29,10 @@
     <string name="cancel">Cancel</string>
     <string name="restore_task">Restore Task</string>
     <string name="are_you_sure_to_delete_task">Are you sure to delete Task?</string>
+    <string name="home">Home</string>
+    <string name="create">Create</string>
+    <string name="recyclebin">RecycleBin</string>
+    <string name="profile">Profile</string>
 
 
 </resources>

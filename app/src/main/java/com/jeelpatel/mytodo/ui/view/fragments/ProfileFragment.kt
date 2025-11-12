@@ -141,7 +141,9 @@ class ProfileFragment : Fragment() {
                 openAppSettings()
             }
             .setCancelable(false)
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("Cancel") { _, _ ->
+                findNavController().popBackStack()
+            }
             .show()
     }
 

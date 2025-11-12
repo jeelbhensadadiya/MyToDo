@@ -4,23 +4,23 @@
         android:id="@+id/mainFragment"
         android:enabled="true"
         android:icon="@drawable/radio_button_24"
-        android:title="Home" />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/createTaskFragment"
         android:enabled="true"
         android:icon="@drawable/pencil_24"
-        android:title="Home" />
+        android:title="@string/create" />
 
     <item
         android:id="@+id/recycleBinFragment"
         android:enabled="true"
         android:icon="@drawable/trash_24"
-        android:title="RecycleBin" />
+        android:title="@string/recyclebin" />
 
     <item
         android:id="@+id/profileFragment"
         android:enabled="true"
         android:icon="@drawable/user_24"
-        android:title="Profile" />
+        android:title="@string/profile" />
 </menu>

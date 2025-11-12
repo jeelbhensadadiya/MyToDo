@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
@@ -39,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         val navHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHost.navController
+
+
+        // setup back button in app toolbar
+        setSupportActionBar(binding.materialToolBar)
+        setupActionBarWithNavController(navController)
 
 
         // setup tool bar action according to active fragment
@@ -104,5 +110,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
