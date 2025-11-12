@@ -20,9 +20,6 @@
             android:id="@+id/action_mainFragment_to_remoteTodoFragment"
             app:destination="@id/remoteTodoFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_taskViewFragment"
-            app:destination="@id/taskViewFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
@@ -87,6 +84,42 @@
         <action
             android:id="@+id/action_profileFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allTasksFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.filters.AllTasksFragment"
+        android:label="fragment_all_tasks"
+        tools:layout="@layout/fragment_all_tasks" >
+        <action
+            android:id="@+id/action_allTasksFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/completedTasksFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.filters.CompletedTasksFragment"
+        android:label="fragment_completed_tasks"
+        tools:layout="@layout/fragment_completed_tasks" >
+        <action
+            android:id="@+id/action_completedTasksFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/overdueTasksFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.filters.OverdueTasksFragment"
+        android:label="fragment_overdue_tasks"
+        tools:layout="@layout/fragment_overdue_tasks" >
+        <action
+            android:id="@+id/action_overdueTasksFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pendingTasksFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.filters.PendingTasksFragment"
+        android:label="fragment_pending_tasks"
+        tools:layout="@layout/fragment_pending_tasks" >
+        <action
+            android:id="@+id/action_pendingTasksFragment_to_taskViewFragment"
+            app:destination="@id/taskViewFragment" />
     </fragment>
 
 </navigation>

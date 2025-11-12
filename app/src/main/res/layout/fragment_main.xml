@@ -37,57 +37,40 @@
 
         </LinearLayout>
 
-        <HorizontalScrollView
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:scrollbarSize="0dp"
-            android:scrollbars="none">
+            app:tabIndicatorAnimationMode="elastic">
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/buttonGroup"
+            <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:selectionRequired="true"
-                app:singleSelection="true">
+                android:text="@string/all" />
 
-                <Button
-                    android:id="@+id/allTaskFilterBtn"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/all" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/over_due" />
 
-                <Button
-                    android:id="@+id/overDueTaskFilterBtn"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/over_due" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/completed" />
 
-                <Button
-                    android:id="@+id/completedTaskFilterBtn"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/completed" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pending" />
 
-                <Button
-                    android:id="@+id/pendingTaskFilterBtn"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </com.google.android.material.tabs.TabLayout>
 
-        </HorizontalScrollView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/taskRecyclerView"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/taskViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            tools:listitem="@layout/item_tasks" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
 </FrameLayout>

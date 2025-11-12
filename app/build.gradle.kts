@@ -91,4 +91,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 
 
+    // ViewPager2
+
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("com.google.android.material:material:1.12.0")
+
+
 }
