@@ -23,9 +23,11 @@ class UserViewModel @Inject constructor(
     private var _uiState = MutableStateFlow<UserUiState>(UserUiState.Ideal)
     val uiState: StateFlow<UserUiState> = _uiState
 
-//    private var _isUserLoggedIn = MutableStateFlow(false)
-//    val isUserLoggedIn: StateFlow<Boolean> get() = _isUserLoggedIn
+    private var _isUserLoggedIn = MutableStateFlow<Boolean>(false)
+    val isUserLoggedIn: StateFlow<Boolean> get() = _isUserLoggedIn
 
+
+    // create new Account
     fun registerUser(
         userName: String,
         userEmail: String,
@@ -51,6 +53,8 @@ class UserViewModel @Inject constructor(
         }
     }
 
+
+    // login existing User
     fun loginUser(
         userEmail: String,
         userPassword: String
@@ -60,25 +64,26 @@ class UserViewModel @Inject constructor(
             val result = getLoginUser(userEmail, userPassword)
 
             result.onSuccess { loggedInUser ->
-                _uiState.value = UserUiState.Success
-                _uiState.value = UserUiState.IsUserLoggedIn(true)
-//                _isUserLoggedIn.value = true
+                _isUserLoggedIn.value = true
                 sessionManager.saveUserSession(loggedInUser.uId)
+                _uiState.value = UserUiState.Success
             }.onFailure {
                 _uiState.value = UserUiState.Error(it.message ?: "Unknown error")
             }
         }
     }
 
+
+    // check user is loggedIn
     fun checkLoginStatus() {
-        _uiState.value = UserUiState.IsUserLoggedIn(sessionManager.isLoggedIn())
-//        _isUserLoggedIn.value = sessionManager.isLoggedIn()
+        _isUserLoggedIn.value = sessionManager.isLoggedIn()
     }
 
+
+    // logout user
     fun logoutUser() {
         sessionManager.clearSession()
-        _uiState.value = UserUiState.IsUserLoggedIn(false)
-//        _isUserLoggedIn.value = false
+        _isUserLoggedIn.value = false
         _uiState.value = UserUiState.Ideal
     }
 }

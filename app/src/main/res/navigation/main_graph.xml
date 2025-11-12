@@ -3,46 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nv_graph"
-    app:startDestination="@id/signUpFragment">
-
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.authentication.SignUpFragment"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up">
-        <action
-            android:id="@+id/action_signUpFragment_to_mainFragment"
-            app:popUpTo="@id/signUpFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_signUpFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.authentication.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login">
-        <action
-            android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-    </fragment>
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_mainFragment_to_signUpFragment"
-            app:popUpTo="@id/signUpFragment"
-            app:popUpToInclusive="false"
-            app:destination="@id/signUpFragment" />
         <action
             android:id="@+id/action_mainFragment_to_recycleBinFragment"
             app:destination="@id/recycleBinFragment" />
@@ -59,6 +26,7 @@
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/recycleBinFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.RecycleBinFragment"
@@ -68,16 +36,19 @@
             android:id="@+id/action_recycleBinFragment_to_taskViewFragment"
             app:destination="@id/taskViewFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/createTaskFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.CreateTaskFragment"
         android:label="fragment_create_task"
         tools:layout="@layout/fragment_create_task" />
+
     <fragment
         android:id="@+id/remoteTodoFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.RemoteTodoFragment"
         android:label="fragment_remote_todo"
         tools:layout="@layout/fragment_remote_todo" />
+
     <fragment
         android:id="@+id/taskViewFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.TaskViewFragment"
@@ -107,6 +78,7 @@
             android:name="isCompleted"
             app:argType="boolean" />
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.ProfileFragment"

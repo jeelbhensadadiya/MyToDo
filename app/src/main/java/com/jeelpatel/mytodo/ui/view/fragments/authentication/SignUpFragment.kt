@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -50,7 +50,7 @@ class SignUpFragment : Fragment() {
         }
 
 
-        // navigate to login fragment if user already have account
+        // manual navigate to login fragment if user already have account
         binding.alreadyUserBtn.setOnClickListener {
             findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
         }
@@ -76,14 +76,6 @@ class SignUpFragment : Fragment() {
 
                             is UserUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiState.message)
-                            }
-
-                            is UserUiState.IsUserLoggedIn -> {
-                                if (uiState.loggedIn) {
-                                    findNavController().navigate(
-                                        SignUpFragmentDirections.actionSignUpFragmentToMainFragment()
-                                    )
-                                }
                             }
                         }
                     }

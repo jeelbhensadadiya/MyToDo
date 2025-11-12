@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
         }
 
 
-        // navigate to signup if not registered
+        // manual navigate to signup if not registered
         binding.notUserBtn.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
         }
@@ -68,28 +68,10 @@ class LoginFragment : Fragment() {
 
                             is UserUiState.Loading -> {}
 
-                            is UserUiState.Success -> {
-                                findNavController().navigate(
-                                    LoginFragmentDirections.actionLoginFragmentToMainFragment(),
-                                    NavOptions.Builder()
-                                        .setPopUpTo(R.id.mainFragment, true)
-                                        .build()
-                                )
-                            }
+                            is UserUiState.Success -> {}
 
                             is UserUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiState.message)
-                            }
-
-                            is UserUiState.IsUserLoggedIn -> {
-                                if (uiState.loggedIn) {
-                                    findNavController().navigate(
-                                        LoginFragmentDirections.actionLoginFragmentToMainFragment(),
-                                        NavOptions.Builder()
-                                            .setPopUpTo(R.id.mainFragment, true)
-                                            .build()
-                                    )
-                                }
                             }
                         }
                     }
