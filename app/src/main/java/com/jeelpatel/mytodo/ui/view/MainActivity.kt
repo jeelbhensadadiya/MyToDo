@@ -3,14 +3,18 @@ package com.jeelpatel.mytodo.ui.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.ActivityMainBinding
@@ -21,15 +25,23 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private lateinit var navController: NavController
     private val userViewModel: UserViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+            insets
+        }
 
 
         // check user login status
@@ -43,8 +55,9 @@ class MainActivity : AppCompatActivity() {
 
 
         // setup back button in app toolbar
-        setSupportActionBar(binding.materialToolBar)
-        setupActionBarWithNavController(navController)
+        binding.materialToolBar.setNavigationOnClickListener {
+            findNavController(R.id.nav_host_fragment).navigateUp()
+        }
 
 
         // setup tool bar action according to active fragment
@@ -55,20 +68,43 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigation.visibility = View.GONE
                 }
 
-                R.id.recycleBinFragment -> binding.materialToolBar.title = "Recycle Bin"
-                R.id.createTaskFragment -> binding.materialToolBar.title = "Create Task"
-                R.id.taskViewFragment -> {
-                    binding.bottomNavigation.visibility = View.GONE
-                    binding.materialToolBar.title = ""
-                }
-
-                R.id.remoteTodoFragment -> binding.materialToolBar.title = "Remote Todo"
-                R.id.profileFragment -> binding.materialToolBar.title = "My Profile"
-
-                else -> {
+                R.id.mainFragment -> {
                     binding.appBar.visibility = View.VISIBLE
                     binding.bottomNavigation.visibility = View.VISIBLE
-                    binding.materialToolBar.title = "My Todo"
+
+                    binding.materialToolBar.navigationIcon =
+                        AppCompatResources.getDrawable(this, R.drawable.to_do_24)
+                    binding.materialToolBar.title = getString(R.string.app_name)
+                }
+
+                R.id.recycleBinFragment -> {
+                    showToolbarWithBackIcon("Recycle Bin")
+                }
+
+                R.id.cameraFragment -> {
+                    showToolbarWithBackIcon("Take Photo")
+                    binding.bottomNavigation.visibility = View.GONE
+                }
+
+                R.id.createTaskFragment -> {
+                    showToolbarWithBackIcon("Create Task")
+                }
+
+                R.id.taskViewFragment -> {
+                    showToolbarWithBackIcon("")
+                    binding.bottomNavigation.visibility = View.GONE
+                }
+
+                R.id.remoteTodoFragment -> {
+                    showToolbarWithBackIcon("Remote Todo")
+                }
+
+                R.id.profileFragment -> {
+                    showToolbarWithBackIcon("My Profile")
+                }
+
+                else -> {
+                    showToolbarWithBackIcon("My Todo")
                 }
             }
         }
@@ -90,6 +126,16 @@ class MainActivity : AppCompatActivity() {
 
         dataCollector()
     }
+
+
+    private fun showToolbarWithBackIcon(title: String) {
+        binding.appBar.visibility = View.VISIBLE
+        binding.bottomNavigation.visibility = View.VISIBLE
+        binding.materialToolBar.navigationIcon =
+            AppCompatResources.getDrawable(this, R.drawable.arrow_small_left_24)
+        binding.materialToolBar.title = title
+    }
+
 
     private fun dataCollector() {
         lifecycleScope.launch {
