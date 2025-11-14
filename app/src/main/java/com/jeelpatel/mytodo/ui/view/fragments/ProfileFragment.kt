@@ -31,6 +31,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToCameraFragment())
         }
 
+        binding.mediaPlayerButtonBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToMediaListFragment())
+        }
+
     }
 
 

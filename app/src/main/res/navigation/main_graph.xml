@@ -87,11 +87,28 @@
         <action
             android:id="@+id/action_profileFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_mediaListFragment"
+            app:destination="@id/mediaListFragment" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.CameraFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" />
+    <fragment
+        android:id="@+id/mediaListFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.MediaListFragment"
+        android:label="fragment_media_list"
+        tools:layout="@layout/fragment_media_list" >
+        <action
+            android:id="@+id/action_mediaListFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoPlayerFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.VideoPlayerFragment"
+        android:label="fragment_video_player"
+        tools:layout="@layout/fragment_video_player" />
 
 </navigation>

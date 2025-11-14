@@ -1,4 +1,4 @@
-package com.jeelpatel.mytodo.ui.view.fragments
+package com.jeelpatel.mytodo.ui.view.fragments.otherFutures
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -19,7 +19,6 @@ import androidx.camera.core.CameraInfo
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -307,7 +306,7 @@ class CameraFragment : Fragment() {
     private suspend fun startCamera() {
 
         // Step 1. Get camera provider
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        val cameraProviderFuture = ProcessCameraProvider.Companion.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -320,7 +319,7 @@ class CameraFragment : Fragment() {
 
             // Step 3. Prepare ImageCapture use case
             imageCapture = ImageCapture.Builder()
-                .setCaptureMode(CAPTURE_MODE_MAXIMIZE_QUALITY)
+                .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
                 .setFlashMode(imageCaptureFlashMode)
                 .build()
 
