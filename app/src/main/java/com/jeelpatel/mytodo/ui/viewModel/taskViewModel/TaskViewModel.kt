@@ -2,6 +2,8 @@ package com.jeelpatel.mytodo.ui.viewModel.taskViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import com.jeelpatel.mytodo.domain.model.TaskModel
 import com.jeelpatel.mytodo.domain.usecase.TaskContainer
 import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.utils.SessionManager
@@ -9,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,14 +27,17 @@ class TaskViewModel @Inject constructor(
     private var taskJob: Job? = null
     private val currentUserId get() = sessionManager.getUserId()
 
+    val pagingTask = MutableStateFlow<PagingData<TaskModel>>(PagingData.empty())
+
 
     // Filter for get All tasks
     fun getAllTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
             useCases.getTasks(currentUserId)
-                .collect {
-                    _uiState.value = TaskUiState.Success(it)
+                .collectLatest { data ->
+                    pagingTask.value = data
+//                        _uiState.value = TaskUiState.Success(it)
                 }
         }
     }

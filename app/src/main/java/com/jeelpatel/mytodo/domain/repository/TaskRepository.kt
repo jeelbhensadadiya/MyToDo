@@ -1,5 +1,6 @@
 package com.jeelpatel.mytodo.domain.repository
 
+import androidx.paging.PagingData
 import com.jeelpatel.mytodo.domain.model.TaskModel
 import kotlinx.coroutines.flow.Flow
 
@@ -8,7 +9,7 @@ interface TaskRepository {
     suspend fun createNewTask(task: TaskModel)
 
 
-    fun getAllTask(currentUserId: Int): Flow<List<TaskModel>>
+    fun getAllTask(currentUserId: Int): Flow<PagingData<TaskModel>>
 
 
     fun getAllDeletedTask(currentUserId: Int): Flow<List<TaskModel>>

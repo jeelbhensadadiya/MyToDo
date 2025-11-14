@@ -110,4 +110,14 @@ dependencies {
     implementation("androidx.camera:camera-extensions:1.5.1")
 
 
+    // Paging3
+
+    implementation("androidx.paging:paging-runtime:3.3.6")
+
+
+    // Room Paging
+
+    implementation("androidx.room:room-paging:2.8.3")
+
+
 }

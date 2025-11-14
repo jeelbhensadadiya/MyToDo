@@ -1,5 +1,6 @@
 package com.jeelpatel.mytodo.data.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -24,7 +25,8 @@ interface TaskDao {
         ORDER BY dueDate DESC
         """
     )
-    fun tasksList(currentUserId: Int): Flow<List<TaskEntity>>
+//    fun tasksList(currentUserId: Int): Flow<List<TaskEntity>>
+    fun tasksList(currentUserId: Int): PagingSource<Int, TaskEntity>
 
 
     @Query(

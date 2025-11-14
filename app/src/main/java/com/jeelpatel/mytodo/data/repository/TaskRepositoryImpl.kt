@@ -1,5 +1,9 @@
 package com.jeelpatel.mytodo.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.jeelpatel.mytodo.data.local.dao.TaskDao
 import com.jeelpatel.mytodo.domain.mapper.toDomain
 import com.jeelpatel.mytodo.domain.mapper.toEntity
@@ -18,9 +22,17 @@ class TaskRepositoryImpl @Inject constructor(private val taskDao: TaskDao) : Tas
 
 
     // get All tasks
-    override fun getAllTask(currentUserId: Int): Flow<List<TaskModel>> =
-        taskDao.tasksList(currentUserId).map { task ->
-            task.map { it.toDomain() }
+    override fun getAllTask(currentUserId: Int): Flow<PagingData<TaskModel>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                taskDao.tasksList(currentUserId)
+            }
+        ).flow.map { pagingData ->
+            pagingData.map { it.toDomain() }
         }
 
 

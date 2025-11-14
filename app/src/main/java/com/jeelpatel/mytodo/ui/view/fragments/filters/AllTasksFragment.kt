@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentAllTasksBinding
-import com.jeelpatel.mytodo.ui.adapter.TaskAdapter
+import com.jeelpatel.mytodo.ui.adapter.TaskPagingAdapter
 import com.jeelpatel.mytodo.ui.view.fragments.MainFragmentDirections
 import com.jeelpatel.mytodo.ui.viewModel.TaskUiState
 import com.jeelpatel.mytodo.ui.viewModel.taskViewModel.TaskViewModel
@@ -30,7 +30,7 @@ class AllTasksFragment : Fragment() {
 
 
     private val viewModel: TaskViewModel by viewModels()
-    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var taskAdapter: TaskPagingAdapter
 
 
     override fun onCreateView(
@@ -47,7 +47,7 @@ class AllTasksFragment : Fragment() {
 
 
         // setup adapter
-        taskAdapter = TaskAdapter(
+        taskAdapter = TaskPagingAdapter(
             requireContext(),
             onStatusChange = { taskId, isCompleted ->
                 viewModel.updateTaskStatus(taskId, isCompleted)
@@ -68,7 +68,6 @@ class AllTasksFragment : Fragment() {
                 findNavController().navigate(action)
             }
         )
-        taskAdapter.setHasStableIds(true)
         binding.taskRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.taskRecyclerView.adapter = taskAdapter
 
@@ -86,6 +85,13 @@ class AllTasksFragment : Fragment() {
     private fun dataCollectors() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                launch {
+                    viewModel.pagingTask.collectLatest { pagingData ->
+                        taskAdapter.submitData(pagingData)
+                    }
+                }
+
                 launch {
                     viewModel.uiStates.collectLatest { uiStates ->
                         when (uiStates) {
@@ -94,7 +100,7 @@ class AllTasksFragment : Fragment() {
                             is TaskUiState.Loading -> {}
 
                             is TaskUiState.Success -> {
-                                taskAdapter.submitList(uiStates.tasks)
+//                                taskAdapter.submitList(uiStates.tasks)
                             }
 
                             is TaskUiState.Error -> {
