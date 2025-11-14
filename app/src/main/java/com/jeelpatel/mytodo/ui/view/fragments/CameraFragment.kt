@@ -26,10 +26,14 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.databinding.FragmentCameraBinding
 import com.jeelpatel.mytodo.utils.UiHelper
+import kotlinx.coroutines.launch
 import java.io.File
 
 class CameraFragment : Fragment() {
@@ -39,7 +43,7 @@ class CameraFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private lateinit var viewFinder: PreviewView
+    private lateinit var previewView: PreviewView
     private var imageCapture: ImageCapture? = null
     private var imageCaptureFlashMode: Int = ImageCapture.FLASH_MODE_OFF
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -52,7 +56,8 @@ class CameraFragment : Fragment() {
 
 
     private val permissions = arrayOf(
-        Manifest.permission.CAMERA
+        Manifest.permission.CAMERA,
+//        Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
     private val permissionLauncher =
@@ -181,33 +186,46 @@ class CameraFragment : Fragment() {
 
 
     private fun onAllPermissionGranted() {
-        viewFinder = binding.imagePreview
+        previewView = binding.imagePreview
 
-        startCamera()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    startCamera()
+                }
+
+                // Switch front/back camera
+                binding.rotateCameraBtn.setOnClickListener {
+                    cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+                        CameraSelector.DEFAULT_FRONT_CAMERA
+                    else
+                        CameraSelector.DEFAULT_BACK_CAMERA
+                    launch {
+                        startCamera()
+                    }
+                }
+
+
+                // Toggle flash (auto-on when capturing)
+                binding.flashBtn.setOnClickListener {
+                    if (imageCaptureFlashMode == ImageCapture.FLASH_MODE_ON) {
+                        imageCaptureFlashMode = ImageCapture.FLASH_MODE_OFF
+                        UiHelper.showToast(requireContext(), "Flash Off")
+                    } else {
+                        imageCaptureFlashMode = ImageCapture.FLASH_MODE_ON
+                        UiHelper.showToast(requireContext(), "Flash On")
+                    }
+                    launch {
+                        startCamera()
+                    }
+                }
+            }
+        }
+
 
         // Capture image
         binding.captureImageBtn.setOnClickListener { takePhoto() }
 
-        // Switch front/back camera
-        binding.rotateCameraBtn.setOnClickListener {
-            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
-                CameraSelector.DEFAULT_FRONT_CAMERA
-            else
-                CameraSelector.DEFAULT_BACK_CAMERA
-            startCamera()
-        }
-
-        // Toggle flash (auto-on when capturing)
-        binding.flashBtn.setOnClickListener {
-            if (imageCaptureFlashMode == ImageCapture.FLASH_MODE_ON) {
-                imageCaptureFlashMode = ImageCapture.FLASH_MODE_OFF
-                UiHelper.showToast(requireContext(), "Flash Off")
-            } else {
-                imageCaptureFlashMode = ImageCapture.FLASH_MODE_ON
-                UiHelper.showToast(requireContext(), "Flash On")
-            }
-            startCamera()
-        }
 
         // Torch (continuous flashlight)
         binding.flashBtn.setOnClickListener {
@@ -243,9 +261,12 @@ class CameraFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupTapToFocus() {
-        viewFinder.setOnTouchListener { _, event ->
+
+
+        // Focus on the point user tapped
+        previewView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                val factory = viewFinder.meteringPointFactory
+                val factory = previewView.meteringPointFactory
                 val point = factory.createPoint(event.x, event.y)
                 val action = FocusMeteringAction.Builder(point).build()
                 cameraControl?.startFocusAndMetering(action)
@@ -283,15 +304,21 @@ class CameraFragment : Fragment() {
     }
 
 
-    private fun startCamera() {
+    private suspend fun startCamera() {
+
+        // Step 1. Get camera provider
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder().build().also {
-                it.surfaceProvider = viewFinder.surfaceProvider
-            }
 
+
+            // Step 2. Build the Preview
+            val preview = Preview.Builder().build()
+            preview.surfaceProvider = previewView.surfaceProvider
+
+
+            // Step 3. Prepare ImageCapture use case
             imageCapture = ImageCapture.Builder()
                 .setCaptureMode(CAPTURE_MODE_MAXIMIZE_QUALITY)
                 .setFlashMode(imageCaptureFlashMode)
@@ -299,6 +326,9 @@ class CameraFragment : Fragment() {
 
             try {
                 cameraProvider.unbindAll()
+
+
+                // Step 4. Bind everything to lifecycle
                 camera = cameraProvider.bindToLifecycle(
                     this,
                     cameraSelector,
@@ -306,22 +336,31 @@ class CameraFragment : Fragment() {
                     imageCapture
                 )
 
+
+                // Step 5. Get CameraControl & CameraInfo
                 cameraControl = camera?.cameraControl
                 cameraInfo = camera?.cameraInfo
 
-                // Observe zoom state and sync with slider
+
+                // Step 6. Synchronize Zoom with Slider
                 cameraInfo?.zoomState?.observe(viewLifecycleOwner) { zoomState ->
                     val minZoom = zoomState.minZoomRatio
                     val maxZoom = zoomState.maxZoomRatio
+                    val current = zoomState.zoomRatio
 
-                    // Set slider range dynamically
-                    binding.zoomSlider.valueFrom = minZoom
-                    binding.zoomSlider.valueTo = maxZoom
-                    binding.zoomSlider.stepSize = 0f // continuous
+                    if (minZoom < maxZoom) {
+                        binding.zoomSlider.valueFrom = minZoom
+                        binding.zoomSlider.valueTo = maxZoom
+                    } else {
+                        binding.zoomSlider.valueFrom = 0f
+                        binding.zoomSlider.valueTo = 1f
+                    }
 
-                    // Sync slider with camera
-                    if (binding.zoomSlider.value != zoomState.zoomRatio) {
-                        binding.zoomSlider.value = zoomState.zoomRatio
+                    binding.zoomSlider.stepSize = 0f
+
+                    // Sync slider → camera
+                    if (binding.zoomSlider.value != current) {
+                        binding.zoomSlider.value = current
                     }
                 }
 
