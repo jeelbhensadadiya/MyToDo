@@ -93,12 +93,12 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.CameraFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" />
     <fragment
         android:id="@+id/mediaListFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.MediaListFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.MediaListFragment"
         android:label="fragment_media_list"
         tools:layout="@layout/fragment_media_list">
         <action
@@ -107,7 +107,7 @@
     </fragment>
     <fragment
         android:id="@+id/videoPlayerFragment"
-        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.VideoPlayerFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.VideoPlayerFragment"
         android:label="fragment_video_player"
         tools:layout="@layout/fragment_video_player">
 

@@ -1,4 +1,4 @@
-package com.jeelpatel.mytodo.ui.view.fragments.otherFutures
+package com.jeelpatel.mytodo.ui.view.fragments.otherFeatures
 
 import android.Manifest
 import android.annotation.SuppressLint

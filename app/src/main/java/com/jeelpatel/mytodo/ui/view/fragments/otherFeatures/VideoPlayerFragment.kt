@@ -1,5 +1,6 @@
-package com.jeelpatel.mytodo.ui.view.fragments.otherFutures
+package com.jeelpatel.mytodo.ui.view.fragments.otherFeatures
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,15 +22,20 @@ import androidx.media3.ui.TrackSelectionDialogBuilder
 import androidx.navigation.fragment.navArgs
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentVideoPlayerBinding
+import com.jeelpatel.mytodo.service.MusicService
 import com.jeelpatel.mytodo.utils.UiHelper
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class VideoPlayerFragment : Fragment() {
 
-    var player: ExoPlayer? = null
+    @Inject
+    lateinit var player: ExoPlayer
     private var isShuffleOn = false
     private var isFullScreen = false
 
@@ -59,10 +66,10 @@ class VideoPlayerFragment : Fragment() {
     private fun videoPlayer() {
 
         // Create the player instance
-        player = ExoPlayer.Builder(requireContext())
-            .setSeekForwardIncrementMs(10_000)
-            .setSeekBackIncrementMs(10_000)
-            .build()
+//        player = ExoPlayer.Builder(requireContext())
+//            .setSeekForwardIncrementMs(10_000)
+//            .setSeekBackIncrementMs(10_000)
+//            .build()
 
 
         // Attach the player to a view
@@ -130,7 +137,7 @@ class VideoPlayerFragment : Fragment() {
 
 
         // set to non null
-        val player = player!!
+        val player = player
 
 
         // play pause action
@@ -141,6 +148,10 @@ class VideoPlayerFragment : Fragment() {
                     AppCompatResources.getDrawable(requireContext(), R.drawable.play_24)
             } else if (!player.isPlaying) {
                 player.play()
+                ContextCompat.startForegroundService(
+                    requireContext(),
+                    Intent(requireContext(), MusicService::class.java)
+                )
                 binding.playPauseMediaBtn.icon =
                     AppCompatResources.getDrawable(requireContext(), R.drawable.pause_24)
             }
@@ -273,16 +284,8 @@ class VideoPlayerFragment : Fragment() {
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        player?.pause()
-    }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
-        player?.release()
-        player = null // clear player
         _binding = null // clear binding
     }
 }
