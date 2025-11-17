@@ -86,6 +86,14 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigation.visibility = View.GONE
                 }
 
+                R.id.mediaListFragment -> {
+                    showToolbarWithBackIcon("Media List")
+                }
+
+                R.id.videoPlayerFragment -> {
+                    showToolbarWithBackIcon("Media Player")
+                }
+
                 R.id.createTaskFragment -> {
                     showToolbarWithBackIcon("Create Task")
                 }

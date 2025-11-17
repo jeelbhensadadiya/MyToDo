@@ -11,14 +11,156 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <androidx.media3.ui.PlayerView
-            android:id="@+id/player_view"
-            android:keepScreenOn="true"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView2"
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:show_buffering="when_playing"
-            app:show_shuffle_button="true" />
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:minHeight="100dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.media3.ui.PlayerView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:keepScreenOn="true"
+                app:show_buffering="when_playing"
+                app:use_controller="false" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView3"
+            style="?attr/materialCardViewOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/playbackSpeedBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/playbackSpeedBtn">
+
+            <TextView
+                android:id="@+id/mediaTimerTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="00:00 00:00"
+                android:textAppearance="?attr/textAppearanceLabelMedium" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/playbackSpeedBtn"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:text="1x"
+            app:icon="@drawable/speed_24"
+            app:iconPadding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mediaShuffleBtn"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/shuffle_24"
+            app:layout_constraintBottom_toBottomOf="@+id/playbackSpeedBtn"
+            app:layout_constraintEnd_toStartOf="@+id/mediaRepeatBtn"
+            app:layout_constraintTop_toTopOf="@+id/playbackSpeedBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mediaRepeatBtn"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/repeat_24"
+            app:layout_constraintBottom_toBottomOf="@+id/playbackSpeedBtn"
+            app:layout_constraintEnd_toStartOf="@+id/mediaSubtitleBtn"
+            app:layout_constraintTop_toTopOf="@+id/playbackSpeedBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mediaFullScreenBtn"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/expand_24"
+            app:layout_constraintBottom_toBottomOf="@+id/playbackSpeedBtn"
+            app:layout_constraintEnd_toStartOf="@+id/playbackSpeedBtn"
+            app:layout_constraintTop_toTopOf="@+id/playbackSpeedBtn" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mediaSubtitleBtn"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/subtitles_24"
+            app:layout_constraintBottom_toBottomOf="@+id/playbackSpeedBtn"
+            app:layout_constraintEnd_toStartOf="@+id/mediaFullScreenBtn"
+            app:layout_constraintTop_toTopOf="@+id/playbackSpeedBtn" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/mediaSeekSlider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/playbackSpeedBtn" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaSeekSlider">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/previousMediaBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/step_backward_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backwardMediaBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/time_past_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playPauseMediaBtn"
+                style="?attr/materialIconButtonFilledStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/play_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forwardMediaBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/forward_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nextMediaBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/step_forward_24" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

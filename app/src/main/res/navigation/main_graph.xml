@@ -100,7 +100,7 @@
         android:id="@+id/mediaListFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.MediaListFragment"
         android:label="fragment_media_list"
-        tools:layout="@layout/fragment_media_list" >
+        tools:layout="@layout/fragment_media_list">
         <action
             android:id="@+id/action_mediaListFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />
@@ -109,6 +109,12 @@
         android:id="@+id/videoPlayerFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFutures.VideoPlayerFragment"
         android:label="fragment_video_player"
-        tools:layout="@layout/fragment_video_player" />
+        tools:layout="@layout/fragment_video_player">
+
+        <argument
+            android:name="mediaUrl"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

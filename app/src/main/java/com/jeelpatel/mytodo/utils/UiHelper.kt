@@ -15,10 +15,12 @@ import java.util.Locale
 
 object UiHelper {
 
+
     /** ✅ Normal Toast */
     fun showToast(context: Context, msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
+
 
     /** ✅ Snackbar with BottomNav anchor */
     fun showSnackWithBottomNav(
@@ -30,11 +32,21 @@ object UiHelper {
             .show()
     }
 
+
     /** ✅ Convert dateMillis → formatted string */
     fun formatDate(millis: Long): String {
         return SimpleDateFormat(Config.DATE_TIME_FORMAT, Locale.getDefault())
             .format(Date(millis))
     }
+
+
+    fun formatTime(ms: Long): String {
+        val totalSeconds = ms / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
+
 
     /** ✅ Convert string → millis */
     fun parseDateToMillis(dateStr: String): Long {
@@ -45,6 +57,7 @@ object UiHelper {
             0L
         }
     }
+
 
     fun showMaterialDateTimePicker(
         fragmentManager: FragmentManager,
@@ -81,5 +94,6 @@ object UiHelper {
 
         datePicker.show(fragmentManager, "M3_DATE_PICKER")
     }
+
 
 }

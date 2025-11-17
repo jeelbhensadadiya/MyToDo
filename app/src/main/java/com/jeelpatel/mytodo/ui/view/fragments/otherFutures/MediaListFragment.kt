@@ -18,16 +18,45 @@ class MediaListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMediaListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.videoBtn.setOnClickListener {
-            findNavController().navigate(MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment())
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
+                    mediaUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                )
+            )
+        }
+
+        binding.video2Btn.setOnClickListener {
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
+                    mediaUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp4"
+                )
+            )
+        }
+
+        binding.audioBtn.setOnClickListener {
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
+                    mediaUrl = "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"
+                )
+            )
+        }
+
+        binding.audio2Btn.setOnClickListener {
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
+                    mediaUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3"
+                )
+            )
         }
     }
 }
