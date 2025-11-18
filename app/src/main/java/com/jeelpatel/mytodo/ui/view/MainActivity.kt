@@ -91,7 +91,19 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.videoPlayerFragment -> {
-                    showToolbarWithBackIcon("Media Player")
+                    showToolbarWithBackIcon("Video Player")
+                }
+
+                R.id.audioPlayerFragment -> {
+                    showToolbarWithBackIcon("Audio Player")
+                }
+
+                R.id.servicesFragment -> {
+                    showToolbarWithBackIcon("Services Example")
+                }
+
+                R.id.simpleNotificationFragment -> {
+                    showToolbarWithBackIcon("Simple Notification")
                 }
 
                 R.id.createTaskFragment -> {

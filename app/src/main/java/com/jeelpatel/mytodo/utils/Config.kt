@@ -25,12 +25,12 @@ object Config {
 
 
     // Notifications Services
-    const val CHANNEL_ID = "media_channel"
+    const val CHANNEL_ID = "music_service_channel"
     const val NOTIFICATION_ID = 1
 
-    const val ACTION_PLAY = "com.jeelpatel.mytodo.ACTION_PLAY"
-    const val ACTION_PAUSE = "com.jeelpatel.mytodo.ACTION_PAUSE"
-    const val ACTION_STOP = "com.jeelpatel.mytodo.ACTION_STOP"
+    const val ACTION_PLAY = "ACTION_PLAY"
+    const val ACTION_PAUSE = "ACTION_PAUSE"
+    const val ACTION_STOP = "ACTION_STOP"
 
 
 }

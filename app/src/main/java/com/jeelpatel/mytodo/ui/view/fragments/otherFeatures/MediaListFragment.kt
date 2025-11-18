@@ -27,10 +27,38 @@ class MediaListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        videoUrl()
+        audioUrl()
+
+    }
+
+
+    private fun audioUrl() {
+        binding.audioBtn.setOnClickListener {
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToAudioPlayerFragment(
+                    audioUrl = "https://webaudioapi.com/samples/audio-tag/chrono.mp3"
+                )
+            )
+        }
+
+        binding.audio2Btn.setOnClickListener {
+            findNavController().navigate(
+                MediaListFragmentDirections.actionMediaListFragmentToAudioPlayerFragment(
+                    audioUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3",
+
+                    )
+            )
+        }
+    }
+
+
+    private fun videoUrl() {
+
         binding.videoBtn.setOnClickListener {
             findNavController().navigate(
                 MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
-                    mediaUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                 )
             )
         }
@@ -38,23 +66,7 @@ class MediaListFragment : Fragment() {
         binding.video2Btn.setOnClickListener {
             findNavController().navigate(
                 MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
-                    mediaUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp4"
-                )
-            )
-        }
-
-        binding.audioBtn.setOnClickListener {
-            findNavController().navigate(
-                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
-                    mediaUrl = "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg"
-                )
-            )
-        }
-
-        binding.audio2Btn.setOnClickListener {
-            findNavController().navigate(
-                MediaListFragmentDirections.actionMediaListFragmentToVideoPlayerFragment(
-                    mediaUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3"
+                    videoUrl = "https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp4"
                 )
             )
         }

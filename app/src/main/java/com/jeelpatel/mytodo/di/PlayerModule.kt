@@ -15,12 +15,7 @@ object PlayerModule {
 
     @Provides
     @Singleton
-    fun provideExoPlayer(
-        @ApplicationContext context: Context
-    ): ExoPlayer {
-        return ExoPlayer.Builder(context)
-            .setSeekForwardIncrementMs(10_000)
-            .setSeekBackIncrementMs(10_000)
-            .build()
+    fun provideExoPlayer(@ApplicationContext context: Context): ExoPlayer {
+        return ExoPlayer.Builder(context).build()
     }
 }

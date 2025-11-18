@@ -33,6 +33,16 @@
     <string name="create">Create</string>
     <string name="recyclebin">RecycleBin</string>
     <string name="profile">Profile</string>
+    <string name="other_features">Other Features</string>
+    <string name="camera_feature">Camera Feature</string>
+    <string name="media_player_feature">Media Player Feature</string>
+    <string name="services_example">Services Example</string>
+    <string name="sensors_example">Sensors Example</string>
+    <string name="connectivity_wifi_bt">Connectivity WIFI/BT</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">Stop Service</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

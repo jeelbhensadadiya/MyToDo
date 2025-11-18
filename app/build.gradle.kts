@@ -119,6 +119,7 @@ dependencies {
 
     implementation("androidx.room:room-paging:2.8.3")
 
+
     // Media3 ExoPlayer
 
     implementation("androidx.media3:media3-exoplayer:1.8.0")
@@ -126,6 +127,6 @@ dependencies {
     implementation("androidx.media3:media3-ui:1.8.0")
     implementation("androidx.media3:media3-ui-compose:1.8.0")
     implementation("androidx.media3:media3-session:1.8.0")
-    implementation("androidx.media:media:1.6.0")
+    implementation("androidx.media:media:1.7.1")
 
 }

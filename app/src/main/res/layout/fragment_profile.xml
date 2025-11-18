@@ -66,7 +66,6 @@
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,20 +76,68 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="10dp"
-                android:text="Other Features"
+                android:text="@string/other_features"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cameraButtonBtn"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Camera Feature" />
+                android:gravity="start"
+                android:text="@string/camera_feature"
+                app:icon="@drawable/camera_24"
+                app:iconPadding="10dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/mediaPlayerButtonBtn"
+                android:id="@+id/mediaPlayerBtn"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Media Player Feature" />
+                android:gravity="start"
+                android:text="@string/media_player_feature"
+                app:icon="@drawable/play_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/simpleNotificationBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Simple Notification Example"
+                app:icon="@drawable/notification_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/servicesBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/services_example"
+                app:icon="@drawable/notification_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sensorsBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/sensors_example"
+                app:icon="@drawable/sensor_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/connectivityBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/connectivity_wifi_bt"
+                app:icon="@drawable/router_24"
+                app:iconPadding="10dp" />
 
         </LinearLayout>
 
