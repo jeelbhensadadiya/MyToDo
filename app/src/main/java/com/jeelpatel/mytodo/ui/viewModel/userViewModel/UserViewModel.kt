@@ -40,7 +40,7 @@ class UserViewModel @Inject constructor(
 
             val result = registerNewUserUseCase(
                 userName,
-                userEmail,
+                userEmail.trim().lowercase(),
                 userPassword,
                 userRePassword
             )
@@ -61,7 +61,7 @@ class UserViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = UserUiState.Loading
-            val result = getLoginUser(userEmail, userPassword)
+            val result = getLoginUser(userEmail.trim().lowercase(), userPassword)
 
             result.onSuccess { loggedInUser ->
                 _isUserLoggedIn.value = true
