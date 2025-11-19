@@ -9,7 +9,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import androidx.fragment.app.Fragment
 import androidx.media3.exoplayer.ExoPlayer
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.utils.Config
@@ -23,6 +22,9 @@ class MusicService : Service() {
 
     @Inject
     lateinit var player: ExoPlayer
+
+    @Inject
+    lateinit var notificationManager: NotificationManager
 
 
     private val channelId = "music_channel"
@@ -66,8 +68,8 @@ class MusicService : Service() {
                 "Music Player",
                 NotificationManager.IMPORTANCE_LOW
             )
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
+
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -115,8 +117,7 @@ class MusicService : Service() {
 
 
     private fun updateNotification(isPlaying: Boolean) {
-        val manager = getSystemService(NotificationManager::class.java)
-        manager.notify(1, buildNotification(isPlaying))
+        notificationManager.notify(1, buildNotification(isPlaying))
     }
 
 
