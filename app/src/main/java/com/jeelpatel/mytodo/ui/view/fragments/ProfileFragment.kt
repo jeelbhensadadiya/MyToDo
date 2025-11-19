@@ -43,6 +43,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSimpleNotificationFragment())
         }
 
+        binding.workManagerBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToWorkManagerFragment())
+        }
+
     }
 
 

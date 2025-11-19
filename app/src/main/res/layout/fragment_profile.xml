@@ -120,6 +120,16 @@
                 app:iconPadding="10dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/workManagerBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Work Manager Example"
+                app:icon="@drawable/productivity_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sensorsBtn"
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="match_parent"

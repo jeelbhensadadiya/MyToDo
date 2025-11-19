@@ -129,4 +129,9 @@ dependencies {
     implementation("androidx.media3:media3-session:1.8.0")
     implementation("androidx.media:media:1.7.1")
 
+
+    // WorkManager
+
+    implementation("androidx.work:work-runtime-ktx:2.11.0")
+
 }

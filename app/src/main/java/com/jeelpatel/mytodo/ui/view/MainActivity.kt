@@ -106,6 +106,10 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Simple Notification")
                 }
 
+                R.id.workManagerFragment -> {
+                    showToolbarWithBackIcon("Work Manager")
+                }
+
                 R.id.createTaskFragment -> {
                     showToolbarWithBackIcon("Create Task")
                 }

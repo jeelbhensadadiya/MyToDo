@@ -96,6 +96,9 @@
         <action
             android:id="@+id/action_profileFragment_to_simpleNotificationFragment"
             app:destination="@id/simpleNotificationFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_workManagerFragment"
+            app:destination="@id/workManagerFragment" />
     </fragment>
 
     <fragment
@@ -103,6 +106,7 @@
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" />
+
     <fragment
         android:id="@+id/mediaListFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.MediaListFragment"
@@ -115,11 +119,13 @@
             android:id="@+id/action_mediaListFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/servicesFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.ServicesFragment"
         android:label="fragment_services"
         tools:layout="@layout/fragment_services" />
+
     <fragment
         android:id="@+id/audioPlayerFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.AudioPlayerFragment"
@@ -130,6 +136,7 @@
             app:argType="string" />
 
     </fragment>
+
     <fragment
         android:id="@+id/videoPlayerFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.VideoPlayerFragment"
@@ -140,10 +147,16 @@
             android:name="videoUrl"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/simpleNotificationFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.SimpleNotificationFragment"
         android:label="fragment_simple_notification"
         tools:layout="@layout/fragment_simple_notification" />
+
+    <fragment
+        android:id="@+id/workManagerFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.WorkManagerFragment"
+        android:label="WorkManagerFragment" />
 
 </navigation>
