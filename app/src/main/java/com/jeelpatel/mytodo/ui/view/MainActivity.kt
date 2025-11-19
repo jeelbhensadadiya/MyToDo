@@ -106,6 +106,14 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Simple Notification")
                 }
 
+                R.id.sensorsFragment -> {
+                    showToolbarWithBackIcon("Sensors List")
+                }
+
+                R.id.gyroscopeFragment -> {
+                    showToolbarWithBackIcon("Gyroscope")
+                }
+
                 R.id.workManagerFragment -> {
                     showToolbarWithBackIcon("Work Manager")
                 }

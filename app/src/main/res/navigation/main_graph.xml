@@ -99,6 +99,9 @@
         <action
             android:id="@+id/action_profileFragment_to_workManagerFragment"
             app:destination="@id/workManagerFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_sensorsFragment"
+            app:destination="@id/sensorsFragment" />
     </fragment>
 
     <fragment
@@ -158,5 +161,19 @@
         android:id="@+id/workManagerFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.WorkManagerFragment"
         android:label="WorkManagerFragment" />
+    <fragment
+        android:id="@+id/sensorsFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.SensorsFragment"
+        android:label="fragment_sensors"
+        tools:layout="@layout/fragment_sensors" >
+        <action
+            android:id="@+id/action_sensorsFragment_to_gyroscopeFragment"
+            app:destination="@id/gyroscopeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gyroscopeFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.GyroscopeFragment"
+        android:label="fragment_gyroscope"
+        tools:layout="@layout/fragment_gyroscope" />
 
 </navigation>

@@ -47,6 +47,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToWorkManagerFragment())
         }
 
+        binding.sensorsBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSensorsFragment())
+        }
+
     }
 
 

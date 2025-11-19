@@ -29,9 +29,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".service.MusicService" />
+        <service
+            android:name=".service.MusicService"
+            android:foregroundServiceType="mediaPlayback" />
 
-        <service android:name=".service.ServiceExample" />
+        <service
+            android:name=".service.ServiceExample"
+            android:foregroundServiceType="mediaPlayback" />
 
         <activity
             android:name=".ui.view.MainActivity"
