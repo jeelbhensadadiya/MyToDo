@@ -51,6 +51,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToSensorsFragment())
         }
 
+        binding.connectivityBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToConnectivityFragment())
+        }
+
     }
 
 

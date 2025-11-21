@@ -118,6 +118,18 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Work Manager")
                 }
 
+                R.id.connectivityFragment -> {
+                    showToolbarWithBackIcon("Connectivity")
+                }
+
+                R.id.wifiFragment -> {
+                    showToolbarWithBackIcon("Wi-Fi")
+                }
+
+                R.id.bluetoothFragment -> {
+                    showToolbarWithBackIcon("Bluetooth")
+                }
+
                 R.id.createTaskFragment -> {
                     showToolbarWithBackIcon("Create Task")
                 }
