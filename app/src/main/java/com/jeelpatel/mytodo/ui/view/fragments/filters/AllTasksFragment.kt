@@ -84,14 +84,10 @@ class AllTasksFragment : Fragment() {
 
     private fun dataCollectors() {
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.pagingTask.collectLatest { pagingData ->
+                taskAdapter.submitData(pagingData)
+            }
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                launch {
-                    viewModel.pagingTask.collectLatest { pagingData ->
-                        taskAdapter.submitData(pagingData)
-                    }
-                }
-
                 launch {
                     viewModel.uiStates.collectLatest { uiStates ->
                         when (uiStates) {
