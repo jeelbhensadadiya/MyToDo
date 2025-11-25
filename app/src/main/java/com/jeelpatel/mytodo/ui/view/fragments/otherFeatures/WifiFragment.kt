@@ -16,14 +16,18 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.databinding.FragmentWifiBinding
+import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
+@AndroidEntryPoint
 class WifiFragment : Fragment() {
 
 
     private var _binding: FragmentWifiBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var wifiManager: WifiManager
+    @Inject
+    lateinit var wifiManager: WifiManager
     private lateinit var adapter: ArrayAdapter<String>
 
 
@@ -52,8 +56,6 @@ class WifiFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        wifiManager = requireContext().getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, ArrayList())
         binding.wifiListView.adapter = adapter

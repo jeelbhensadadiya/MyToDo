@@ -1,18 +1,12 @@
 package com.jeelpatel.mytodo.ui.view.fragments.otherFeatures
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraControl
 import androidx.camera.core.CameraInfo
@@ -28,8 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.databinding.FragmentCameraBinding
 import com.jeelpatel.mytodo.utils.UiHelper
 import kotlinx.coroutines.launch
@@ -40,60 +32,21 @@ class CameraFragment : Fragment() {
 
     private var _binding: FragmentCameraBinding? = null
     private val binding get() = _binding!!
-
-
     private lateinit var previewView: PreviewView
     private var imageCapture: ImageCapture? = null
     private var imageCaptureFlashMode: Int = ImageCapture.FLASH_MODE_OFF
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-
     private var camera: Camera? = null // 👈 store camera reference
     private var cameraControl: CameraControl? = null
     private var cameraInfo: CameraInfo? = null
     private var isTorchOn = false
 
 
-    private val permissions = arrayOf(
-        Manifest.permission.CAMERA,
-//        Manifest.permission.WRITE_EXTERNAL_STORAGE
-    )
-
-    private val permissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { result ->
-            val deniedList = result.filterValues { !it }.keys
-
-            when {
-                deniedList.isEmpty() -> {
-                    onAllPermissionGranted()
-                }
-
-                deniedList.any { permission ->
-                    !shouldShowRequestPermissionRationale(permission)
-                } -> {
-                    showSettingsDialog()
-                }
-
-                else -> {
-                    showRationalDialog()
-                }
-            }
-        }
-
-    private val startActivityOrReCheckSettings = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        recheckPermissions()
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCameraBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -102,89 +55,12 @@ class CameraFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkPermissions()
+        setupCameraUi()
 
     }
 
 
-    private fun recheckPermissions() {
-        val notGranted = permissions.filter {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                it
-            ) != PackageManager.PERMISSION_GRANTED
-        }
-
-        if (notGranted.isEmpty()) {
-            onAllPermissionGranted()
-        } else {
-            MaterialAlertDialogBuilder(requireContext())
-                .setMessage("Camera Permissions still missing, please enable them from settings.")
-                .setPositiveButton("Go To Settings") { _, _ ->
-                    openAppSettings()
-                }
-                .setNegativeButton("Cancel") { _, _ ->
-                    findNavController().popBackStack()
-                }
-        }
-    }
-
-
-    private fun showRationalDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Camera Permission Required")
-            .setMessage("Camera permission is permanently denied. You can enable them in app settings.")
-            .setPositiveButton("Go To Settings") { _, _ ->
-                openAppSettings()
-            }
-            .setCancelable(false)
-            .show()
-    }
-
-
-    private fun openAppSettings() {
-        val intent = Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.fromParts("package", requireContext().packageName, null)
-        )
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivityOrReCheckSettings.launch(intent)
-
-    }
-
-
-    private fun showSettingsDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Camera Permission Required")
-            .setMessage("Camera permission is permanently denied. You can enable them in app settings.")
-            .setPositiveButton("Go To Settings") { _, _ ->
-                openAppSettings()
-            }
-            .setCancelable(false)
-            .setNegativeButton("Cancel") { _, _ ->
-                findNavController().popBackStack()
-            }
-            .show()
-    }
-
-
-    private fun checkPermissions() {
-        val notGranted = permissions.filter {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                it
-            ) != PackageManager.PERMISSION_GRANTED
-        }
-
-        if (notGranted.isEmpty()) {
-            onAllPermissionGranted()
-        } else {
-            permissionLauncher.launch(notGranted.toTypedArray())
-        }
-    }
-
-
-    private fun onAllPermissionGranted() {
+    private fun setupCameraUi() {
         previewView = binding.imagePreview
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -246,17 +122,6 @@ class CameraFragment : Fragment() {
         setupTapToFocus()
     }
 
-    private fun zoomCamera(zoomIn: Boolean) {
-        val currentZoom = cameraInfo?.zoomState?.value?.zoomRatio ?: 1f
-        val newZoom = if (zoomIn) currentZoom + 0.2f else currentZoom - 0.2f
-        cameraControl?.setZoomRatio(
-            newZoom.coerceIn(
-                0f,
-                cameraInfo?.zoomState?.value?.maxZoomRatio ?: 1f
-            )
-        )
-    }
-
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupTapToFocus() {
@@ -303,7 +168,7 @@ class CameraFragment : Fragment() {
     }
 
 
-    private suspend fun startCamera() {
+    private fun startCamera() {
 
         // Step 1. Get camera provider
         val cameraProviderFuture = ProcessCameraProvider.Companion.getInstance(requireContext())

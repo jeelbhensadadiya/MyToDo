@@ -4,7 +4,6 @@ import android.R
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothClass
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,11 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.jeelpatel.mytodo.databinding.FragmentBluetoothBinding
+import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 
 
+@AndroidEntryPoint
 class BluetoothFragment : Fragment() {
 
 
@@ -27,19 +28,13 @@ class BluetoothFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-    private lateinit var bluetoothAdapter: BluetoothAdapter
+    @Inject
+    lateinit var bluetoothAdapter: BluetoothAdapter
+
+
     private lateinit var pairedAdapter: ArrayAdapter<String>
     private lateinit var discoveredAdapter: ArrayAdapter<String>
     private val discoveredDevices = mutableListOf<BluetoothDevice>()
-
-
-    // ----------- RUNTIME PERMISSION HANDLER -----------
-    private val bluetoothPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-            if (result.values.all { it }) startDiscovery()
-            else Toast.makeText(requireContext(), "Bluetooth permission denied", Toast.LENGTH_SHORT)
-                .show()
-        }
 
 
     // ----------- BROADCAST RECEIVER -----------
@@ -72,7 +67,7 @@ class BluetoothFragment : Fragment() {
 
 
     // ----------- ADD DEVICE TO LIST -----------
-    fun addDeviceToList(device: BluetoothDevice) {
+    private fun addDeviceToList(device: BluetoothDevice) {
 
         val type = getDeviceType(device.bluetoothClass)
         val display = "${device.name ?: "Unknown"}\n${device.address}\n$type"
@@ -100,7 +95,7 @@ class BluetoothFragment : Fragment() {
 
 
     // ----------- BONDING STATE HANDLER -----------
-    fun onBondStateChanged(device: BluetoothDevice) {
+    private fun onBondStateChanged(device: BluetoothDevice) {
         val msg = when (device.bondState) {
             BluetoothDevice.BOND_BONDING -> "Pairing with ${device.name}..."
             BluetoothDevice.BOND_BONDED -> "Paired with ${device.name}"
@@ -117,7 +112,7 @@ class BluetoothFragment : Fragment() {
             if (bluetoothAdapter.isDiscovering) bluetoothAdapter.cancelDiscovery()
             device.createBond()
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Pairing failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Pairing failed $e", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -125,7 +120,7 @@ class BluetoothFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentBluetoothBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -143,12 +138,6 @@ class BluetoothFragment : Fragment() {
         binding.otherBluetoothListView.adapter = discoveredAdapter
 
 
-        // ----------- Init Bluetooth -----------
-        val manager: BluetoothManager =
-            requireContext().getSystemService(BluetoothManager::class.java)
-        bluetoothAdapter = manager.adapter
-
-
         // ----------- Register for broadcasts -----------
         val filter = IntentFilter().apply {
             addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED)
@@ -160,7 +149,7 @@ class BluetoothFragment : Fragment() {
 
 
         // ----------- Discover Paired Device -----------
-        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter?.bondedDevices
+        val pairedDevices: Set<BluetoothDevice>? = bluetoothAdapter.bondedDevices
         pairedDevices?.forEach { device ->
             val deviceName = device.name
             pairedAdapter.add(deviceName)
@@ -169,7 +158,7 @@ class BluetoothFragment : Fragment() {
 
         // ----------- Check bluetooth is enabled or not -----------
         binding.bluetoothBtn.setOnClickListener {
-            if (bluetoothAdapter?.isEnabled == false) {
+            if (bluetoothAdapter.isEnabled == false) {
                 startActivity(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
             } else {
                 Toast.makeText(

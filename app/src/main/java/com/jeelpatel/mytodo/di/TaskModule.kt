@@ -17,7 +17,7 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class TaskModule {
+object TaskModule {
 
     @Provides
     fun provideTaskUseCases(
