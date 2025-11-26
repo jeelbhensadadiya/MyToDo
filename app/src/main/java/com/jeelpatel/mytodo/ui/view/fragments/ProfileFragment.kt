@@ -5,13 +5,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.media3.common.util.Log
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.databinding.FragmentProfileBinding
@@ -180,6 +180,10 @@ class ProfileFragment : Fragment() {
 
         binding.connectivityBtn.setOnClickListener {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToConnectivityFragment())
+        }
+
+        binding.galleryBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToGalleryFragment())
         }
 
         binding.photoPickerBtn.setOnClickListener {

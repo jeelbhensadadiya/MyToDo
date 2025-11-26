@@ -2,6 +2,7 @@ package com.jeelpatel.mytodo.ui.view.fragments.otherFeatures
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,23 +43,29 @@ class PhotoPickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.selectPhotoBtn.setOnClickListener {
-            photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            photoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
         }
 
     }
 
 
     private fun photoSelected(photoUri: Uri) {
+
+        Log.d("PHOTO_URI", "${photoUri.toString()}")
+
         Glide.with(binding.photoIv)
             .load(photoUri)
-            .placeholder(R.drawable.ic_launcher_background)
+            .placeholder(R.drawable.dummy_image)
             .centerCrop()
             .into(binding.photoIv)
     }
 
 
     private fun photoSelectionError() {
-        TODO("Not yet implemented")
+        Glide.with(binding.photoIv)
+            .load(R.drawable.dummy_image)
+            .centerCrop()
+            .into(binding.photoIv)
     }
 
 

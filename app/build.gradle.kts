@@ -23,13 +23,13 @@ android {
     }
 
     buildTypes {
-        debug {
-            isShrinkResources = true
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
-        }
+//        debug {
+//            isShrinkResources = true
+//            isMinifyEnabled = true
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+//            )
+//        }
 
         release {
             isShrinkResources = true
@@ -147,5 +147,11 @@ dependencies {
     // Glide
 
     implementation("com.github.bumptech.glide:glide:5.0.5")
+
+
+    // LeakCanary
+
+//    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
+
 
 }

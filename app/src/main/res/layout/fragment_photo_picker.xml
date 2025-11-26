@@ -26,8 +26,11 @@
             <ImageView
                 android:id="@+id/photoIv"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:src="@color/ic_launcher_background" />
+                android:layout_height="280dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/media_gallery"
+                android:cropToPadding="true"
+                android:src="@drawable/dummy_image" />
 
         </com.google.android.material.card.MaterialCardView>
 
