@@ -110,6 +110,16 @@
                 app:iconPadding="10dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/photoPickerBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Photo Picker"
+                app:icon="@drawable/gallery_24"
+                app:iconPadding="10dp" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/simpleNotificationBtn"
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="match_parent"
