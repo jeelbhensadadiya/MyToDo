@@ -42,12 +42,35 @@ object AppPermissions {
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else emptyArray()
 
-    val usbPermissions = emptyArray<String>()
+    val mediaPermissions = when {
+        Build.VERSION.SDK_INT >= 33 -> {
+            arrayOf(
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.READ_MEDIA_VIDEO,
+                Manifest.permission.READ_MEDIA_AUDIO
+            )
+        }
+
+        Build.VERSION.SDK_INT >= 29 -> {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        }
+
+        else -> {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
+    }
+
 
     val permissions = cameraPermissions +
             bluetoothPermissions +
             wifiPermissions +
             audioPermissions +
             notificationPermissions +
+            mediaPermissions +
             storagePermissions
 }

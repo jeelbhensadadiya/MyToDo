@@ -105,6 +105,9 @@
         <action
             android:id="@+id/action_profileFragment_to_connectivityFragment"
             app:destination="@id/connectivityFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_galleryFragment"
+            app:destination="@id/galleryFragment" />
     </fragment>
 
     <fragment
@@ -193,15 +196,23 @@
             android:id="@+id/action_connectivityFragment_to_bluetoothFragment"
             app:destination="@id/bluetoothFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/wifiFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.WifiFragment"
         android:label="fragment_wifi"
         tools:layout="@layout/fragment_wifi" />
+
     <fragment
         android:id="@+id/bluetoothFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.BluetoothFragment"
         android:label="fragment_bluetooth"
         tools:layout="@layout/fragment_bluetooth" />
+
+    <fragment
+        android:id="@+id/galleryFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.GalleryFragment"
+        android:label="fragment_gallery"
+        tools:layout="@layout/fragment_gallery" />
 
 </navigation>

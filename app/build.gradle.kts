@@ -143,4 +143,9 @@ dependencies {
 
     implementation("androidx.work:work-runtime-ktx:2.11.0")
 
+
+    // Glide
+
+    implementation("com.github.bumptech.glide:glide:5.0.5")
+
 }

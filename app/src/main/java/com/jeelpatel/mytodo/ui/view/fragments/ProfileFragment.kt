@@ -182,6 +182,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToConnectivityFragment())
         }
 
+        binding.galleryBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToGalleryFragment())
+        }
+
     }
 
 
