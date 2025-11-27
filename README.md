@@ -1,110 +1,109 @@
-# 📝 MyToDo App
+# 📱 MyToDo — Modern Android To-Do Application
 
-### Built with Modern Android Development Practices
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue?logo=kotlin)
+![Android](https://img.shields.io/badge/Android-14+-green?logo=android)
+![MVVM](https://img.shields.io/badge/Architecture-MVVM-orange)
+![Hilt](https://img.shields.io/badge/DI-Hilt-brightgreen)
 
-**Developer:** Jeel Bhensadadiya  
-**Language:** Kotlin  
-**Architecture:** MVVM (Model–View–ViewModel)  
-**Tech Stack:** Hilt • Room • Retrofit • Coroutines • Flow • ListAdapter • Jetpack Navigation
-
----
-
-## 📱 Overview
-
-**MyToDo** is a simple yet powerful ToDo application built entirely in **Kotlin**, demonstrating the use of **Modern Android Architecture Components** and **best development practices**.
-
-It allows users to:
-- ✅ Create new tasks  
-- ✏️ Update existing tasks  
-- ❌ Delete tasks  
-- 📋 View all tasks (with live updates)  
-- 🕒 Manage task completion status  
-
-This project is created for learning and practice purposes to understand **MVVM**, **Dependency Injection**, **Asynchronous programming**, and **Reactive data streams** using **Kotlin Flow**.
+A clean, modern, and scalable **To-Do App** built using **Kotlin + Jetpack Components**, following **MVVM architecture**, **Clean Architecture principles**, and **Modern Android Development (MAD)** practices.
 
 ---
 
-## 🧠 Tech Stack & Concepts Used
+## 🚀 Features
 
-| Layer | Technology | Description |
-|-------|-------------|-------------|
-| **Architecture** | **MVVM** | Clean separation between UI, ViewModel, Repository, and Data layers |
-| **Dependency Injection** | **Hilt (Dagger)** | Simplifies dependency injection and lifecycle management |
-| **Database** | **Room** | Local persistence with Entity, DAO, and Database |
-| **Networking** | **Retrofit** | REST API integration for CRUD operations |
-| **Asynchronous Work** | **Kotlin Coroutines** | Efficient background threading |
-| **Reactive Streams** | **Kotlin Flow** | Observing and collecting live database updates |
-| **UI Components** | **RecyclerView + ListAdapter** | Efficient UI rendering with DiffUtil |
-| **Lifecycle Awareness** | **ViewModel + LiveData/Flow** | Prevents leaks and ensures smooth UI updates |
+### 📝 Task Management
+- ➕ Create new tasks
+- ✏️ Edit and update tasks
+- ❌ Delete tasks
+- ♻️ Restore from Recycle Bin
+- 📋 View All, Completed, Pending, and Overdue tasks
+- 🔍 Filter tasks by status
+
+### ⚙️ Architecture & Tech
+- MVVM + Clean Architecture
+- Kotlin Coroutines + Flow
+- Room Database (Offline support)
+- Retrofit Networking
+- Paging 3 (Efficient infinite lists)
+- Hilt Dependency Injection
+- Jetpack Navigation Component
+- CameraX Integration
+- Media3 ExoPlayer Support
+- WorkManager for background tasks
 
 ---
 
-## 🧩 Project Structure
+## 🧠 Tech Stack
+
+| Layer | Technology |
+|------|------------|
+| **Architecture** | MVVM + Clean Architecture |
+| **Dependency Injection** | Hilt (Dagger) |
+| **Database** | Room + Room-Paging |
+| **Networking** | Retrofit + Gson |
+| **Async & Reactive** | Coroutines, Flow, ViewModel KTX |
+| **UI Layer** | RecyclerView + ListAdapter + ViewBinding |
+| **Pagination** | Paging 3 |
+| **Media** | CameraX, Media3 ExoPlayer |
+| **Background Work** | WorkManager |
+| **Navigation** | Navigation Component + Safe Args |
+
+---
+
+## 📂 Project Structure
+
 ```
 mytodo/
-    mytodo/
-        MyApplication.kt
-        data/
-            local/
-                database/
-                    UserDatabase.kt
-                entity/
-                    TaskEntity.kt
-                    UserEntity.kt
-                dao/
-                    UserDao.kt
-                    TaskDao.kt
-            mapper/
-                TaskDomainMapper.kt
-            remote/
-                api/
-                    ApiService.kt
-                dto/
-                    TodoDto.kt
-        domain/
-            model/
-                User.kt
-                Task.kt
-            repository/
-                UserRepository.kt
-                TaskRepository.kt
-            usecase/
-                task/
-                    AddTaskUseCase.kt
-                    DeleteTaskUseCase.kt
-                    GetAllTaskUseCase.kt
-                    GetCompletedTaskUseCase.kt
-                    GetPendingTaskUseCase.kt
-                user/
-                    LoginUseCase.kt
-                    RegisterUseCase.kt
-        ui/
-            view/
-                MainActivity.kt
-                TaskViewFragment.kt
-                CreateTaskFragment.kt
-                LoginFragment.kt
-                RecycleBinFragment.kt
-                SignUpFragment.kt
-            viewmodel/
-                LoginViewModel.kt
-                SignUpViewModel.kt
-                TaskViewModel.kt
-        util/
-            UIState.kt
-            Validator.kt
-        di/
-            AppModule.kt
-    app/
-        build.gradle
-    gradle/
-    build.gradle
-    settings.gradle
+│
+├── data/
+│ ├── local/
+│ ├── remote/
+│ ├── mapper/
+│ └── repository/
+│
+├── domain/
+│ ├── model/
+│ ├── repository/
+│ └── usecase/
+│
+├── ui/
+│ ├── view/
+│ ├── adapter/
+│ └── viewModel/
+│
+├── util/
+└── di/
+
 ```
 
-
-
 ---
+
+## 📦 Dependencies (Major Highlights)
+
+```gradle
+// Hilt
+implementation("com.google.dagger:hilt-android:2.57.2")
+ksp("com.google.dagger:hilt-compiler:2.57.2")
+
+// Room
+implementation("androidx.room:room-runtime:2.8.3")
+implementation("androidx.room:room-paging:2.8.3")
+ksp("androidx.room:room-compiler:2.8.3")
+
+// Paging 3
+implementation("androidx.paging:paging-runtime:3.3.6")
+
+// Retrofit
+implementation("com.squareup.retrofit2:retrofit:3.0.0")
+implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+// Kotlin Coroutines
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+
+// Navigation
+implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
+```
 
 ## ⚙️ Features
 
@@ -138,10 +137,13 @@ mytodo/
 
 Through building this project, I (**Jeel Bhensadadiya**) have learned:
 
-- 🧩 How to structure an app using **MVVM Architecture**  
-- 💉 How to use **Hilt** for dependency injection  
-- 💾 How to persist data locally using **Room**  
-- 🌐 How to perform network operations with **Retrofit**  
-- ⚡ How to use **Coroutines** and **Flow** for asynchronous operations  
-- 🎨 How to design reactive, lifecycle-aware UIs with **ListAdapter**  
+- MVVM + Clean Architecture in-depth
+- How to implement Hilt dependency injection
+- Building offline-first apps using Room
+- Networking with Retrofit
+- Flow + Coroutines for reactive streams
+- Paging3 for efficient list loading
+- Using CameraX and Media3 ExoPlayer
+- Clean UI architecture with ViewBinding
+- How to manage UI State with sealed classes
 
