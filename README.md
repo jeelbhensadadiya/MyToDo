@@ -1,5 +1,4 @@
-# 📱 MyToDo — Modern Android To-Do Application
-
+# 📱 MyToDo
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue?logo=kotlin)
 ![Android](https://img.shields.io/badge/Android-14+-green?logo=android)
 ![MVVM](https://img.shields.io/badge/Architecture-MVVM-orange)
