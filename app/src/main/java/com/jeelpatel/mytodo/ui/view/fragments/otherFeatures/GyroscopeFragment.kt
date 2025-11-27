@@ -46,7 +46,7 @@ class GyroscopeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentGyroscopeBinding.inflate(inflater, container, false)
         return binding.root
     }

@@ -86,6 +86,7 @@ class TaskViewFragment : Fragment() {
                             is TaskUiState.Ideal -> {}
                             is TaskUiState.Loading -> {}
                             is TaskUiState.Success -> {}
+                            is TaskUiState.EmptyList -> {}
                             is TaskUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiStates.message)
                             }

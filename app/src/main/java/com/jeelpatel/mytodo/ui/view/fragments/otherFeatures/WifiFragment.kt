@@ -48,7 +48,7 @@ class WifiFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentWifiBinding.inflate(inflater, container, false)
         return binding.root
     }

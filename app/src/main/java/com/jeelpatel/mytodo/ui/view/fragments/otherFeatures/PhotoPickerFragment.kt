@@ -51,7 +51,7 @@ class PhotoPickerFragment : Fragment() {
 
     private fun photoSelected(photoUri: Uri) {
 
-        Log.d("PHOTO_URI", "${photoUri.toString()}")
+        Log.d("PHOTO_URI", "$photoUri")
 
         Glide.with(binding.photoIv)
             .load(photoUri)

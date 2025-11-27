@@ -171,7 +171,7 @@ class CameraFragment : Fragment() {
     private fun startCamera() {
 
         // Step 1. Get camera provider
-        val cameraProviderFuture = ProcessCameraProvider.Companion.getInstance(requireContext())
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
 
         cameraProviderFuture.addListener({
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()

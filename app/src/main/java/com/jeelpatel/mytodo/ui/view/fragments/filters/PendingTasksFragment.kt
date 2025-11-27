@@ -93,7 +93,13 @@ class PendingTasksFragment : Fragment() {
 
                             is TaskUiState.Loading -> {}
 
+                            is TaskUiState.EmptyList -> {
+                                binding.onErrorLayout.visibility = View.VISIBLE
+                                taskAdapter.submitList(emptyList())
+                            }
+
                             is TaskUiState.Success -> {
+                                binding.onErrorLayout.visibility = View.GONE
                                 taskAdapter.submitList(uiStates.tasks)
                             }
 

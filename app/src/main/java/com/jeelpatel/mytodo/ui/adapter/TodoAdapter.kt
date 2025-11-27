@@ -10,7 +10,7 @@ import com.jeelpatel.mytodo.data.remote.dto.TodoDto
 import com.jeelpatel.mytodo.databinding.ItemTodosBinding
 
 class TodoAdapter(val context: Context) :
-    ListAdapter<TodoDto, TodoAdapter.TodoViewHolder>(TodoAdapter.DiffCallBack()) {
+    ListAdapter<TodoDto, TodoAdapter.TodoViewHolder>(DiffCallBack()) {
 
     class TodoViewHolder(val binding: ItemTodosBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -22,12 +22,12 @@ class TodoAdapter(val context: Context) :
             oldItem == newItem
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoAdapter.TodoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val binding = ItemTodosBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TodoViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TodoAdapter.TodoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo = getItem(position)
 
         with(holder.binding) {

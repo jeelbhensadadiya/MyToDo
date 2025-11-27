@@ -17,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val useCases: TaskContainer,
-    private val sessionManager: SessionManager
+    private val useCases: TaskContainer, private val sessionManager: SessionManager
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow<TaskUiState>(TaskUiState.Ideal)
@@ -34,11 +33,10 @@ class TaskViewModel @Inject constructor(
     fun getAllTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
-            useCases.getTasks(currentUserId)
-                .collectLatest { data ->
-                    pagingTask.value = data
+            useCases.getTasks(currentUserId).collectLatest { data ->
+                pagingTask.value = data
 //                        _uiState.value = TaskUiState.Success(it)
-                }
+            }
         }
     }
 
@@ -47,8 +45,12 @@ class TaskViewModel @Inject constructor(
     fun completedTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
-            useCases.getCompleted(currentUserId).collect {
-                _uiState.value = TaskUiState.Success(it)
+            useCases.getCompleted(currentUserId).collectLatest { taskList ->
+                if (!taskList.isEmpty()) {
+                    _uiState.value = TaskUiState.Success(taskList)
+                } else {
+                    _uiState.value = TaskUiState.EmptyList
+                }
             }
         }
     }
@@ -58,10 +60,13 @@ class TaskViewModel @Inject constructor(
     fun pendingTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
-            useCases.getPending(currentUserId)
-                .collect {
-                    _uiState.value = TaskUiState.Success(it)
+            useCases.getPending(currentUserId).collectLatest { taskList ->
+                if (!taskList.isEmpty()) {
+                    _uiState.value = TaskUiState.Success(taskList)
+                } else {
+                    _uiState.value = TaskUiState.EmptyList
                 }
+            }
         }
     }
 
@@ -70,10 +75,13 @@ class TaskViewModel @Inject constructor(
     fun overDueTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
-            useCases.getOverdue(currentUserId)
-                .collect {
-                    _uiState.value = TaskUiState.Success(it)
+            useCases.getOverdue(currentUserId).collectLatest { taskList ->
+                if (!taskList.isEmpty()) {
+                    _uiState.value = TaskUiState.Success(taskList)
+                } else {
+                    _uiState.value = TaskUiState.EmptyList
                 }
+            }
         }
     }
 
@@ -82,10 +90,13 @@ class TaskViewModel @Inject constructor(
     fun getAllDeletedTask() {
         taskJob?.cancel()
         taskJob = viewModelScope.launch {
-            useCases.getDeleted(currentUserId)
-                .collect {
-                    _uiState.value = TaskUiState.Success(it)
+            useCases.getDeleted(currentUserId).collectLatest { taskList ->
+                if (!taskList.isEmpty()) {
+                    _uiState.value = TaskUiState.Success(taskList)
+                } else {
+                    _uiState.value = TaskUiState.EmptyList
                 }
+            }
         }
     }
 
@@ -95,8 +106,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             val result = useCases.delete(taskId)
             result.onFailure {
-                _uiState.value =
-                    TaskUiState.Error(it.message ?: "Unknown error")
+                _uiState.value = TaskUiState.Error(it.message ?: "Unknown error")
             }
         }
     }
@@ -107,8 +117,7 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             val result = useCases.restore(taskId)
             result.onFailure {
-                _uiState.value =
-                    TaskUiState.Error(it.message ?: "Unknown error")
+                _uiState.value = TaskUiState.Error(it.message ?: "Unknown error")
             }
         }
     }

@@ -111,6 +111,9 @@
         <action
             android:id="@+id/action_profileFragment_to_photoPickerFragment"
             app:destination="@id/photoPickerFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_testFragment"
+            app:destination="@id/testFragment" />
     </fragment>
 
     <fragment
@@ -222,5 +225,10 @@
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.PhotoPickerFragment"
         android:label="fragment_photo_picker"
         tools:layout="@layout/fragment_photo_picker" />
+    <fragment
+        android:id="@+id/testFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.TestFragment"
+        android:label="fragment_test"
+        tools:layout="@layout/fragment_test" />
 
 </navigation>

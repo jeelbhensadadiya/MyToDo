@@ -130,6 +130,10 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Bluetooth")
                 }
 
+                R.id.testFragment -> {
+                    showToolbarWithBackIcon("Beta Testing")
+                }
+
                 R.id.createTaskFragment -> {
                     showToolbarWithBackIcon("Create Task")
                 }

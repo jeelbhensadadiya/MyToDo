@@ -82,8 +82,16 @@ class RecycleBinFragment : Fragment() {
                             }
 
                             is TaskUiState.Ideal -> {}
+
                             is TaskUiState.Loading -> {}
+
+                            is TaskUiState.EmptyList -> {
+                                binding.onErrorLayout.visibility = View.VISIBLE
+                                recyclerBinAdapter.submitList(emptyList())
+                            }
+
                             is TaskUiState.Success -> {
+                                binding.onErrorLayout.visibility = View.GONE
                                 recyclerBinAdapter.submitList(uiStates.tasks)
                             }
                         }

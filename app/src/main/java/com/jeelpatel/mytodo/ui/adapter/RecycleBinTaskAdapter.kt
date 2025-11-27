@@ -21,6 +21,7 @@ class RecycleBinTaskAdapter(
     class TaskViewHolder(val binding: ItemDeletedTasksBinding) :
         RecyclerView.ViewHolder(binding.root)
 
+
     class DiffCallBack : DiffUtil.ItemCallback<TaskModel>() {
         override fun areItemsTheSame(oldItem: TaskModel, newItem: TaskModel): Boolean =
             oldItem.taskId == newItem.taskId
@@ -32,13 +33,14 @@ class RecycleBinTaskAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecycleBinTaskAdapter.TaskViewHolder {
+    ): TaskViewHolder {
         val binding =
             ItemDeletedTasksBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecycleBinTaskAdapter.TaskViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val task = getItem(position)
 
         with(holder.binding) {

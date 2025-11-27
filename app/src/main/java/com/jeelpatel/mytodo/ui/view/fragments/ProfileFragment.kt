@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentProfileBinding
 import com.jeelpatel.mytodo.utils.AppPermissions
 
@@ -190,6 +191,18 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToPhotoPickerFragment())
         }
 
+        binding.testingsBtn.setOnClickListener {
+            MaterialAlertDialogBuilder(requireContext())
+                .setIcon(R.drawable.risk_24)
+                .setTitle("Disclaimer")
+                .setMessage("App may be Crash !!!")
+                .setCancelable(false)
+                .setPositiveButton("Open Anyway") { _, _ ->
+                    findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToTestFragment())
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
     }
 
 

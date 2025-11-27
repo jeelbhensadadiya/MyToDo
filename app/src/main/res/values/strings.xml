@@ -44,6 +44,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="media_gallery">Media Gallery</string>
+    <string name="beta_testing">Beta Testing</string>
+    <string name="no_pending_tasks">No pending tasks</string>
+    <string name="no_overdue_tasks">No overdue tasks</string>
+    <string name="no_tasks_marked_as_completed">No tasks marked as completed</string>
+    <string name="no_tasks_found">No tasks found</string>
+    <string name="your_recycle_bin_is_empty">Your Recycle Bin is empty</string>
 
 
 </resources>

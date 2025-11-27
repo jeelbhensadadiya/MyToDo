@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,5 +12,43 @@
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_tasks" />
+
+    <LinearLayout
+        android:id="@+id/onErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            app:icon="@drawable/not_found_24"
+            app:iconSize="60dp" />
+
+        <TextView
+            android:id="@+id/taskNotFoundTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/no_tasks_found"
+            android:textAppearance="?attr/textAppearanceLabelLarge" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createTaskBtn"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_task"
+            app:icon="@drawable/pencil_24"
+            app:iconGravity="end"
+            app:iconPadding="10dp"
+            app:iconSize="15dp" />
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.view.fragments.filters.OverdueTasksFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -11,5 +12,32 @@
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_tasks" />
+
+    <LinearLayout
+        android:id="@+id/onErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            app:icon="@drawable/not_found_24"
+            app:iconSize="60dp" />
+
+        <TextView
+            android:id="@+id/taskNotFoundTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/no_overdue_tasks"
+            android:textAppearance="?attr/textAppearanceLabelLarge" />
+
+    </LinearLayout>
 
 </FrameLayout>

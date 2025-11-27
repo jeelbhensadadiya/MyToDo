@@ -20,7 +20,6 @@ class TaskPagingAdapter(
 ) : PagingDataAdapter<TaskModel, TaskPagingAdapter.TaskViewHolder>(DiffCallBack()) {
 
 
-
     class DiffCallBack : DiffUtil.ItemCallback<TaskModel>() {
         override fun areItemsTheSame(oldItem: TaskModel, newItem: TaskModel): Boolean =
             oldItem.taskId == newItem.taskId
@@ -30,9 +29,7 @@ class TaskPagingAdapter(
     }
 
 
-
     class TaskViewHolder(val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root)
-
 
 
     override fun onCreateViewHolder(

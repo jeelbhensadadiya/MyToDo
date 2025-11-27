@@ -71,6 +71,16 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/testingsBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/beta_testing"
+                app:icon="@drawable/test_24"
+                app:iconPadding="10dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

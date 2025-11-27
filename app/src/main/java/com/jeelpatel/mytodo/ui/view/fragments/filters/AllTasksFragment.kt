@@ -1,6 +1,7 @@
 package com.jeelpatel.mytodo.ui.view.fragments.filters
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeelpatel.mytodo.databinding.FragmentAllTasksBinding
 import com.jeelpatel.mytodo.ui.adapter.TaskPagingAdapter
@@ -84,10 +86,32 @@ class AllTasksFragment : Fragment() {
 
     private fun dataCollectors() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.pagingTask.collectLatest { pagingData ->
-                taskAdapter.submitData(pagingData)
+            launch {
+                viewModel.pagingTask.collectLatest { pagingData ->
+                    taskAdapter.submitData(pagingData)
+                }
             }
+
+
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    taskAdapter.loadStateFlow.collectLatest { pagingData ->
+                        val isListEmpty = pagingData.refresh is LoadState.NotLoading &&
+                                taskAdapter.itemCount == 0
+
+                        Log.d("TASK_DATA", isListEmpty.toString())
+
+                        if (isListEmpty) {
+                            binding.onErrorLayout.visibility = View.VISIBLE
+                            binding.createTaskBtn.setOnClickListener {
+                                findNavController().navigate(MainFragmentDirections.actionMainFragmentToCreateTaskFragment())
+                            }
+                        } else {
+                            binding.onErrorLayout.visibility = View.GONE
+                        }
+                    }
+                }
+
                 launch {
                     viewModel.uiStates.collectLatest { uiStates ->
                         when (uiStates) {
@@ -95,9 +119,9 @@ class AllTasksFragment : Fragment() {
 
                             is TaskUiState.Loading -> {}
 
-                            is TaskUiState.Success -> {
-//                                taskAdapter.submitList(uiStates.tasks)
-                            }
+                            is TaskUiState.Success -> {}
+
+                            is TaskUiState.EmptyList -> {}
 
                             is TaskUiState.Error -> {
                                 UiHelper.showToast(requireContext(), uiStates.message)
