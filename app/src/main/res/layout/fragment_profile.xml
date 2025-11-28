@@ -81,6 +81,16 @@
                 app:icon="@drawable/test_24"
                 app:iconPadding="10dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/weatherAppBtn"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Weather App"
+                app:icon="@drawable/weather_24"
+                app:iconPadding="10dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

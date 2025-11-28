@@ -114,6 +114,9 @@
         <action
             android:id="@+id/action_profileFragment_to_testFragment"
             app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment" />
     </fragment>
 
     <fragment
@@ -230,5 +233,10 @@
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.TestFragment"
         android:label="fragment_test"
         tools:layout="@layout/fragment_test" />
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.WeatherFragment"
+        android:label="fragment_weather"
+        tools:layout="@layout/fragment_weather" />
 
 </navigation>

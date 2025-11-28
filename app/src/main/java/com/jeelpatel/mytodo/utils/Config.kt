@@ -33,4 +33,10 @@ object Config {
     const val ACTION_STOP = "ACTION_STOP"
 
 
+    // Weather Services
+
+    const val WEATHER_BASE_URL = "https://api.weatherapi.com/v1/"
+    const val WEATHER_API_KEY = "4085e8a1284a4385bf842054252811"
+
+
 }
