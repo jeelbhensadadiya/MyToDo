@@ -42,7 +42,7 @@ class WeatherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.getCurrentWeatherBtn.setOnClickListener {
-            viewModel.getCurrentWeather("Ahmedabad")
+            viewModel.getCurrentWeather(binding.locationEdt.text.toString())
         }
 
         dataCollector()
@@ -65,10 +65,15 @@ class WeatherFragment : Fragment() {
                             Toast.makeText(
                                 requireContext(), weatherUiState.message, Toast.LENGTH_SHORT
                             ).show()
+                            binding.tvTemperature.text = "${weatherUiState.message}"
+                            binding.weatherLayout.visibility = View.GONE
+                            binding.weatherLocationInputLayout.visibility = View.VISIBLE
                         }
 
                         is WeatherUiState.Success -> {
                             printWeatherValuesOnScreen(weatherUiState.weatherResponseModel)
+                            binding.weatherLayout.visibility = View.VISIBLE
+                            binding.weatherLocationInputLayout.visibility = View.GONE
                         }
                     }
                 }
@@ -81,7 +86,6 @@ class WeatherFragment : Fragment() {
         binding.tvLocalTime.text = weatherResponse.location.localtime
         binding.tvLocalTime.text = weatherResponse.location.localtime
 
-
         binding.tvTemperature.text = weatherResponse.current.temp_c.toString() + " °C"
         binding.tvConditionText.text = weatherResponse.current.condition.text
 
@@ -92,12 +96,8 @@ class WeatherFragment : Fragment() {
         binding.tvVisibility.text = weatherResponse.current.vis_km.toString() + " km"
         binding.tvCloud.text = weatherResponse.current.cloud.toString() + " %"
 
-        Glide.with(binding.root)
-            .load("https:${weatherResponse.current.condition.icon}")
-            .placeholder(R.drawable.dummy_image)
-            .into(binding.imgCondition)
-
-
+        Glide.with(binding.root).load("https:${weatherResponse.current.condition.icon}")
+            .placeholder(R.drawable.dummy_image).into(binding.imgCondition)
     }
 
 

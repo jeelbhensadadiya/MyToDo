@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Beta Testing")
                 }
 
-                R.id.weatherAppBtn -> {
+                R.id.weatherFragment -> {
                     showToolbarWithBackIcon("Weather App")
                 }
 
