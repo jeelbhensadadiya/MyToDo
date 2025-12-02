@@ -27,16 +27,13 @@ class MusicService : Service() {
     lateinit var notificationManager: NotificationManager
 
 
-    private val channelId = "music_channel"
-
-
     override fun onBind(intent: Intent?): IBinder? = null
 
 
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        startForeground(1, buildNotification(isPlaying = false))
+        startForeground(Config.NOTIFICATION_ID, buildNotification(isPlaying = false))
     }
 
 
@@ -64,7 +61,7 @@ class MusicService : Service() {
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
+                Config.CHANNEL_ID,
                 "Music Player",
                 NotificationManager.IMPORTANCE_LOW
             )
@@ -95,7 +92,7 @@ class MusicService : Service() {
             serviceAction(Config.ACTION_STOP)
         )
 
-        return NotificationCompat.Builder(this, channelId)
+        return NotificationCompat.Builder(this, Config.CHANNEL_ID)
             .setSmallIcon(R.drawable.to_do_24)
             .setContentTitle("Music Player")
             .setContentText(if (isPlaying) "Playing" else "Paused")
@@ -117,7 +114,7 @@ class MusicService : Service() {
 
 
     private fun updateNotification(isPlaying: Boolean) {
-        notificationManager.notify(1, buildNotification(isPlaying))
+        notificationManager.notify(Config.NOTIFICATION_ID, buildNotification(isPlaying))
     }
 
 

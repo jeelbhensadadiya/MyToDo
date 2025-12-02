@@ -34,12 +34,11 @@ class WeatherRepositoryImpl @Inject constructor(private val service: WeatherServ
                 } else {
                     when (response.code()) {
                         400 -> throw WeatherException.BadRequest("Invalid location format.")
-                        401 -> throw WeatherException.Unauthorized("Invalid API ke.")
+                        401 -> throw WeatherException.Unauthorized("Invalid API key.")
                         403 -> throw WeatherException.NotFound("API key has exceeded calls per month quota.")
                         404 -> throw WeatherException.NotFound("Weather data not found.")
                     }
                 }
-
             } catch (e: UnknownHostException) {
                 throw WeatherException.NetworkError("No internet connection")
             } catch (e: java.net.SocketTimeoutException) {
