@@ -195,6 +195,10 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToWeatherFragment())
         }
 
+        binding.customViewBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToCustomViewFragment())
+        }
+
         binding.testingsBtn.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
                 .setIcon(R.drawable.risk_24)

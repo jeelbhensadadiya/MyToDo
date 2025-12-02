@@ -138,6 +138,10 @@ class MainActivity : AppCompatActivity() {
                     showToolbarWithBackIcon("Weather App")
                 }
 
+                R.id.customViewBtn -> {
+                    showToolbarWithBackIcon("Custom Views")
+                }
+
                 R.id.createTaskFragment -> {
                     showToolbarWithBackIcon("Create Task")
                 }

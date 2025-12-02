@@ -117,6 +117,9 @@
         <action
             android:id="@+id/action_profileFragment_to_weatherFragment"
             app:destination="@id/weatherFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_customViewFragment"
+            app:destination="@id/customViewFragment" />
     </fragment>
 
     <fragment
@@ -223,20 +226,29 @@
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.GalleryFragment"
         android:label="fragment_gallery"
         tools:layout="@layout/fragment_gallery" />
+
     <fragment
         android:id="@+id/photoPickerFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.PhotoPickerFragment"
         android:label="fragment_photo_picker"
         tools:layout="@layout/fragment_photo_picker" />
+
     <fragment
         android:id="@+id/testFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.TestFragment"
         android:label="fragment_test"
         tools:layout="@layout/fragment_test" />
+
     <fragment
         android:id="@+id/weatherFragment"
         android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.WeatherFragment"
         android:label="fragment_weather"
         tools:layout="@layout/fragment_weather" />
+
+    <fragment
+        android:id="@+id/customViewFragment"
+        android:name="com.jeelpatel.mytodo.ui.view.fragments.otherFeatures.CustomViewFragment"
+        android:label="fragment_custom_view"
+        tools:layout="@layout/fragment_custom_view" />
 
 </navigation>

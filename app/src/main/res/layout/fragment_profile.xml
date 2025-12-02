@@ -188,6 +188,16 @@
                 app:icon="@drawable/router_24"
                 app:iconPadding="10dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/customViewBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Custom Views"
+                app:icon="@drawable/custom_view_24"
+                app:iconPadding="10dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
