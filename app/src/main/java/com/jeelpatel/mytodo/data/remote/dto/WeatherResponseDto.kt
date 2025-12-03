@@ -49,6 +49,7 @@ data class CurrentDto(
     val uv: Double,
     val gust_mph: Double,
     val gust_kph: Double,
+    val air_quality: AirQualityDto,
     val short_rad: Double,
     val diff_rad: Double,
     val dni: Double,
@@ -62,3 +63,14 @@ data class ConditionDto(
     val code: Int
 )
 
+
+data class AirQualityDto(
+    val co: Double,
+    val no2: Double,
+    val o3: Double,
+    val so2: Double,
+    val pm2_5: Double,
+    val pm10: Double,
+    val us_epa_index: Double,
+    val gb_defra_index: Double,
+)

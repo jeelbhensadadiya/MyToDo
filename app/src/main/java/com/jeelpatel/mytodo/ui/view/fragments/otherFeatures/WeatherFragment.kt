@@ -41,6 +41,18 @@ class WeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.delhiBtn.setOnClickListener {
+            viewModel.getCurrentWeather("Delhi")
+        }
+
+        binding.ahmedabadBtn.setOnClickListener {
+            viewModel.getCurrentWeather("Ahmedabad")
+        }
+
+        binding.rajkotBtn.setOnClickListener {
+            viewModel.getCurrentWeather("Rajkot")
+        }
+
         binding.getCurrentWeatherBtn.setOnClickListener {
             viewModel.getCurrentWeather(binding.locationEdt.text.toString())
         }
@@ -95,6 +107,10 @@ class WeatherFragment : Fragment() {
         binding.tvUV.text = weatherResponse.current.uv.toString()
         binding.tvVisibility.text = weatherResponse.current.vis_km.toString() + " km"
         binding.tvCloud.text = weatherResponse.current.cloud.toString() + " %"
+
+        binding.tvAqiCo.text = weatherResponse.current.air_quality.co.toString() + " co"
+        binding.tvAqiNo2.text = weatherResponse.current.air_quality.no2.toString() + " No2"
+        binding.tvAqiSo2.text = weatherResponse.current.air_quality.so2.toString() + " So2"
 
         Glide.with(binding.root).load("https:${weatherResponse.current.condition.icon}")
             .placeholder(R.drawable.dummy_image).into(binding.imgCondition)

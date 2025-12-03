@@ -14,6 +14,33 @@
         android:orientation="vertical"
         android:padding="10dp">
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delhiBtn"
+            style="?attr/materialIconButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Delhi" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ahmedabadBtn"
+            style="?attr/materialIconButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Ahmedabad" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/rajkotBtn"
+            style="?attr/materialIconButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="Rajkot" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,9 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Surat, Gujarat"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/tvLocalTime"
@@ -80,8 +106,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Local Time: 12:45 PM"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="15sp" />
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -103,6 +129,7 @@
                         android:id="@+id/imgCondition"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_launcher_foreground" />
 
                     <TextView
@@ -111,17 +138,16 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="28°C"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="42sp"
-                        android:textStyle="bold" />
+                        android:textAppearance="?attr/textAppearanceDisplayLarge"
+                        android:textColor="?attr/colorOnSurface" />
 
                     <TextView
                         android:id="@+id/tvConditionText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Partly Cloudy"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="18sp" />
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -157,18 +183,50 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Wind"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:id="@+id/tvWind"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12 km/h"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- WIND -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Wind Direction"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                        <TextView
+                            android:id="@+id/tvWindDirection"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    </LinearLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- HUMIDITY -->
@@ -188,16 +246,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Humidity"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:id="@+id/tvHumidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="65%"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -220,16 +277,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pressure"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:id="@+id/tvPressure"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1012 mb"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -251,16 +307,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="UV Index"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:id="@+id/tvUV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5.2"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -283,18 +338,49 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Visibility"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
                             android:id="@+id/tvVisibility"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8 km"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- CLOUD COVER -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cloud Cover"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                        <TextView
+                            android:id="@+id/tvCloud"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="70%"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    </LinearLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- CLOUD COVER -->
@@ -313,17 +399,32 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cloud Cover"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:text="AQI"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
 
                         <TextView
-                            android:id="@+id/tvCloud"
+                            android:id="@+id/tvAqiCo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="70%"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="14sp" />
+                            android:text="70 co"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/tvAqiNo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="70 no2"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <TextView
+                            android:id="@+id/tvAqiSo2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="70 so2"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
 
                     </LinearLayout>
 

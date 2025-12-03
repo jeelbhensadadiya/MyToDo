@@ -46,8 +46,12 @@ class RegisterNewUserUseCase @Inject constructor(private val userRepository: Use
 
         // return data or errors
         return try {
-            userRepository.registerUser(userModel)
-            Result.success(Unit)
+            val result = userRepository.registerUser(userModel)
+            if (result.isSuccess) {
+                Result.success(Unit)
+            } else {
+                Result.failure(result.exceptionOrNull() ?: Exception("Unknown error"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

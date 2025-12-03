@@ -13,6 +13,11 @@ interface UserDao {
     suspend fun registerUser(user: UserEntity)
 
 
+    // check if email already exists
+    @Query("SELECT * FROM user_table WHERE uEmail = :email LIMIT 1")
+    suspend fun getUserByEmail(email: String): UserEntity?
+
+
     // fetch user data for login
     @Query("SELECT * FROM user_table WHERE uEmail = :userEmail AND uPassword = :userPassword LIMIT 1")
     fun loginUser(userEmail: String, userPassword: String): UserEntity?

@@ -1,4 +1,4 @@
-package com.jeelpatel.mytodo.ui.viewModel
+package com.jeelpatel.mytodo.ui.viewModel.otherViewModel
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -19,7 +19,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jeelpatel.mytodo.domain.model.MediaStoreImage
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

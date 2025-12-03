@@ -11,6 +11,6 @@ interface WeatherService {
     suspend fun getCurrentWeather(
         @Query("key") apiKey: String,
         @Query("q") city: String,
-        @Query("aqi") aqi: String = "no",
+        @Query("aqi") aqi: String = "yes",
     ): Response<WeatherResponseDto>
 }

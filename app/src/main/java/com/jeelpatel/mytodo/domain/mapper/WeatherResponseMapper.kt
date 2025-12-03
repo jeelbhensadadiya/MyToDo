@@ -1,9 +1,11 @@
 package com.jeelpatel.mytodo.domain.mapper
 
+import com.jeelpatel.mytodo.data.remote.dto.AirQualityDto
 import com.jeelpatel.mytodo.data.remote.dto.ConditionDto
 import com.jeelpatel.mytodo.data.remote.dto.CurrentDto
 import com.jeelpatel.mytodo.data.remote.dto.LocationDto
 import com.jeelpatel.mytodo.data.remote.dto.WeatherResponseDto
+import com.jeelpatel.mytodo.domain.model.AirQualityModel
 import com.jeelpatel.mytodo.domain.model.ConditionModel
 import com.jeelpatel.mytodo.domain.model.CurrentModel
 import com.jeelpatel.mytodo.domain.model.LocationModel
@@ -62,6 +64,7 @@ fun CurrentDto.toDomain(): CurrentModel {
         uv = uv,
         gust_mph = gust_mph,
         gust_kph = gust_kph,
+        air_quality = air_quality.toDomain(),
         short_rad = short_rad,
         diff_rad = diff_rad,
         dni = dni,
@@ -74,5 +77,19 @@ fun ConditionDto.toDomain(): ConditionModel {
         text = text,
         icon = icon,
         code = code
+    )
+}
+
+
+fun AirQualityDto.toDomain(): AirQualityModel {
+    return AirQualityModel(
+        co = co,
+        no2 = no2,
+        o3 = o3,
+        so2 = so2,
+        pm2_5 = pm2_5,
+        pm10 = pm10,
+        us_epa_index = us_epa_index,
+        gb_defra_index = gb_defra_index,
     )
 }

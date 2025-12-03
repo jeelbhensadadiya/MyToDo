@@ -11,7 +11,16 @@ class UserRepositoryImpl @Inject constructor(private val userDao: UserDao) : Use
 
 
     // create new user
-    override suspend fun registerUser(user: UserModel) = userDao.registerUser(user.toEntity())
+    override suspend fun registerUser(user: UserModel): Result<String> {
+        val existingUser = userDao.getUserByEmail(user.uEmail)
+
+        return if (existingUser != null) {
+            Result.failure(Exception("409"))
+        } else {
+            userDao.registerUser(user.toEntity())
+            Result.success("User registered successfully")
+        }
+    }
 
 
     // login or fetch loggedIn user's data

@@ -17,7 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.R
 import com.jeelpatel.mytodo.databinding.FragmentGalleryBinding
 import com.jeelpatel.mytodo.domain.model.MediaStoreImage
-import com.jeelpatel.mytodo.ui.viewModel.MediaViewModel
+import com.jeelpatel.mytodo.ui.viewModel.otherViewModel.MediaViewModel
 
 class GalleryFragment : Fragment() {
 

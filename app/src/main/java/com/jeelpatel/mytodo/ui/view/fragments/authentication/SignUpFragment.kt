@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jeelpatel.mytodo.databinding.FragmentSignUpBinding
 import com.jeelpatel.mytodo.ui.viewModel.UserUiState
 import com.jeelpatel.mytodo.ui.viewModel.userViewModel.UserViewModel
@@ -75,7 +76,20 @@ class SignUpFragment : Fragment() {
                             }
 
                             is UserUiState.Error -> {
-                                UiHelper.showToast(requireContext(), uiState.message)
+                                if (uiState.message == "409") {
+                                    MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle("Email Already Registered ")
+                                        .setMessage("This email is already registered. Please log in to continue.")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Login") { _, _ ->
+                                            findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToLoginFragment())
+                                        }
+                                        .setNegativeButton("Cancel", null)
+                                        .show()
+
+                                } else {
+                                    UiHelper.showToast(requireContext(), uiState.message)
+                                }
                             }
                         }
                     }
